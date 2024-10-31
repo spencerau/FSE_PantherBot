@@ -1,0 +1,45 @@
+# Paths and config settings for Mistral, LLaMA, NeMo
+
+# Configurations for each model type supported in the system
+#   •	model_name and tokenizer_name: Paths to model weights and tokenizers.
+# 	•	max_length: The maximum number of tokens in generated responses.
+# 	•	temperature: Controls randomness in the model’s output (higher values yield more diverse responses).
+# 	•	top_p and top_k: Sampling strategies for response generation, adjusting how the model selects the next token.
+# 	•	checkpoint_path (for NeMo): Path to specific checkpoints if needed.
+# 	•	precision (for NeMo): Use mixed precision (fp16) to save memory and increase speed on compatible GPUs.
+models:
+  mistral:
+    model_name: "mistralai/Mistral-7B"        
+    tokenizer_name: "mistralai/Mistral-7B"    
+    max_length: 1024                          
+    temperature: 0.7                         
+    top_p: 0.9                                 
+    device: "cuda"                            
+
+  llama:
+    model_name: "meta-llama/LLaMA-13B"       
+    tokenizer_name: "meta-llama/LLaMA-13B"     
+    max_length: 1024                         
+    temperature: 0.7                        
+    top_k: 50                                 
+    top_p: 0.9                                
+    device: "cuda"                   
+
+  nemo:
+    model_name: "nvidia/nemo-megatron-345M"  
+    checkpoint_path: "/path/to/checkpoint"     
+    tokenizer_name: "nvidia/nemo-megatron"    
+    max_length: 1024                        
+    temperature: 0.7                         
+    precision: "fp16"                          
+    device: "cuda"                            
+
+# Global parameters for model usage across pipeline
+# •	default_model: Specifies the primary model, useful if you plan to allow runtime switching.
+# •	retry_attempts and timeout: Useful for cloud models; ensure smooth fallbacks and prevent long-running requests.
+# •	batch_size: Sets the batch size for model generation; adjust this if you plan to use batch inference.
+general:
+  default_model: "llama"                  
+  retry_attempts: 3                           
+  timeout: 10                                
+  batch_size: 1                             

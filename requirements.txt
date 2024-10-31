@@ -1,0 +1,9 @@
+# foundational packages
+torch 
+transformers 
+numpy 
+#faiss-gpu # this doesnt work on MacOS ARM64
+# FAISS will be installed conditionally
+# nemo toolkit and quantization support
+nemo-toolkit[all]
+bitsandbytes
