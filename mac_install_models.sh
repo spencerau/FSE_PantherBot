@@ -1,16 +1,9 @@
 #!/bin/bash
 
-# Ensure Ollama is installed
-# if ! command -v ollama &> /dev/null; then
-#     echo "Ollama is not installed. Installing Ollama..."
-#     brew install ollama/tap/ollama
-# else
-#     echo "Ollama is already installed."
-# fi
-
 export OLLAMA_MODELS="$(pwd)/ollama"
 mkdir -p "$OLLAMA_MODELS"
-launchctl setenv OLLAMA_MODELS "$OLLAMA_MODELS"
+
+export OLLAMA_MODELS="$OLLAMA_MODELS"
 
 # Models to install
 models=("llama3.2" "mistral")
@@ -26,4 +19,5 @@ for model in "${models[@]}"; do
     fi
 done
 
-echo "Setup complete! Ollama models are stored in $OLLAMA_MODELS and ready to use."
+# this doesn't install locally within the pwd
+#echo "Setup complete! Ollama models are stored in $OLLAMA_MODELS and ready to use."

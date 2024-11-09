@@ -9,3 +9,11 @@ Then run `./setup_conda.sh` to install the necessary dependencies and create the
 
 Finally, run `conda activate pantherbot` to activate the conda environment.
 
+Install ollama from [here - ollama download link](https://ollama.com/download)
+
+Install the models on ollama by running 'mac_install_models.sh`
+
+## Running LLAMA 3.2 (Mac as of now)
+
+Run `python tests/ollama_test.py` to test the installation of ollama.
+

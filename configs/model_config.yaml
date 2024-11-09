@@ -17,13 +17,10 @@ models:
     device: "cuda"                            
 
   llama:
-    model_name: "meta-llama/LLaMA-13B"       
-    tokenizer_name: "meta-llama/LLaMA-13B"     
-    max_length: 1024                         
-    temperature: 0.7                        
-    top_k: 50                                 
-    top_p: 0.9                                
-    device: "cuda"                   
+    model_name: "llama3.2"
+    max_length: 250
+    temperature: 0.7
+    top_p: 0.9                 
 
   nemo:
     model_name: "nvidia/nemo-megatron-345M"  
