@@ -17,3 +17,4 @@ Install the models on ollama by running 'mac_install_models.sh`
 
 Run `python tests/ollama_test.py` to test the installation of ollama.
 
+![Example Use](/assets/initial_llama.png)
