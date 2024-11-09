@@ -1,1 +1,0 @@
-# Builds and manages FAISS retrieval index

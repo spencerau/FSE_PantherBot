@@ -1,1 +1,0 @@
-# Retrieves documents based on user queries
