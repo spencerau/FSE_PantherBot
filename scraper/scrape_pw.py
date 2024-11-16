@@ -67,20 +67,6 @@ def scrape_courses():
         page.goto(manage_classes_url)
         print("Navigated to 'Manage Classes'.")
 
-        # # Inject JavaScript to log manual clicks
-        # print("Injecting JavaScript to log manual clicks on 'Manage Classes' page...")
-        # page.evaluate("""
-        #     document.addEventListener('click', function(event) {
-        #         console.log('Clicked element:', event.target);
-        #         console.log('Element ID:', event.target.id || 'No ID');
-        #         console.log('Element Classes:', event.target.className || 'No Class');
-        #         console.log('Element Outer HTML:', event.target.outerHTML || 'No Outer HTML');
-        #     });
-        # """)
-        # print("JavaScript injected. Click on any element to log its details in the browser console.")
-
-        # input("Press Enter to continue the automated script after manual interaction...")
-
         random_delay(2.0, 3.0)
 
         # Step 6: Select "Class Search and Enroll"
@@ -135,13 +121,19 @@ def scrape_courses():
 #TODO: Fix selectors for course details
 def scrape_course_details(page):
     try:
-        status = page.locator("text=Status").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
-        days_and_times = page.locator("text=Days and Times").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
-        seats = page.locator("text=Seats").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
+        rows = page.locator(".ps_grid-body tr")
+        row_count = rows.count()
 
-        print(f"Status: {status}")
-        print(f"Days and Times: {days_and_times}")
-        print(f"Seats: {seats}")
+        for i in range(row_count):
+            row = rows.nth(i)
+            status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
+            days_and_times = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
+            seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+
+            print(f"Status: {status}")
+            print(f"Days and Times: {days_and_times}")
+            print(f"Seats: {seats}")
+            print("-" * 50)
     except Exception as e:
         print(f"Error scraping course details: {e}")
 
@@ -156,11 +148,9 @@ def scrape_all_classes_dynamic(page):
             class_link = class_elements.nth(i)
             class_text = class_link.inner_text(timeout=5000).strip()
             if re.match(r"^CPSC \d{3}$", class_text):
-                print(f"Clicking on class: {class_text}")
+                print(f"\nClicking on class: {class_text}\n")
                 class_link.click()
                 random_delay(2.0, 3.0)
-
-                page.wait_for_selector(".ps_page-title", timeout=60000)
 
                 scrape_course_details(page)
 
