@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 import os
 import time
 import random
+import re
 
 
 load_dotenv()
@@ -127,15 +128,47 @@ def scrape_courses():
 
         #TODO: Step 9: Scrape course data and fix selectors
         print("Scraping course data...")
-        courses = page.query_selector_all(".ps_box-group.ps_layout")
-        for course in courses:
-            course_code = course.query_selector("span.course-code").text_content()
-            course_title = course.query_selector("span.course-title").text_content()
-            print(f"Code: {course_code}, Title: {course_title}")
-            random_delay(0.5, 1.0)
+        scrape_all_classes_dynamic(page)
 
-        # Close the browser
         browser.close()
+
+#TODO: Fix selectors for course details
+def scrape_course_details(page):
+    try:
+        status = page.locator("text=Status").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
+        days_and_times = page.locator("text=Days and Times").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
+        seats = page.locator("text=Seats").nth(0).locator("..").locator("div.value-class-or-selector").inner_text(timeout=5000)
+
+        print(f"Status: {status}")
+        print(f"Days and Times: {days_and_times}")
+        print(f"Seats: {seats}")
+    except Exception as e:
+        print(f"Error scraping course details: {e}")
+
+#TODO: Fix selectors for class elements
+def scrape_all_classes_dynamic(page):
+    try:
+        class_elements = page.locator("a[class*='ps-link']")
+        class_count = class_elements.count()
+        print(f"Found {class_count} classes.")
+
+        for i in range(class_count):
+            class_link = class_elements.nth(i)
+            class_text = class_link.inner_text(timeout=5000).strip()
+            if re.match(r"^CPSC \d{3}$", class_text):
+                print(f"Clicking on class: {class_text}")
+                class_link.click()
+                random_delay(2.0, 3.0)
+
+                page.wait_for_selector(".ps_page-title", timeout=60000)
+
+                scrape_course_details(page)
+
+                page.go_back(timeout=60000)
+                random_delay(2.0, 3.0)
+                page.wait_for_selector(".ps_box-group", timeout=60000)
+    except Exception as e:
+        print(f"Error while scraping classes: {e}")
 
 
 scrape_courses()
