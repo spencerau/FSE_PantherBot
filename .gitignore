@@ -167,3 +167,4 @@ ollama/
 models/
 
 .DS_Store
+*.csv

@@ -5,6 +5,7 @@ import time
 import random
 import re
 import argparse
+import csv
 
 
 load_dotenv()
@@ -98,10 +99,10 @@ def scrape_courses():
 
         # Step 8: Enter "CPSC" in the search field and execute the search using Enter key
         try:
-            print("Entering 'CPSC' in the search field...")
+            print(f"Entering {SUBJECT} in the search field...")
             search_field = page.locator("input[placeholder='Enter keyword e.g. course, subject, class, topic']")
             search_field.wait_for(state="visible", timeout=60000)
-            search_field.fill("CPSC")
+            search_field.fill(SUBJECT)
             random_delay(0.8, 1.5)
 
             print("Pressing 'Enter' to execute the search...")
@@ -120,23 +121,27 @@ def scrape_courses():
         browser.close()
 
 #TODO: Fix selectors for course details
-def scrape_course_details(page):
-    try:
-        rows = page.locator(".ps_grid-body tr")
-        row_count = rows.count()
+def scrape_course_details(page, class_text):
+    with open(f"{TERM}.csv", mode="a", newline="") as file:
+        writer = csv.writer(file)
+        try:
+            rows = page.locator(".ps_grid-body tr")
+            row_count = rows.count()
 
-        for i in range(row_count):
-            row = rows.nth(i)
-            status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
-            days_and_times = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
-            seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+            for i in range(row_count):
+                row = rows.nth(i)
+                status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
+                days_and_times = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
+                seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
 
-            print(f"Status: {status}")
-            print(f"Days and Times: {days_and_times}")
-            print(f"Seats: {seats}")
-            print("-" * 50)
-    except Exception as e:
-        print(f"Error scraping course details: {e}")
+                writer.writerow([TERM, class_text, status, days_and_times, seats])
+
+                print(f"Status: {status}")
+                print(f"Days and Times: {days_and_times}")
+                print(f"Seats: {seats}")
+                print("-" * 50)
+        except Exception as e:
+            print(f"Error scraping course details: {e}")
 
 #TODO: Fix selectors for class elements
 def scrape_all_classes_dynamic(page):
@@ -148,12 +153,13 @@ def scrape_all_classes_dynamic(page):
         for i in range(class_count):
             class_link = class_elements.nth(i)
             class_text = class_link.inner_text(timeout=5000).strip()
-            if re.match(r"^CPSC \d{3}$", class_text):
+            #if re.match(r"^CPSC \d{3}$", class_text):
+            if re.match(rf"^{SUBJECT} \d{{3}}$", class_text):
                 print(f"\nClicking on class: {class_text}\n")
                 class_link.click()
                 random_delay(2.0, 3.0)
 
-                scrape_course_details(page)
+                scrape_course_details(page, class_text)
 
                 page.go_back(timeout=60000)
                 random_delay(2.0, 3.0)

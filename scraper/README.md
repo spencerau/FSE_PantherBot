@@ -2,4 +2,4 @@
 
 ## Admin bootlickers can go eat a bag of dicks
 
-![Corgi](../assets/leandros_cuckboy.png)
+![typical bootlicker](../assets/leandros.png)
