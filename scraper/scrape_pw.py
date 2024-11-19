@@ -4,6 +4,7 @@ import os
 import time
 import random
 import re
+import argparse
 
 
 load_dotenv()
@@ -161,4 +162,19 @@ def scrape_all_classes_dynamic(page):
         print(f"Error while scraping classes: {e}")
 
 
-scrape_courses()
+def parser():
+    parser = argparse.ArgumentParser(description="Scrape course data from Chapman University's Student Center.")
+    parser.add_argument("--term", type=str, help="The season + year of the term to scrape (e.g., 'Spring 2025')")
+    parser.add_argument("--subject", type=str, help="The subject code to search for (e.g., 'CPSC')")
+    args = parser.parse_args()
+    return args
+
+
+if __name__ == "__main__":
+    args = parser()
+
+    # set the term and subject as global var to scrape
+    TERM = args.term
+    SUBJECT = args.subject
+
+    scrape_courses()
