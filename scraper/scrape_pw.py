@@ -119,31 +119,66 @@ def scrape_courses():
         scrape_all_classes_dynamic(page)
 
         browser.close()
+    
 
-#TODO: Fix selectors for course details
+def scrape_section(page, row):
+    try:
+        status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
+        days_and_times_raw = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
+        seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+
+        # Clean and process 'Days and Times'
+        # TODO: prob fix this to make it more granular etc
+        days_and_times_lines = days_and_times_raw.splitlines()
+        days_and_times = "\n".join(line for line in days_and_times_lines if "Time Conflict" not in line)
+
+        section_details = [status, days_and_times, seats]
+
+        print(f"Section Details: {section_details}")
+        return section_details
+    except Exception as e:
+        print(f"Error scraping section details: {e}")
+        return None
+
+
 def scrape_course_details(page, class_text):
     with open(f"{TERM}.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         try:
+            course_info_button = page.locator("a:has-text('Course Information')")
+            course_info_button.click()
+            page.wait_for_timeout(2000)
+
+            title = page.locator("span#SSR_CRSE_INFO_V_COURSE_TITLE_LONG").inner_text(timeout=5000).strip()
+            print(f"Title: {title}")
+
+            description = page.locator("span#SSR_CRSE_INFO_V_DESCRLONG").inner_text(timeout=5000).strip()
+            print(f"Description: {description}")
+
+            credits = page.locator("span#SSR_CLSRCH_F_WK_UNITS_RANGE").inner_text(timeout=5000).strip()
+            print(f"Credits: {credits}")
+
+            grading_option = page.locator("span#SSR_CLSRCH_F_WK_SSR_GRAD_BASIS_LNG").inner_text(timeout=5000).strip()
+            print(f"Grading Option: {grading_option}")
+            
             rows = page.locator(".ps_grid-body tr")
             row_count = rows.count()
 
             for i in range(row_count):
-                row = rows.nth(i)
-                status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
-                days_and_times = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
-                seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+                    row = rows.nth(i)
+                    try:
+                        section_details = scrape_section(page, row)
+                        writer.writerow([TERM, class_text, title, description, *section_details])
+                        
+                        print(f"Section Details: {section_details}")
+                        print("-" * 50)
+                    except Exception as e:
+                        print(f"Error processing row {i + 1}: {e}")
 
-                writer.writerow([TERM, class_text, status, days_and_times, seats])
-
-                print(f"Status: {status}")
-                print(f"Days and Times: {days_and_times}")
-                print(f"Seats: {seats}")
-                print("-" * 50)
         except Exception as e:
-            print(f"Error scraping course details: {e}")
+            print(f"Error in scrape_course_details: {e}")
 
-#TODO: Fix selectors for class elements
+
 def scrape_all_classes_dynamic(page):
     try:
         class_elements = page.locator("a[class*='ps-link']")
@@ -153,7 +188,6 @@ def scrape_all_classes_dynamic(page):
         for i in range(class_count):
             class_link = class_elements.nth(i)
             class_text = class_link.inner_text(timeout=5000).strip()
-            #if re.match(r"^CPSC \d{3}$", class_text):
             if re.match(rf"^{SUBJECT} \d{{3}}$", class_text):
                 print(f"\nClicking on class: {class_text}\n")
                 class_link.click()
@@ -170,8 +204,8 @@ def scrape_all_classes_dynamic(page):
 
 def parser():
     parser = argparse.ArgumentParser(description="Scrape course data from Chapman University's Student Center.")
-    parser.add_argument("--term", type=str, help="The season + year of the term to scrape (e.g., 'Spring 2025')")
-    parser.add_argument("--subject", type=str, help="The subject code to search for (e.g., 'CPSC')")
+    parser.add_argument("--term", type=str, required=True, help="The season + year of the term to scrape (e.g., 'Spring 2025')")
+    parser.add_argument("--subject", type=str, required=True, help="The subject code to search for (e.g., 'CPSC')")
     args = parser.parse_args()
     return args
 
@@ -179,7 +213,6 @@ def parser():
 if __name__ == "__main__":
     args = parser()
 
-    # set the term and subject as global var to scrape
     TERM = args.term
     SUBJECT = args.subject
 
