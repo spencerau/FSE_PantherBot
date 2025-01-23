@@ -1,4 +1,5 @@
 # foundational packages
+python-dotenv
 torch 
 transformers 
 numpy 
@@ -11,6 +12,8 @@ nemo-toolkit
 bitsandbytes
 sentencepiece
 # hugging face stuff
-huggingface_hub
+#huggingface_hub
 # olama because zuckerberg can eat a bag of dicks
 ollama
+chromadb 
+langchain
