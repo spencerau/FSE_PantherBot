@@ -86,18 +86,24 @@ def scrape_courses():
 
         # Step 7: Select the appropriate term (e.g., "Spring 2025")
         try:
-            print("Selecting the row for 'Spring 2025'...")
-            spring_2025_row = page.locator("text='Spring 2025'")
-            spring_2025_row.wait_for(state="visible", timeout=60000)
-            spring_2025_row.scroll_into_view_if_needed()
-            spring_2025_row.click()
-            print("Row for 'Spring 2025' selected successfully.")
+            # @TODO: add the ability to select terms prior to the current term
+            # SELECT "TERMS PRIOR TO CURRENT TERM" IF NECESSARY
+            # FOR EXAMPLE, IT IS CURRENTLY INTERTERM 2025, so we would want to select "TERMS PRIOR TO INTERTERM 2025"
+            # need to integrate current date etc and select from there
+            # get current term and year, and if necessary, select terms prior to that
+
+            print(f"Selecting the row for '{TERM}'...")
+            term_row = page.locator(f"text='{TERM}'")
+            term_row.wait_for(state="visible", timeout=60000)
+            term_row.scroll_into_view_if_needed()
+            term_row.click()
+            print(f"Row for '{TERM}' selected successfully.")
         except Exception as e:
-            print(f"Error selecting the row for 'Spring 2025': {e}")
+            print(f"Error selecting the row for '{TERM}': {e}")
 
         random_delay(2.0, 3.0)
 
-        # Step 8: Enter "CPSC" in the search field and execute the search using Enter key
+        # Step 8: Enter "SUBJECT" in the search field and execute the search using Enter key
         try:
             print(f"Entering {SUBJECT} in the search field...")
             search_field = page.locator("input[placeholder='Enter keyword e.g. course, subject, class, topic']")
@@ -114,26 +120,37 @@ def scrape_courses():
 
         random_delay(2.0, 3.5)
 
-        #TODO: Step 9: Scrape course data and fix selectors
+        #Step 9: Scrape course data and fix selectors
         print("Scraping course data...")
         scrape_all_classes_dynamic(page)
 
         browser.close()
-    
 
-def scrape_section(page, row):
+
+def scrape_section(page, row, class_text, title):
     try:
-        status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
-        days_and_times_raw = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
-        seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+        # Check if the course requires special handling for topic (298, 370, 470)
+        if "298" in class_text or "370" in class_text or "470" in class_text:
+            status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
+            days_and_times_raw = row.locator("td:nth-child(7)").inner_text(timeout=5000).strip()
+            seats = row.locator("td:nth-child(10)").inner_text(timeout=5000).strip()
+            topic = row.locator("td:nth-child(5)").inner_text(timeout=5000).strip()
+            title = f"{title} - {topic}"
+            
+        else: # not a 298/370/470 course
+            status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
+            days_and_times_raw = row.locator("td:nth-child(6)").inner_text(timeout=5000).strip()
+            seats = row.locator("td:nth-child(9)").inner_text(timeout=5000).strip()
+            topic = ""
 
-        # Clean and process 'Days and Times'
-        # TODO: prob fix this to make it more granular etc
-        days_and_times_lines = days_and_times_raw.splitlines()
-        days_and_times = "\n".join(line for line in days_and_times_lines if "Time Conflict" not in line)
+        # Split days and times into separate columns
+        days, times = "", ""
+        if "\n" in days_and_times_raw:
+            parts = days_and_times_raw.split("\n")
+            days = parts[0].strip()
+            times = parts[1].strip() if len(parts) > 1 else ""
 
-        section_details = [status, days_and_times, seats]
-
+        section_details = [status, days, times, seats, title]
         print(f"Section Details: {section_details}")
         return section_details
     except Exception as e:
@@ -160,21 +177,24 @@ def scrape_course_details(page, class_text):
 
             grading_option = page.locator("span#SSR_CLSRCH_F_WK_SSR_GRAD_BASIS_LNG").inner_text(timeout=5000).strip()
             print(f"Grading Option: {grading_option}")
-            
+
             rows = page.locator(".ps_grid-body tr")
             row_count = rows.count()
 
+            if file.tell() == 0:
+                writer.writerow(["Term", "Class", "Title", "Description", "Status", "Days", "Time", "Seats"])
+
             for i in range(row_count):
-                    row = rows.nth(i)
-                    try:
-                        section_details = scrape_section(page, row)
-                        writer.writerow([TERM, class_text, title, description, *section_details])
-                        
+                row = rows.nth(i)
+                try:
+                    section_details = scrape_section(page, row, class_text, title)
+                    if section_details:
+                        status, days, times, seats, updated_title = section_details
+                        writer.writerow([TERM, class_text, updated_title, description, status, days, times, seats])
                         print(f"Section Details: {section_details}")
                         print("-" * 50)
-                    except Exception as e:
-                        print(f"Error processing row {i + 1}: {e}")
-
+                except Exception as e:
+                    print(f"Error processing row {i + 1}: {e}")
         except Exception as e:
             print(f"Error in scrape_course_details: {e}")
 
