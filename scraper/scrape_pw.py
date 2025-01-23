@@ -6,6 +6,7 @@ import random
 import re
 import argparse
 import csv
+from datetime import datetime
 
 
 load_dotenv()
@@ -85,21 +86,26 @@ def scrape_courses():
         random_delay(2.0, 3.0)
 
         # Step 7: Select the appropriate term (e.g., "Spring 2025")
-        try:
-            # @TODO: add the ability to select terms prior to the current term
-            # SELECT "TERMS PRIOR TO CURRENT TERM" IF NECESSARY
-            # FOR EXAMPLE, IT IS CURRENTLY INTERTERM 2025, so we would want to select "TERMS PRIOR TO INTERTERM 2025"
-            # need to integrate current date etc and select from there
-            # get current term and year, and if necessary, select terms prior to that
+        # try:
+        #     # @TODO: add the ability to select terms prior to the current term
+        #     # SELECT "TERMS PRIOR TO CURRENT TERM" IF NECESSARY
+        #     # FOR EXAMPLE, IT IS CURRENTLY INTERTERM 2025, so we would want to select "TERMS PRIOR TO INTERTERM 2025"
+        #     # need to integrate current date etc and select from there
+        #     # get current term and year, and if necessary, select terms prior to that
 
-            print(f"Selecting the row for '{TERM}'...")
-            term_row = page.locator(f"text='{TERM}'")
-            term_row.wait_for(state="visible", timeout=60000)
-            term_row.scroll_into_view_if_needed()
-            term_row.click()
-            print(f"Row for '{TERM}' selected successfully.")
+        #     print(f"Selecting the row for '{TERM}'...")
+        #     term_row = page.locator(f"text='{TERM}'")
+        #     term_row.wait_for(state="visible", timeout=60000)
+        #     term_row.scroll_into_view_if_needed()
+        #     term_row.click()
+        #     print(f"Row for '{TERM}' selected successfully.")
+        # except Exception as e:
+        #     print(f"Error selecting the row for '{TERM}': {e}")
+
+        try:
+            select_term(page, TERM)
         except Exception as e:
-            print(f"Error selecting the row for '{TERM}': {e}")
+            print(f"Error selecting the term '{TERM}': {e}")
 
         random_delay(2.0, 3.0)
 
@@ -125,6 +131,61 @@ def scrape_courses():
         scrape_all_classes_dynamic(page)
 
         browser.close()
+
+
+def determine_current_term():
+    now = datetime.now()
+    month = now.month
+    year = now.year
+
+    if month == 1:
+        current_term = f"Interterm {year}"
+    elif 2 <= month <= 5:
+        current_term = f"Spring {year}"
+    elif 6 <= month <= 8:
+        current_term = f"Summer {year}"
+    elif 9 <= month <= 12:
+        current_term = f"Fall {year}"
+    else:
+        raise ValueError("Invalid month for term determination.")
+    
+    return current_term
+
+
+def get_term_order(term):
+    term_order = {
+        "Interterm": 0,
+        "Spring": 1,
+        "Summer": 2,
+        "Fall": 3
+    }
+
+    term_name, term_year = term.split()
+    return int(term_year) * 4 + term_order[term_name]
+
+
+def select_term(page, target_term):
+    try:
+        current_term = determine_current_term()
+        print(f"Current term based on date: {current_term}")
+        
+        # Check if the target term is prior to the current term
+        if get_term_order(target_term) < get_term_order(current_term):
+            print(f"Selecting Terms prior to {current_term}...")
+            prior_terms_button = page.locator(f"text='Terms prior to {current_term}'")
+            prior_terms_button.wait_for(state="visible", timeout=60000)
+            prior_terms_button.click()
+            page.wait_for_timeout(2000)
+
+        print(f"Selecting the row for '{target_term}'...")
+        term_row = page.locator(f"text='{target_term}'")
+        term_row.wait_for(state="visible", timeout=60000)
+        term_row.scroll_into_view_if_needed()
+        term_row.click()
+            
+        print(f"Row for '{target_term}' selected successfully.")
+    except Exception as e:
+        print(f"Error selecting the row for '{target_term}': {e}")
 
 
 def scrape_section(page, row, class_text, title):
