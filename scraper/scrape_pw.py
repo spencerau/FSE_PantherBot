@@ -130,7 +130,9 @@ def scrape_courses():
 def scrape_section(page, row, class_text, title):
     try:
         # Check if the course requires special handling for topic (298, 370, 470)
-        if "298" in class_text or "370" in class_text or "470" in class_text:
+        special_courses = ["298", "370", "398"]
+        if any(course in class_text for course in special_courses):
+        #if "298" in class_text or "370" in class_text or "470" in class_text:
             status = row.locator("td:nth-child(2)").inner_text(timeout=5000).strip()
             days_and_times_raw = row.locator("td:nth-child(7)").inner_text(timeout=5000).strip()
             seats = row.locator("td:nth-child(10)").inner_text(timeout=5000).strip()
@@ -151,7 +153,6 @@ def scrape_section(page, row, class_text, title):
             times = parts[1].strip() if len(parts) > 1 else ""
 
         section_details = [status, days, times, seats, title]
-        print(f"Section Details: {section_details}")
         return section_details
     except Exception as e:
         print(f"Error scraping section details: {e}")
@@ -159,7 +160,7 @@ def scrape_section(page, row, class_text, title):
 
 
 def scrape_course_details(page, class_text):
-    with open(f"{TERM}.csv", mode="a", newline="") as file:
+    with open(f"data/course_catalogs/{TERM}.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         try:
             course_info_button = page.locator("a:has-text('Course Information')")
