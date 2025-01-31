@@ -4,6 +4,8 @@ torch
 transformers 
 numpy 
 pyyaml
+
+# is this being used / should just delete?
 cython
 #faiss-gpu # this doesnt work on MacOS ARM64
 # FAISS will be installed conditionally
@@ -11,9 +13,9 @@ cython
 nemo-toolkit
 bitsandbytes
 sentencepiece
-# hugging face stuff
-#huggingface_hub
-# olama because zuckerberg can eat a bag of dicks
+
+
 ollama
 chromadb 
 langchain
+langchain_community

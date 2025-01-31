@@ -86,22 +86,6 @@ def scrape_courses():
         random_delay(2.0, 3.0)
 
         # Step 7: Select the appropriate term (e.g., "Spring 2025")
-        # try:
-        #     # @TODO: add the ability to select terms prior to the current term
-        #     # SELECT "TERMS PRIOR TO CURRENT TERM" IF NECESSARY
-        #     # FOR EXAMPLE, IT IS CURRENTLY INTERTERM 2025, so we would want to select "TERMS PRIOR TO INTERTERM 2025"
-        #     # need to integrate current date etc and select from there
-        #     # get current term and year, and if necessary, select terms prior to that
-
-        #     print(f"Selecting the row for '{TERM}'...")
-        #     term_row = page.locator(f"text='{TERM}'")
-        #     term_row.wait_for(state="visible", timeout=60000)
-        #     term_row.scroll_into_view_if_needed()
-        #     term_row.click()
-        #     print(f"Row for '{TERM}' selected successfully.")
-        # except Exception as e:
-        #     print(f"Error selecting the row for '{TERM}': {e}")
-
         try:
             select_term(page, TERM)
         except Exception as e:
@@ -114,7 +98,11 @@ def scrape_courses():
             print(f"Entering {SUBJECT} in the search field...")
             search_field = page.locator("input[placeholder='Enter keyword e.g. course, subject, class, topic']")
             search_field.wait_for(state="visible", timeout=60000)
-            search_field.fill(SUBJECT)
+            # since regular SE has too many results 
+            if (SUBJECT == "SE"):
+                search_field.fill("Software Engineering")
+            else:
+                search_field.fill(SUBJECT)
             random_delay(0.8, 1.5)
 
             print("Pressing 'Enter' to execute the search...")

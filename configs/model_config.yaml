@@ -7,6 +7,9 @@
 # 	•	top_p and top_k: Sampling strategies for response generation, adjusting how the model selects the next token.
 # 	•	checkpoint_path (for NeMo): Path to specific checkpoints if needed.
 # 	•	precision (for NeMo): Use mixed precision (fp16) to save memory and increase speed on compatible GPUs.
+
+# TODO: include model config info for DeepSeek
+
 models:
   mistral:
     model_name: "mistralai/Mistral-7B"        
