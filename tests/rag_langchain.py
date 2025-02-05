@@ -21,7 +21,7 @@ class ChatPDF:
         self.prompt = PromptTemplate.from_template(
             """
             <s> [INST] You are an assistant designed to answer questions. Use the information provided in the context below to formulate your response. 
-            If you don’t know the answer, simply state that you don’t know. Limit your response to a maximum of three sentences and be concise. [/INST] </s> 
+            If you don’t know the answer, simply state that you don’t know. [/INST] </s> 
             [INST] Question: {question} 
             Context: {context} 
             Answer: [/INST]

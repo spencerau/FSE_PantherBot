@@ -1,0 +1,19 @@
+deepseek:
+  model_name: "deepseek-r1:14b"
+  temperature: 0.7
+  top_p: 0.9
+  max_tokens: 2000
+
+langchain:
+  chunk_size: 2000
+  chunk_overlap: 250
+  prompt: |
+    <s> [INST] You are an AI assistant. Answer the question based on the given context. 
+    If you don’t know the answer, say "I don't know." [/INST] </s> 
+    [INST] Question: {question} 
+    Context: {context} 
+    Answer: [/INST]
+
+chroma:
+  persist_directory: "vector_db"
+  top_k: 3
