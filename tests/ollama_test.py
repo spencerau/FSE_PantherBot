@@ -19,9 +19,9 @@ class SimpleRAG:
 
         self.model = ChatOllama(
             model=self.config["deepseek"]["model_name"],
-            temperature=self.config["deepseek"].get("temperature", 0.7),
-            top_p=self.config["deepseek"].get("top_p", 0.9),
-            max_tokens=self.config["deepseek"].get("max_tokens", 512),
+            temperature=self.config["deepseek"].get("temperature"),
+            top_p=self.config["deepseek"].get("top_p"),
+            max_tokens=self.config["deepseek"].get("max_tokens"),
             streaming=True
         )
         self.text_splitter = RecursiveCharacterTextSplitter(
@@ -52,6 +52,7 @@ class SimpleRAG:
                 try:
                     if file.endswith(".pdf"):
                         docs.extend(PyPDFLoader(file_path=file_path).load())
+                        print(f"Loaded {file}")
                     elif file.endswith(".csv"):
                         docs.extend(self._load_csv(file_path))
                 except Exception as e:

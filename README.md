@@ -20,13 +20,22 @@ Run `python tests/ollama_test.py` to test the installation of ollama.
 
 ## TODO:
 
+### General Stuff
 - Use verbose mode to omit or include the `<think>` text of the output
 - Grab CLI args and slap them into the YAML config if necessary
+- Clear out various subdir and files that aren't being used
+- Update documentation accordingly
+
+### Vector DB and Retrieval/RAG Stuff
 - Fix chunking, etc of csv
 - Fix chunking, etc of the subdir as the retrieval doesnt seem to be working
-- Clear out various subdir and files that aren't being used
+- Perform some basic EDA on pdf and other data and then dyanmically create YAML config as well as store in separate? Vector DB for various sizes
+- Could also store different course catalogs in different vectordbs based on when the student joined; so if they joined in 2023, they would pull responses from the 2023 db
+
+### Frontend Stuff
 - Use Streamlit, etc to create a web interface for the LLM
-- Integrate with Slacks; test out with MLAT Slack server for an initial demo
-- Update documentation accordingly
+- Integrate with Slack; test out with MLAT Slack server for an initial demo
+
+### Testing Stuff
 - Create a more robust testing suite and integrate into PR, etc (because i look like an asshole if i submit this as my thesis with commented print statements)
 - Create testing with a list of questions so i can examine the expected answers

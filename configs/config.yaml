@@ -1,19 +1,30 @@
 deepseek:
-  model_name: "deepseek-r1:14b"
-  temperature: 0.7
-  top_p: 0.9
+  model_name: "deepseek-r1:7b"
+  # Controls randomness in model responses. Lower = more deterministic, higher = more creative.
+  temperature: 0.1
+  # Top-P (Nucleus Sampling): Limits the probability mass of words chosen. Lower values make responses more focused.
+  top_p: 0.6
+  # Maximum length of model responses. The model will not generate more than 2000 tokens.
   max_tokens: 2000
 
+# This section controls how documents are split into smaller chunks before being sent to the LLM.
 langchain:
-  chunk_size: 2000
-  chunk_overlap: 250
+  # Defines the max size (characters) of each chunk before it is sent to the LLM.
+  chunk_size: 3000
+  # Overlapping buffer between chunks to preserve context across splits.
+  chunk_overlap: 300
+  # Template for how the LLM should respond. Uses {question} and {context} placeholders.
   prompt: |
-    <s> [INST] You are an AI assistant. Answer the question based on the given context. 
-    If you don’t know the answer, say "I don't know." [/INST] </s> 
-    [INST] Question: {question} 
+    <s> You are an AI assistant for Academic Advising at Chapman University assisting students with choosing courses as well as developing four year plans, etc. Answer the question based on the given context.
+    If you don’t know the answer, say "I don't know." The major and minor catalog of varying dates corresponds to the date the student has joined the University.
+    For example, if a student joined in 2020, then their course catalog would be the 2020-2021 one. </s> 
+
+    Question: {question} 
     Context: {context} 
-    Answer: [/INST]
+    Answer:
 
 chroma:
+  # Directory where vector embeddings (converted from text) are stored.
   persist_directory: "vector_db"
-  top_k: 3
+  # Number of most relevant document chunks to retrieve per query.
+  top_k: 7
