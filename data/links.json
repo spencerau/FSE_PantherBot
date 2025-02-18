@@ -1,0 +1,62 @@
+[
+    {
+      "title": "Chapman University Academic Calendar",
+      "url": "https://www.chapman.edu/academics/academic-calendar.aspx",
+      "category": "Academics",
+      "description": "Official academic calendar for Chapman University, including important dates and deadlines."
+    },
+    {
+      "title": "Chapman Library Research Guides",
+      "url": "https://libguides.chapman.edu/",
+      "category": "Library",
+      "description": "A collection of research guides created by the Chapman Library for various subjects."
+    },
+    {
+      "title": "Chapman University Admissions",
+      "url": "https://www.chapman.edu/admission/index.aspx",
+      "category": "Admissions",
+      "description": "Information about undergraduate and graduate admissions at Chapman University."
+    },
+    {
+      "title": "Chapman Canvas Learning Management System",
+      "url": "https://canvas.chapman.edu/",
+      "category": "Academics",
+      "description": "Chapman's Canvas portal for course management and online learning."
+    },
+    {
+      "title": "Chapman Career and Professional Development",
+      "url": "https://www.chapman.edu/campus-services/career/index.aspx",
+      "category": "Career Services",
+      "description": "Career counseling, internship opportunities, and professional development resources for students."
+    },
+    {
+      "title": "Chapman Financial Aid",
+      "url": "https://www.chapman.edu/students/tuition-and-aid/financial-aid/index.aspx",
+      "category": "Financial Aid",
+      "description": "Information on financial aid options, scholarships, and tuition assistance programs."
+    },
+    {
+      "title": "Chapman University Student Life",
+      "url": "https://www.chapman.edu/students/index.aspx",
+      "category": "Student Life",
+      "description": "Resources and services for student organizations, housing, and campus involvement."
+    },
+    {
+      "title": "Chapman Health and Counseling Services",
+      "url": "https://www.chapman.edu/students/health-and-safety/health-services/index.aspx",
+      "category": "Health & Wellness",
+      "description": "Student health and counseling services available on campus."
+    },
+    {
+      "title": "Chapman Public Safety",
+      "url": "https://www.chapman.edu/campus-services/public-safety/index.aspx",
+      "category": "Safety",
+      "description": "Campus safety and emergency response resources for Chapman University."
+    },
+    {
+      "title": "Chapman University Academic Programs",
+      "url": "https://www.chapman.edu/academics/degrees-and-programs.aspx",
+      "category": "Academics",
+      "description": "List of undergraduate, graduate, and professional degree programs offered at Chapman."
+    }
+  ]

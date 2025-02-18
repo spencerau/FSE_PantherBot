@@ -12,6 +12,11 @@ Install ollama from [here - ollama download link](https://ollama.com/download)
 
 Install the models on ollama by running 'mac_install_models.sh`
 
+## Setting Parameters via YAML config
+
+The `config.yaml` file contains all the parameters that can be set for the LLM.
+[Go to Yaml Config Documentation](configs/README.md)
+
 ## Running DeepSeek-R1 (Mac as of now)
 
 Run `python tests/ollama_test.py` to test the installation of ollama.
@@ -30,7 +35,8 @@ Run `python tests/ollama_test.py` to test the installation of ollama.
 - Fix chunking, etc of csv
 - Fix chunking, etc of the subdir as the retrieval doesnt seem to be working
 - Perform some basic EDA on pdf and other data and then dyanmically create YAML config as well as store in separate? Vector DB for various sizes
-- Could also store different course catalogs in different vectordbs based on when the student joined; so if they joined in 2023, they would pull responses from the 2023 db
+- Could also store different course catalogs in different vectordbs based on when the student joined; so if they joined in 2023, they would pull responses from the 2023 db\
+- Need it to be on an actual server so that it can be accessed by multiple people/threads as well as be persistent 
 
 ### Frontend Stuff
 - Use Streamlit, etc to create a web interface for the LLM
