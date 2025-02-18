@@ -1,17 +1,5 @@
 [
     {
-      "title": "Chapman University Academic Calendar",
-      "url": "https://www.chapman.edu/academics/academic-calendar.aspx",
-      "category": "Academics",
-      "description": "Official academic calendar for Chapman University, including important dates and deadlines."
-    },
-    {
-      "title": "Chapman Library Research Guides",
-      "url": "https://libguides.chapman.edu/",
-      "category": "Library",
-      "description": "A collection of research guides created by the Chapman Library for various subjects."
-    },
-    {
       "title": "Chapman University Admissions",
       "url": "https://www.chapman.edu/admission/index.aspx",
       "category": "Admissions",
@@ -48,15 +36,21 @@
       "description": "Student health and counseling services available on campus."
     },
     {
-      "title": "Chapman Public Safety",
-      "url": "https://www.chapman.edu/campus-services/public-safety/index.aspx",
-      "category": "Safety",
-      "description": "Campus safety and emergency response resources for Chapman University."
-    },
-    {
       "title": "Chapman University Academic Programs",
       "url": "https://www.chapman.edu/academics/degrees-and-programs.aspx",
       "category": "Academics",
       "description": "List of undergraduate, graduate, and professional degree programs offered at Chapman."
+    },
+    {
+      "title": "Chapman Registrar Forms",
+      "url": "www.chapman.edu/registrar/forms",
+      "category": "Academics",
+      "description": "Forms for registration, enrollment, and academic records available through the Registrar's Office."
+    },
+    {
+      "title": "Chapman Academic Advising Appointment Booking",
+      "url": "https://outlook.office365.com/owa/calendar/FSEAcademicAdvising@chapman.edu/bookings/?skipRedirect=1",
+      "category": "Academics",
+      "description": "Book an appointment with an academic advisor through Microsoft Bookings."
     }
   ]

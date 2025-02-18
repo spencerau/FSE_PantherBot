@@ -1,6 +1,7 @@
 import os
 import sys
 import yaml
+import argparse
 import pandas as pd
 from langchain_community.vectorstores import Chroma
 from langchain_community.chat_models import ChatOllama
@@ -17,10 +18,12 @@ from ingestion.ingest_json import ingest_json
 
 
 class SimpleRAG:
-    def __init__(self, config_filename="config.yaml"):
+
+    def __init__(self, config_filename="config.yaml", verbose):
         pwd = os.getcwd()
         config_path = os.path.join(pwd, "configs", config_filename)
         self.config = self._load_config(config_path)
+        self.VERBOSE = verbose
 
         self.model = ChatOllama(
             model=self.config["deepseek"]["model_name"],
@@ -110,8 +113,14 @@ class SimpleRAG:
         print("\n")
 
 
+def parser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--verbose", type=bool, default=False, optional=True, help="Verbose output (Whether or not to include <think> content)\n Usage: (True/False)")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    rag = SimpleRAG(config_filename="config.yaml")
+    rag = SimpleRAG(config_filename="config.yaml", verbose=parser().verbose)
     rag.ingest(data_dir="data")
     while True:
         user_input = input("\nAsk a question (or type 'exit' to quit): ")
