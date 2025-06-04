@@ -19,7 +19,7 @@ from ingestion.ingest_json import ingest_json
 
 class SimpleRAG:
 
-    def __init__(self, config_filename="config.yaml", verbose):
+    def __init__(self, config_filename="config.yaml", verbose=False):
         pwd = os.getcwd()
         config_path = os.path.join(pwd, "configs", config_filename)
         self.config = self._load_config(config_path)
@@ -115,7 +115,7 @@ class SimpleRAG:
 
 def parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--verbose", type=bool, default=False, optional=True, help="Verbose output (Whether or not to include <think> content)\n Usage: (True/False)")
+    parser.add_argument("--verbose", type=bool, default=False, help="Verbose output (Whether or not to include <think> content)\n Usage: (True/False)")
     return parser.parse_args()
 
 

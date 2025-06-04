@@ -10,9 +10,9 @@ cython
 #faiss-gpu # this doesnt work on MacOS ARM64
 # FAISS will be installed conditionally
 # nemo toolkit and quantization support
-nemo-toolkit
-bitsandbytes
-sentencepiece
+#nemo-toolkit
+#bitsandbytes
+#sentencepiece
 
 pandas
 pypdf
@@ -22,3 +22,6 @@ ollama
 chromadb 
 langchain
 langchain_community
+
+# validation/testing
+pydantic

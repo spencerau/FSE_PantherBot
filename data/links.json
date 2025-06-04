@@ -52,5 +52,11 @@
       "url": "https://outlook.office365.com/owa/calendar/FSEAcademicAdvising@chapman.edu/bookings/?skipRedirect=1",
       "category": "Academics",
       "description": "Book an appointment with an academic advisor through Microsoft Bookings."
+    },
+    {
+      "title": "Pre-Approved Transfer Credit Search",
+      "url": "https://tes.collegesource.com/publicview/TES_publicview01.aspx?rid=d1362265-7acd-4ee2-8e6b-853adc8b6b2d&aid=1a01b3f5-6ebe-412d-9ea7-41e5ed981fde",
+      "category": "Academics",
+      "description": "Search for pre-approved transfer credits from other institutions to Chapman University."
     }
   ]

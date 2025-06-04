@@ -1,1 +1,0 @@
-# Manages read/write operations for memory persistence
