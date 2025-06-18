@@ -1,0 +1,3 @@
+[submodule "rowboat"]
+	path = rowboat
+	url = https://github.com/rowboatlabs/rowboat.git

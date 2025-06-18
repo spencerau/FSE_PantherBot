@@ -1,27 +1,9 @@
-# foundational packages
 python-dotenv
-torch 
-transformers 
-numpy 
 pyyaml
-
-# is this being used / should just delete?
-cython
-#faiss-gpu # this doesnt work on MacOS ARM64
-# FAISS will be installed conditionally
-# nemo toolkit and quantization support
-#nemo-toolkit
-#bitsandbytes
-#sentencepiece
-
-pandas
 pypdf
 fastembed
 
 ollama
-chromadb 
-langchain
-langchain_community
 
 # validation/testing
 pydantic
