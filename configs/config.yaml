@@ -1,5 +1,5 @@
-deepseek:
-  model_name: "deepseek-r1:7b"
+model_llm:
+  model_name: "deepseek-r1:1.5b"
   temperature: 0.1
   top_p: 0.6
   max_tokens: 2000

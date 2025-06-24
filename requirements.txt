@@ -1,8 +1,12 @@
 python-dotenv
 pyyaml
 pypdf
+requests
 fastembed
 
+streamlit
+qdrant-client
+PyMuPDF
 ollama
 
 # validation/testing
