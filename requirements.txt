@@ -8,6 +8,8 @@ streamlit
 qdrant-client
 PyMuPDF
 ollama
+tiktoken
 
 # validation/testing
 pydantic
+pytest

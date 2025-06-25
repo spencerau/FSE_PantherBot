@@ -164,6 +164,7 @@ cython_debug/
 # custom
 .DS_Store
 *.csv
-
-# deprecated files
 old
+ollama_data
+qdrant_data
+

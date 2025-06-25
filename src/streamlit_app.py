@@ -12,9 +12,14 @@ temperature = mc.get("temperature", 0.1)
 top_p = mc.get("top_p", 0.95)
 max_tokens = mc.get("max_tokens", 2000)
 
+# Use environment variables with fallbacks for service hostnames
+OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "ollama" if os.environ.get("DOCKER_ENV") else "localhost")
+
+SYSTEM_PROMPT = mc.get("system_prompt")
+
 
 def query_ollama_stream(messages):
-    url = "http://localhost:11434/api/chat"
+    url = f"http://{OLLAMA_HOST}:11434/api/chat"
     payload = {
         "model": model_name,
         "messages": messages,
@@ -36,12 +41,17 @@ def main():
 
     if "history" not in st.session_state:
         st.session_state.history = [
-            {"role": "system", "content": "You are a helpful academic advisor."}
+            {"role": "system", 
+             "content": SYSTEM_PROMPT}
         ]
 
     for msg in st.session_state.history:
         with st.chat_message(msg["role"]):
             st.markdown(msg["content"])
+    
+    # uploaded = st.file_uploader("Upload a PDF or TXT", type=["pdf", "txt"])
+    # if uploaded:
+    #     text = extract_text(uploaded)
 
     if prompt := st.chat_input("Type your message…"):
         st.session_state.history.append({"role": "user", "content": prompt})
