@@ -1,10 +1,10 @@
-# Configuration Guide for DeepSeek RAG System
+# Configuration Guide for AI Academic Advisor RAG System
 
-This document explains each parameter in the `config.yaml` file used for configuring the DeepSeek-based Retrieval-Augmented Generation (RAG) system.
+This document explains each parameter in the `config.yaml` file used for configuring the AI Academic Advisor Retrieval-Augmented Generation (RAG) system.
 
-## **DeepSeek Model Configuration**
+## **AI Academic Advisor Model Configuration**
 
-The `deepseek` section defines parameters for the DeepSeek language model, controlling its response behavior.
+The `model_llm` section defines parameters for the AI Academic Advisor language model, controlling its response behavior.
 
 ```yaml
 model_llm:

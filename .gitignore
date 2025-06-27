@@ -163,7 +163,6 @@ cython_debug/
 
 # custom
 .DS_Store
-*.csv
 old
 ollama_data
 qdrant_data

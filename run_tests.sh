@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Default build flag is false (no build)
 BUILD=false
 
-# Parse command line arguments
 while getopts ":b" opt; do
   case ${opt} in
     b )
@@ -16,6 +14,12 @@ while getopts ":b" opt; do
       ;;
   esac
 done
+
+# # Check for tika-server.jar
+# if [ ! -f ./dependencies/tika-server.jar ]; then
+#   echo "ERROR: tika-server.jar is missing from ./dependencies. Please download it before running tests."
+#   exit 1
+# fi
 
 clear
 
@@ -35,7 +39,7 @@ fi
 #./pull_models_mac.sh
 
 echo "Running tests..."
-python -m pytest tests/test_qdrant_ingest.py -v
+python -m pytest tests/test_ingestion.py -v
 
 echo "Tests completed"
 

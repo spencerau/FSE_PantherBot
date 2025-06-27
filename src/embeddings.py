@@ -4,6 +4,7 @@ import yaml
 import requests
 import tiktoken
 import sys
+import uuid
 from pathlib import Path
 from qdrant_client import QdrantClient
 from qdrant_client.models import VectorParams, Distance, PointStruct
@@ -14,6 +15,7 @@ if str(src_dir) not in sys.path:
     sys.path.append(str(src_dir))
 
 from src.utils.config_loader import load_config
+from src.content_extract import extract_chunks_and_metadata
 
 
 cfg = load_config()
@@ -57,10 +59,18 @@ def chunk_text(text: str):
     ]
 
 def embed_texts(texts: list[str]):
-    payload = {"model": embed_cfg["embed_model"], "texts": texts}
-    resp = requests.post(f"http://{OLLAMA_HOST}:11434/api/embeddings", json=payload)
+    # changed to use proper API endpoint (embed and not embeddings)
+    url = f"http://{OLLAMA_HOST}:11434/api/embed"
+    payload = {"model": embed_cfg["embed_model"], "input": texts if len(texts) > 1 else texts[0]}
+    resp = requests.post(url, json=payload)
     resp.raise_for_status()
-    return resp.json().get("embeddings", [])
+    data = resp.json()
+    if "embeddings" in data:
+        return data["embeddings"]
+    elif "embedding" in data:
+        return [data["embedding"]]
+    else:
+        return []
 
 def ingest(text: str, collection=None):
     collection_name = collection or COLLECTION
@@ -69,6 +79,26 @@ def ingest(text: str, collection=None):
     embs = embed_texts(chunks)
     points = [
         PointStruct(id=i, vector=embs[i], payload={"text": chunks[i]})
+        for i in range(len(chunks))
+    ]
+    qdrant.upsert(collection_name=collection_name, points=points)
+    return len(chunks)
+
+# changed to use Apache Tika for content extraction
+def ingest_file(file_path: str, collection=None, metadata=None):
+    collection_name = collection or COLLECTION
+    create_collection_if_not_exists(collection_name)
+    chunked = extract_chunks_and_metadata(
+        file_path,
+        user_metadata=metadata,
+        chunk_size=CHUNK_SIZE,
+        chunk_overlap=CHUNK_OVERLAP
+    )
+    chunks = [c for c, m in chunked]
+    metadatas = [m for c, m in chunked]
+    embs = embed_texts(chunks)
+    points = [
+        PointStruct(id=str(uuid.uuid4()), vector=embs[i], payload={"text": chunks[i], "metadata": metadatas[i]})
         for i in range(len(chunks))
     ]
     qdrant.upsert(collection_name=collection_name, points=points)
