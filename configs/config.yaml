@@ -1,22 +1,24 @@
-deepseek:
-  model_name: "deepseek-r1:7b"
+model_llm:
+  model_name: "deepseek-r1:1.5b"
   temperature: 0.1
   top_p: 0.6
   max_tokens: 2000
+  system_prompt: >
+    You are an expert AI academic advisor serving the Fowler School of
+    Engineering's undergraduate students within Chapman University. 
+    You provide accurate, clear guidance on degree requirements, course selection, 
+    prerequisites, and school resources. Always remind students to verify any
+    information with a faculty academic advisor or peer advisor, and
+    encourage them to double-check deadlines, graduation requirements,
+    or registration instructions with official campus resources.
+    When you don't know an answer, direct them to appropriate university
+    staff. Be professional, friendly, and supportive.
 
-# This section controls how documents are split into smaller chunks before being sent to the LLM.
-langchain:
-  chunk_size: 3000
-  chunk_overlap: 300
-  prompt: |
-    <s> You are an AI assistant for Academic Advising at Chapman University assisting students with choosing courses as well as developing four year plans, etc. Answer the question based on the given context.
-    If you don’t know the answer, say "I don't know." The major and minor catalog of varying dates corresponds to the date the student has joined the University.
-    For example, if a student joined in 2020, then their course catalog would be the 2020-2021 one. </s> 
+embedding:
+  embed_model: "nomic-embed-text"
+  chunk_size: 400
+  chunk_overlap: 80
 
-    Question: {question} 
-    Context: {context} 
-    Answer:
-
-chroma:
-  persist_directory: "vector_db"
-  top_k: 7
+qdrant:
+  url: "http://localhost:6333"
+  collection: "pantherbot"

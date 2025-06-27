@@ -1,9 +1,9 @@
-python-dotenv
 pyyaml
-pypdf
-fastembed
-
-ollama
-
-# validation/testing
-pydantic
+requests
+tika
+tiktoken
+qdrant-client
+streamlit
+pytest
+python
+#ollama
