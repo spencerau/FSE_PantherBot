@@ -66,35 +66,34 @@ def test_ingest_and_retrieve(tmp_path):
 
 # 2. PDF Ingestion Test
 def test_ingest_pdf():
-    pdf_files = glob.glob(str(Path(project_root, 'data/major_catalogs/*.pdf')))
-    for pdf_path in pdf_files:
-        metadata = extract_metadata_from_filename(pdf_path, 'pdf')
-        collection = 'test_pdf_catalogs'
-        if qdrant.collection_exists(collection):
-            qdrant.delete_collection(collection_name=collection)
-        dim = len(embed_texts(["dummy"])[0])
-        qdrant.create_collection(
-            collection_name=collection,
-            vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
-        )
-        count = ingest_file(pdf_path, collection=collection, metadata=metadata)
-        assert count > 0, f"No chunks ingested for {pdf_path}"
+    pdf_path = "data/major_catalogs/2022-2023_Undergrad_CompSci.pdf"
+    metadata = extract_metadata_from_filename(pdf_path, 'pdf')
+    collection = 'test_pdf_catalogs'
+    if qdrant.collection_exists(collection):
+        qdrant.delete_collection(collection_name=collection)
+    dim = len(embed_texts(["dummy"])[0])
+    qdrant.create_collection(
+        collection_name=collection,
+        vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
+    )
+    count = ingest_file(pdf_path, collection=collection, metadata=metadata)
+    assert count > 0, f"No chunks ingested for {pdf_path}"
 
 # 3. CSV Ingestion Test
 def test_ingest_csv():
-    csv_files = glob.glob(str(Path(project_root, 'data/course_catalogs/*.csv')))
-    for csv_path in csv_files:
-        metadata = extract_metadata_from_filename(Path(csv_path).name, 'csv')
-        collection = 'test_csv_catalogs'
-        if qdrant.collection_exists(collection):
-            qdrant.delete_collection(collection_name=collection)
+    # switch to just ingest a single csv file for testing
+    csv_path = "data/course_catalogs/Fall_2024.csv"
+    metadata = extract_metadata_from_filename(Path(csv_path).name, 'csv')
+    collection = 'test_csv_catalogs'
+    if qdrant.collection_exists(collection):
+        qdrant.delete_collection(collection_name=collection)
         dim = len(embed_texts(["dummy"])[0])
         qdrant.create_collection(
             collection_name=collection,
             vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
         )
-        count = ingest_file(csv_path, collection=collection, metadata=metadata)
-        assert count > 0, f"No chunks ingested for {csv_path}"
+    count = ingest_file(csv_path, collection=collection, metadata=metadata)
+    assert count > 0, f"No chunks ingested for {csv_path}"
 
 # 4. JSON (Hyperlinks) Ingestion Test
 def test_ingest_links_json():

@@ -9,7 +9,7 @@ This project is a locally hosted AI-powered academic advising platform designed 
 ## Streamlit
 - Run `pull_models_mac.sh` once to pull the models into the Ollama Docker Container
 - Run `docker compose up -d` to start the Docker containers
-- Head to `localhost:8501` to test out the Streamlit interface
+- Head to `http://localhost:8501/` to test out the Streamlit interface
 
 ## Configuration
 - See [`configs/README.md`](configs/README.md) for configuration details and options.
