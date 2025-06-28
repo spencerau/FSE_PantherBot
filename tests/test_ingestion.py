@@ -6,14 +6,17 @@ import pytest
 import csv
 import json
 import glob
+from pypdf import PdfReader
 from qdrant_client.models import VectorParams, Distance
 
+src_path = Path(__file__).parent.parent / 'src'
+if str(src_path) not in sys.path:
+    sys.path.insert(0, str(src_path))
+
 project_root = Path(__file__).parent.parent.resolve()
-if str(project_root) not in sys.path:
-    sys.path.append(str(project_root))
-    
-from src.embeddings import ingest, qdrant, embed_texts, ingest_file
-from src.content_extract import extract_content
+
+from ingestion.embeddings import ingest, qdrant, embed_texts, ingest_file
+from ingestion.content_extract import extract_content
 
 
 def extract_metadata_from_filename(filename, filetype):
@@ -66,7 +69,9 @@ def test_ingest_and_retrieve(tmp_path):
 
 # 2. PDF Ingestion Test
 def test_ingest_pdf():
-    pdf_path = "data/major_catalogs/2022-2023_Undergrad_CompSci.pdf"
+    pdf_path = "data/Major_Catalogs/2022_Computer Science.pdf"
+    #metadata = extract_metadata_from_filename(pdf_path, 'pdf')
+    reader = PdfReader(pdf_path)
     metadata = extract_metadata_from_filename(pdf_path, 'pdf')
     collection = 'test_pdf_catalogs'
     if qdrant.collection_exists(collection):
@@ -137,7 +142,7 @@ def test_qdrant_connection():
 
 # 6. Tika Extraction Test
 def test_tika_extraction():
-    sample_pdf = next(glob.iglob(str(Path(project_root, 'data/major_catalogs/*.pdf'))))
+    sample_pdf = next(glob.iglob(str(Path(project_root, 'data/Major_Catalogs/2022_Computer Science.pdf'))))
     text, metadata = extract_content(sample_pdf)
     assert text and isinstance(text, str)
     assert isinstance(metadata, dict)
@@ -152,29 +157,30 @@ def test_embedding_service():
     assert len(embedding[0]) > 0
 
 # 8. Metadata Tagging Test
-def test_metadata_tagging():
-    pdf_files = glob.glob(str(Path(project_root, 'data/major_catalogs/*.pdf')))
-    if not pdf_files:
-        pytest.skip("No PDF files found for metadata tagging test.")
-    pdf_path = pdf_files[0]
-    metadata = {'test_tag': 'test_value'}
-    collection = 'test_metadata_tagging'
-    if qdrant.collection_exists(collection):
-        qdrant.delete_collection(collection_name=collection)
-    dim = len(embed_texts(["dummy"])[0])
-    qdrant.create_collection(
-        collection_name=collection,
-        vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
-    )
-    count = ingest_file(pdf_path, collection=collection, metadata=metadata)
-    assert count > 0
-    results = qdrant.scroll(collection_name=collection, limit=1, with_payload=True)
-    # Fix: handle Qdrant scroll return type robustly
-    records = results[0] if isinstance(results, tuple) else results
-    first_record = records[0]
-    payload = getattr(first_record, "payload", None)
-    assert payload is not None, "No payload found in first record"
-    assert 'test_tag' in payload.get('metadata', {})
+# no longer needed as metadata is now handled in src/preprocess/edit_metadata.py
+# def test_metadata_tagging():
+#     pdf_files = glob.glob(str(Path(project_root, 'data/Major_Catalogs/*.pdf')))
+#     if not pdf_files:
+#         pytest.skip("No PDF files found for metadata tagging test.")
+#     pdf_path = pdf_files[0]
+#     metadata = {'test_tag': 'test_value'}
+#     collection = 'test_metadata_tagging'
+#     if qdrant.collection_exists(collection):
+#         qdrant.delete_collection(collection_name=collection)
+#     dim = len(embed_texts(["dummy"])[0])
+#     qdrant.create_collection(
+#         collection_name=collection,
+#         vectors_config=VectorParams(size=dim, distance=Distance.COSINE)
+#     )
+#     count = ingest_file(pdf_path, collection=collection, metadata=metadata)
+#     assert count > 0
+#     results = qdrant.scroll(collection_name=collection, limit=1, with_payload=True)
+#     # Fix: handle Qdrant scroll return type robustly
+#     records = results[0] if isinstance(results, tuple) else results
+#     first_record = records[0]
+#     payload = getattr(first_record, "payload", None)
+#     assert payload is not None, "No payload found in first record"
+#     assert 'test_tag' in payload.get('metadata', {})
 
 # 9. Error Handling Test
 def test_error_handling():
@@ -183,7 +189,7 @@ def test_error_handling():
 
 # 10. Duplicate Ingestion Test
 def test_duplicate_ingestion():
-    pdf_files = glob.glob(str(Path(project_root, 'data/major_catalogs/*.pdf')))
+    pdf_files = glob.glob(str(Path(project_root, 'data/Major_Catalogs/*.pdf')))
     if not pdf_files:
         pytest.skip("No PDF files found for duplicate ingestion test.")
     pdf_path = pdf_files[0]

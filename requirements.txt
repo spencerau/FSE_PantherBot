@@ -1,4 +1,5 @@
 pyyaml
+pypdf
 requests
 tika
 tiktoken

@@ -15,7 +15,7 @@ if str(src_dir) not in sys.path:
     sys.path.append(str(src_dir))
 
 from src.utils.config_loader import load_config
-from src.content_extract import extract_chunks_and_metadata
+from ingestion.content_extract import extract_chunks_and_metadata
 
 
 cfg = load_config()

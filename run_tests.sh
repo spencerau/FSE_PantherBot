@@ -15,12 +15,6 @@ while getopts ":b" opt; do
   esac
 done
 
-# # Check for tika-server.jar
-# if [ ! -f ./dependencies/tika-server.jar ]; then
-#   echo "ERROR: tika-server.jar is missing from ./dependencies. Please download it before running tests."
-#   exit 1
-# fi
-
 clear
 
 echo "Stopping any running containers..."
@@ -39,7 +33,12 @@ fi
 #./pull_models_mac.sh
 
 echo "Running tests..."
-python -m pytest tests/test_ingestion.py -v
+export PYTHONPATH="$PYTHONPATH:$(pwd)/src"
+# pytest -s tests/test_ingestion.py -v
+
+# python -m pytest tests/test_ingestion.py -v
+
+pytest -s tests/ -v
 
 echo "Tests completed"
 
