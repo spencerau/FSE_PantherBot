@@ -209,7 +209,7 @@ def scrape_section(page, row, class_text, title):
 
 
 def scrape_course_details(page, class_text):
-    with open(f"data/course_catalogs/{TERM}.csv", mode="a", newline="") as file:
+    with open(f"data/course_listings/{TERM}.csv", mode="a", newline="") as file:
         writer = csv.writer(file)
         try:
             course_info_button = page.locator("a:has-text('Course Information')")

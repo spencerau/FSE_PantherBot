@@ -6,4 +6,3 @@ tiktoken
 qdrant-client
 streamlit
 pytest
-#ollama

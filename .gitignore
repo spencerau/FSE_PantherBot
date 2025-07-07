@@ -166,4 +166,5 @@ cython_debug/
 old
 ollama_data
 qdrant_data
-
+.vscode/
+*.bak

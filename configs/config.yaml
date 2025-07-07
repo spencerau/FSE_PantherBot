@@ -1,24 +1,73 @@
-model_llm:
-  model_name: "deepseek-r1:1.5b"
+# Academic Advisor RAG System Configuration
+system:
+  name: "Fowler School of Engineering Academic Advisor"
+  version: "1.0.0"
+  description: "Unified collection-based RAG system for academic advising"
+
+# Qdrant Vector Database Configuration
+qdrant:
+  host: "localhost"
+  port: 6333
+  timeout: 60
+  collections:
+    major_catalogs: "major_catalogs"
+    minor_catalogs: "minor_catalogs"
+    course_listings: "course_listings"
+    general_knowledge: "general_knowledge"
+
+# Embedding Configuration
+embedding:
+  model: "nomic-embed-text"
+  chunk_size: 1500
+  chunk_overlap: 200
+  batch_size: 32
+  ollama_host: "localhost"
+  ollama_port: 11434
+
+# LLM Configuration
+llm:
+  model: "deepseek-r1:8b"
   temperature: 0.1
   top_p: 0.6
-  max_tokens: 2000
+  max_tokens: 3000
+  timeout: 60
   system_prompt: >
-    You are an expert AI academic advisor serving the Fowler School of
-    Engineering's undergraduate students within Chapman University. 
-    You provide accurate, clear guidance on degree requirements, course selection, 
-    prerequisites, and school resources. Always remind students to verify any
-    information with a faculty academic advisor or peer advisor, and
-    encourage them to double-check deadlines, graduation requirements,
-    or registration instructions with official campus resources.
-    When you don't know an answer, direct them to appropriate university
-    staff. Be professional, friendly, and supportive.
+    You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
+    
+    Your role is to provide accurate, helpful guidance to undergraduate students about:
+    - Degree requirements and graduation planning
+    - Course schedules and availability
+    - Prerequisites and course sequencing
+    - Academic policies and procedures
+    - Program-specific information
+    
+    IMPORTANT GUIDELINES:
+    - Use ONLY the information provided in the context from university catalogs
+    - Be specific about course codes, credit hours, and requirements
+    - If information is incomplete, clearly state what you don't know
+    - Always recommend students verify information with academic advisors
+    - Be supportive and encouraging in your responses
+    - Focus on the student's specific program and catalog year when provided
+    
+    Format your responses clearly and be concise but thorough.
 
-embedding:
-  embed_model: "nomic-embed-text"
-  chunk_size: 400
-  chunk_overlap: 80
+data:
+  major_catalogs_path: "data/major_catalogs"
+  minor_catalogs_path: "data/minor_catalogs"
+  course_catalogs_path: "data/course_listings"
+  general_knowledge_path: "data/general_knowledge"
 
-qdrant:
-  url: "http://localhost:6333"
-  collection: "pantherbot"
+# Retrieval Configuration
+retrieval:
+  top_k: 10
+  score_threshold: 0.7
+  rerank_top_k: 5
+  enable_reranking: true
+
+# Reranker Configuration
+reranker:
+  model: "BAAI/bge-reranker-v2-m3"
+  top_k: 5
+  batch_size: 32
+  pdf_weight: 1.0
+  course_weight: 1.0
