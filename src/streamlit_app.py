@@ -16,7 +16,7 @@ def main():
     )
     
     st.title("Fowler Engineering Academic Advisor")
-    st.caption("AI-powered academic guidance using your program's specific requirements")
+    st.caption("AI-powered academic guidance")
     
     if 'rag_system' not in st.session_state:
         with st.spinner("Initializing AI advisor..."):
@@ -121,8 +121,8 @@ def main():
                         prompt, 
                         program_code, 
                         student_year,
-                        top_k=8,
-                        rerank_top_k=5,
+                        top_k=None,
+                        rerank_top_k=None,
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
                         use_streaming=st.session_state.get('use_streaming', True)

@@ -42,7 +42,7 @@ export PYTHONPATH="$PYTHONPATH:$(pwd)/src"
 if [ "$CLEAN_COLLECTIONS" = true ]; then
   echo "Cleaning all Qdrant collections..."
   echo "Removing qdrant_data directory..."
-  rm -rf qdrant_data
+  sudo rm -rf qdrant_data
   echo "Collection cleanup completed."
 fi
 
@@ -58,8 +58,18 @@ fi
 #echo "Pulling required models..."
 #./pull_models_mac.sh
 
+echo "Waiting for containers to be ready..."
+sleep 5
+
+# echo "Checking if Qdrant is responding..."
+# curl -f http://localhost:6333/collections || echo "Qdrant not yet ready, waiting longer..."
+# sleep 10
+
 echo "Ingesting data from PDF documents..."
 python src/ingestion/ingest.py
+
+# echo "Checking collections after ingestion..."
+# curl http://localhost:6333/collections
 
 echo "Running tests..."
 if [ "$RUN_TESTS" = true ]; then

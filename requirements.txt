@@ -6,3 +6,4 @@ tiktoken
 qdrant-client
 streamlit
 pytest
+pymupdf

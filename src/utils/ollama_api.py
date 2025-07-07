@@ -5,7 +5,6 @@ import os
 
 
 class OllamaAPI:
-    """Fast Ollama API client using direct REST calls for better GPU utilization"""
     
     def __init__(self, base_url: str = None):
         self.base_url = base_url or f"http://{self._get_ollama_host()}:11434"
@@ -32,16 +31,6 @@ class OllamaAPI:
     
     def chat(self, model: str, messages: List[Dict], stream: bool = True, think: Optional[bool] = None, 
              hide_thinking: bool = False, **kwargs) -> str:
-        """
-        Chat completion with optional thinking mode
-        
-        Args:
-            model: Model name
-            messages: List of message dicts
-            stream: Whether to use streaming (default True)
-            think: Enable/disable thinking mode (None=auto, True=force, False=disable)
-            hide_thinking: If True, hide <think></think> tags from output while still thinking
-        """
         if stream:
             return ''.join(self.chat_stream(model, messages, think=think, hide_thinking=hide_thinking, **kwargs))
         
@@ -64,6 +53,8 @@ class OllamaAPI:
             
             if hide_thinking and content:
                 content = self._strip_thinking_tags(content)
+            elif not hide_thinking and content and '<think>' in content:
+                content = self._format_thinking_content(content)
             
             return content
         except Exception as e:
@@ -87,6 +78,9 @@ class OllamaAPI:
             response = self.session.post(url, json=payload, stream=True, timeout=60)
             response.raise_for_status()
             
+            accumulated_content = ""
+            in_thinking = False
+            
             for line in response.iter_lines():
                 if not line:
                     continue
@@ -94,9 +88,24 @@ class OllamaAPI:
                     data = json.loads(line.decode())
                     if 'message' in data and 'content' in data['message']:
                         content = data['message']['content']
-                        if hide_thinking and content:
-                            content = self._strip_thinking_tags(content)
-                        yield content
+                        accumulated_content += content
+                        
+                        # For streaming, handle thinking formatting
+                        if hide_thinking:
+                            if '<think>' in content:
+                                in_thinking = True
+                                content = content.replace('<think>', '')
+                            if '</think>' in content:
+                                in_thinking = False
+                                content = content.replace('</think>', '')
+                            if not in_thinking:
+                                yield content
+                        else:
+                            if '<think>' in content:
+                                content = content.replace('<think>', '\n\n---\n\n**Thinking Process:**\n\n*')
+                            if '</think>' in content:
+                                content = content.replace('</think>', '*\n\n---\n\n')
+                            yield content
                 except json.JSONDecodeError:
                     continue
         except Exception as e:
@@ -104,7 +113,6 @@ class OllamaAPI:
             yield ""
     
     def chat_with_thinking(self, model: str, messages: List[Dict], stream: bool = True, **kwargs) -> Dict[str, str]:
-        """Chat with thinking enabled, returns both thinking and content"""
         url = f"{self.base_url}/api/chat"
         payload = {
             "model": model,
@@ -166,10 +174,18 @@ class OllamaAPI:
             return False
     
     def _strip_thinking_tags(self, content: str) -> str:
-        """Remove <think></think> tags from content while preserving other text"""
         import re
-        # Remove thinking tags but preserve surrounding whitespace structure
         return re.sub(r'<think>.*?</think>', '', content, flags=re.DOTALL)
+    
+    def _format_thinking_content(self, content: str) -> str:
+        import re
+        
+        def replace_thinking(match):
+            thinking_content = match.group(1).strip()
+            return f"\n\n---\n\n**Thinking Process:**\n\n*{thinking_content}*\n\n---\n\n"
+        
+        formatted = re.sub(r'<think>(.*?)</think>', replace_thinking, content, flags=re.DOTALL)
+        return formatted
 
 
 _ollama_api = None

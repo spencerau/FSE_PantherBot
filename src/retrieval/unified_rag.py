@@ -67,7 +67,6 @@ class UnifiedRAG:
     
     def _get_llm_response_stream(self, prompt: str, enable_thinking: bool = True, 
                                 show_thinking: bool = False):
-        """Generate streaming response"""
         try:
             for chunk in self.ollama_api.chat_stream(
                 model=self.config['llm']['model'],
@@ -162,47 +161,48 @@ class UnifiedRAG:
     
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
-                                  top_k_per_collection: int = 3) -> List[Dict]:
-        """
-        Search multiple collections with guaranteed retrieval:
-        - ALWAYS get 1 result from major_catalogs (with program/year filter)
-        - ALWAYS get 1 result from course_listings (with year filter only)
-        - 1 result max from minor_catalogs (if requested, with program/year filter)
-        - Remaining slots filled with general_knowledge
-        """
+                                  top_k_per_collection: int = 8) -> List[Dict]:
         all_results = []
         
-        # Priority collections that we MUST retrieve from
-        guaranteed_collections = ['major_catalogs', 'course_listings']
+        major_chunks = self.config['retrieval']['major_catalogs_chunks']
+        minor_chunks = self.config['retrieval']['minor_catalogs_chunks']
+        course_chunks = self.config['retrieval']['course_listings_chunks']
         
-        for collection_name in guaranteed_collections:
-            if collection_name in collection_names:
-                if collection_name == 'major_catalogs':
-                    collection_results = self.search_collection(
-                        query, collection_name, student_program, student_year, top_k=1
-                    )
-                elif collection_name == 'course_listings':
-                    collection_results = self.search_collection(
-                        query, collection_name, None, student_year, top_k=1
-                    )
-                
-                if collection_results:
-                    all_results.extend(collection_results)
-                else:
-                    print(f"No filtered results from {collection_name}, trying without filters...")
-                    fallback_results = self.search_collection(
-                        query, collection_name, None, None, top_k=1
-                    )
-                    all_results.extend(fallback_results)
+        if 'major_catalogs' in collection_names:
+            major_results = self.search_collection(
+                query, 'major_catalogs', student_program, student_year, 
+                top_k=major_chunks
+            )
+            if major_results:
+                all_results.extend(major_results)
+            else:
+                fallback_results = self.search_collection(
+                    query, 'major_catalogs', None, student_year, top_k=major_chunks//2
+                )
+                all_results.extend(fallback_results)
+        
+        if 'course_listings' in collection_names:
+            course_results = self.search_collection(
+                query, 'course_listings', None, student_year, 
+                top_k=course_chunks
+            )
+            if course_results:
+                all_results.extend(course_results)
+            else:
+                fallback_results = self.search_collection(
+                    query, 'course_listings', None, None, top_k=course_chunks//2
+                )
+                all_results.extend(fallback_results)
         
         if 'minor_catalogs' in collection_names:
             minor_results = self.search_collection(
-                query, 'minor_catalogs', student_program, student_year, top_k=1
+                query, 'minor_catalogs', student_program, student_year, top_k=minor_chunks
             )
             all_results.extend(minor_results)
         
         if 'general_knowledge' in collection_names:
-            remaining_slots = max(0, top_k_per_collection - len(all_results))
+            used_chunks = len(all_results)
+            remaining_slots = max(0, top_k_per_collection - used_chunks)
             if remaining_slots > 0:
                 general_results = self.search_collection(
                     query, 'general_knowledge', None, None, top_k=remaining_slots
@@ -235,7 +235,14 @@ class UnifiedRAG:
             top_k_per_collection=top_k
         )
         
-        retrieved_chunks = retrieved_chunks[:top_k]
+        # Use config-based total for maximum chunks
+        config_total = (
+            self.config['retrieval']['major_catalogs_chunks'] + 
+            self.config['retrieval']['course_listings_chunks'] + 
+            self.config['retrieval']['minor_catalogs_chunks']
+        )
+        max_chunks = max(config_total, top_k)  # Use whichever is higher
+        retrieved_chunks = retrieved_chunks[:max_chunks]
         
         if not retrieved_chunks:
             return ("I don't have enough information to answer your question. "

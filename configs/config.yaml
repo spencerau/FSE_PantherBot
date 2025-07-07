@@ -18,8 +18,8 @@ qdrant:
 # Embedding Configuration
 embedding:
   model: "nomic-embed-text"
-  chunk_size: 1500
-  chunk_overlap: 200
+  chunk_size: 2750
+  chunk_overlap: 250
   batch_size: 32
   ollama_host: "localhost"
   ollama_port: 11434
@@ -42,14 +42,16 @@ llm:
     - Program-specific information
     
     IMPORTANT GUIDELINES:
-    - Use ONLY the information provided in the context from university catalogs
-    - Be specific about course codes, credit hours, and requirements
-    - If information is incomplete, clearly state what you don't know
-    - Always recommend students verify information with academic advisors
+    - Use the information provided in the context from university catalogs as your primary source
+    - When you have relevant context, provide specific and detailed answers based on that information
+    - Be specific about course codes, credit hours, and requirements when available in the context
+    - If the context contains partial information, provide what you can and note what might be missing
+    - Only recommend contacting academic advisors if the context truly lacks the needed information
     - Be supportive and encouraging in your responses
     - Focus on the student's specific program and catalog year when provided
+    - Trust the context provided - it comes from official university documents
     
-    Format your responses clearly and be concise but thorough.
+    Format your responses clearly and be thorough when you have good context to work with.
 
 data:
   major_catalogs_path: "data/major_catalogs"
@@ -59,15 +61,17 @@ data:
 
 # Retrieval Configuration
 retrieval:
-  top_k: 10
-  score_threshold: 0.7
-  rerank_top_k: 5
+  top_k: 15
+  rerank_top_k: 10
   enable_reranking: true
+  major_catalogs_chunks: 2
+  minor_catalogs_chunks: 1
+  course_listings_chunks: 5
 
 # Reranker Configuration
 reranker:
   model: "BAAI/bge-reranker-v2-m3"
-  top_k: 5
+  top_k: 10
   batch_size: 32
   pdf_weight: 1.0
   course_weight: 1.0
