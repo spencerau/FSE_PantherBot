@@ -168,3 +168,5 @@ ollama_data
 qdrant_data
 .vscode/
 *.bak
+.github
+.reports

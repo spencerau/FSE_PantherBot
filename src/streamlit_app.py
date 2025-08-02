@@ -6,7 +6,6 @@ from pathlib import Path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 
 from retrieval.unified_rag import UnifiedRAG
-from retrieval.rag_agent import RAGAgent
 
 
 def main():
@@ -21,10 +20,8 @@ def main():
     if 'rag_system' not in st.session_state:
         with st.spinner("Initializing AI advisor..."):
             st.session_state.rag_system = UnifiedRAG()
-            st.session_state.rag_agent = RAGAgent(st.session_state.rag_system)
     
     rag = st.session_state.rag_system
-    agent = st.session_state.rag_agent
     
     with st.sidebar:
         st.header("Your Academic Profile")
@@ -85,6 +82,13 @@ def main():
             help="Show responses as they're generated for a more interactive experience.",
             key="use_streaming"
         )
+        
+        debug_mode = st.checkbox(
+            "Debug Mode",
+            value=False,
+            help="Show detailed retrieval and reranking information.",
+            key="debug_mode"
+        )
     
     st.header("Ask Your Academic Questions")
     
@@ -117,12 +121,11 @@ def main():
                     }
                     program_code = program_codes.get(student_program, "cs")
                     
-                    answer, context, retrieved_chunks = agent.answer(
+                    answer, retrieved_chunks = rag.answer_question(
                         prompt, 
-                        program_code, 
-                        student_year,
-                        top_k=None,
-                        rerank_top_k=None,
+                        student_program=student_program, 
+                        student_year=student_year,
+                        top_k=15,
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
                         use_streaming=st.session_state.get('use_streaming', True)
@@ -175,6 +178,57 @@ def main():
                                     disabled=True
                                 )
                                 st.divider()
+                        
+                        if st.session_state.get('debug_mode', False):
+                            with st.expander("🔍 Debug Information", expanded=False):
+                                st.subheader("Query Processing")
+                                st.write(f"**Original Query:** {prompt}")
+                                st.write(f"**Student Program:** {student_program}")
+                                st.write(f"**Catalog Year:** {student_year}")
+                                
+                                st.subheader("Retrieval Details")
+                                st.write(f"**Total Chunks Retrieved:** {len(retrieved_chunks)}")
+                                
+                                dense_scores = [c.get('score_dense', 0) for c in retrieved_chunks if 'score_dense' in c]
+                                sparse_scores = [c.get('score_sparse', 0) for c in retrieved_chunks if 'score_sparse' in c]
+                                rrf_scores = [c.get('score_rrf', 0) for c in retrieved_chunks if 'score_rrf' in c]
+                                rerank_scores = [c.get('rerank_score', 0) for c in retrieved_chunks if 'rerank_score' in c]
+                                
+                                if dense_scores:
+                                    st.write(f"**Dense Retrieval Scores:** {len(dense_scores)} results, top score: {max(dense_scores):.4f}")
+                                if sparse_scores:
+                                    st.write(f"**Sparse (BM25) Scores:** {len(sparse_scores)} results, top score: {max(sparse_scores):.4f}")
+                                if rrf_scores:
+                                    st.write(f"**RRF Fusion Scores:** {len(rrf_scores)} results, top score: {max(rrf_scores):.4f}")
+                                if rerank_scores:
+                                    st.write(f"**Reranking Scores:** {len(rerank_scores)} results, top score: {max(rerank_scores):.4f}")
+                                
+                                st.subheader("Collection Distribution")
+                                collection_counts = {}
+                                for chunk in retrieved_chunks:
+                                    coll = chunk.get('collection', 'unknown')
+                                    collection_counts[coll] = collection_counts.get(coll, 0) + 1
+                                
+                                for coll, count in collection_counts.items():
+                                    st.write(f"- **{coll}**: {count} chunks")
+                                
+                                st.subheader("Top 5 Chunks Detail")
+                                for i, chunk in enumerate(retrieved_chunks[:5]):
+                                    st.write(f"**Rank {i+1}:**")
+                                    scores_info = []
+                                    if 'score_dense' in chunk:
+                                        scores_info.append(f"Dense: {chunk['score_dense']:.4f}")
+                                    if 'score_sparse' in chunk:
+                                        scores_info.append(f"Sparse: {chunk['score_sparse']:.4f}")
+                                    if 'score_rrf' in chunk:
+                                        scores_info.append(f"RRF: {chunk['score_rrf']:.4f}")
+                                    if 'rerank_score' in chunk:
+                                        scores_info.append(f"Rerank: {chunk['rerank_score']:.4f}")
+                                    
+                                    st.write(f"Scores: {', '.join(scores_info)}")
+                                    st.write(f"Collection: {chunk.get('collection', 'N/A')}")
+                                    st.write(f"Text: {chunk['text'][:150]}...")
+                                    st.write("---")
                     
                     st.session_state.messages.append({"role": "assistant", "content": answer})
                 

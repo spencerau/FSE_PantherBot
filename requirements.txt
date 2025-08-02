@@ -7,3 +7,6 @@ qdrant-client
 streamlit
 pytest
 pymupdf
+sentence-transformers
+mcp
+fastmcp

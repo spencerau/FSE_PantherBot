@@ -84,7 +84,8 @@ def test_unified_rag_basic():
     rag_system = UnifiedRAG()
     
     query = "What is Computer Science?"
-    result = rag_system.query(query)
+    answer, context_chunks = rag_system.answer_question(query)
+    result = {"answer": answer, "context": context_chunks}
     
     assert isinstance(result, dict), "Result should be a dictionary"
     assert 'answer' in result, "Result should contain an answer"
@@ -107,14 +108,14 @@ def test_unified_rag_collections():
     ]
     
     for query, expected_collections in test_cases:
-        result = rag_system.query(query)
-        context_chunks = result.get('context', [])
+        answer, context_chunks = rag_system.answer_question(query)
+        result = {"answer": answer, "context": context_chunks}
         
-        assert len(context_chunks) > 0, f"No context retrieved for query: {query}"
+        assert len(result['context']) > 0, f"No context retrieved for query: {query}"
         
         found_collections = set()
-        for chunk in context_chunks:
-            if 'collection' in chunk:
+        for chunk in result['context']:
+            if isinstance(chunk, dict) and 'collection' in chunk:
                 found_collections.add(chunk['collection'])
         
         print(f"Query: {query}")

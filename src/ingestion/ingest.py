@@ -12,7 +12,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from utils.config_loader import load_config
 from utils.ollama_api import get_ollama_api
+from utils.text_preprocessing import preprocess_for_embedding
 from ingestion.content_extract import extract_content
+from ingestion.chunking import AdvancedChunker
 
 
 class UnifiedIngestion:
@@ -24,8 +26,7 @@ class UnifiedIngestion:
             timeout=self.config['qdrant']['timeout']
         )
         self.embedding_model = self.config['embedding']['model']
-        self.chunk_size = self.config['embedding']['chunk_size']
-        self.chunk_overlap = self.config['embedding']['chunk_overlap']
+        self.chunker = AdvancedChunker(self.config.get('chunker', {}))
         self.ollama_api = get_ollama_api()
         
         self._ensure_collections_exist()
@@ -47,38 +48,40 @@ class UnifiedIngestion:
                 )
                 print(f"Created collection '{collection_name}'")
     
-    def _get_embedding(self, text: str) -> List[float]:
+    def _get_embedding(self, text: str, task_type: str = 'document') -> List[float]:
         try:
+            processed_text = preprocess_for_embedding([text], task_type, self.config.get('embedding', {}))[0]
             embedding = self.ollama_api.get_embeddings(
                 model=self.embedding_model,
-                prompt=text
+                prompt=processed_text
             )
             return embedding
         except Exception as e:
             print(f"Error getting embedding: {e}")
             return None
     
-    def _chunk_text(self, text: str) -> List[str]:
-        words = text.split()
-        chunks = []
-        current_chunk = []
-        current_size = 0
-        
-        for word in words:
-            if current_size + len(word) + 1 > self.chunk_size:
-                if current_chunk:
-                    chunks.append(' '.join(current_chunk))
-                    overlap_words = int(self.chunk_overlap / 10)
-                    current_chunk = current_chunk[-overlap_words:] if overlap_words > 0 else []
-                    current_size = sum(len(w) + 1 for w in current_chunk)
+    def _get_embeddings_batch(self, texts: List[str], task_type: str = 'document') -> List[List[float]]:
+        try:
+            processed_texts = preprocess_for_embedding(texts, task_type, self.config.get('embedding', {}))
+            embeddings = []
+            batch_size = self.config.get('embedding', {}).get('batch_size', 32)
             
-            current_chunk.append(word)
-            current_size += len(word) + 1
-        
-        if current_chunk:
-            chunks.append(' '.join(current_chunk))
-        
-        return chunks
+            for i in range(0, len(processed_texts), batch_size):
+                batch = processed_texts[i:i + batch_size]
+                for text in batch:
+                    embedding = self.ollama_api.get_embeddings(
+                        model=self.embedding_model,
+                        prompt=text
+                    )
+                    embeddings.append(embedding)
+            
+            return embeddings
+        except Exception as e:
+            print(f"Error getting batch embeddings: {e}")
+            return []
+    
+    def _chunk_text_with_metadata(self, text: str, base_metadata: Dict) -> List[tuple]:
+        return self.chunker.chunk_text(text, base_metadata)
     
     def _extract_metadata_from_path(self, file_path: str) -> Dict:
         path = Path(file_path)
@@ -141,18 +144,16 @@ class UnifiedIngestion:
             
             collection_name = self.config['qdrant']['collections'][combined_metadata['collection_type']]
             
-            chunks = self._chunk_text(text)
+            chunk_data = self._chunk_text_with_metadata(text, combined_metadata)
             
             points = []
-            for i, chunk in enumerate(chunks):
-                embedding = self._get_embedding(chunk)
+            for i, (chunk_text, chunk_metadata) in enumerate(chunk_data):
+                embedding = self._get_embedding(chunk_text)
                 if embedding is None:
                     continue
                 
-                chunk_metadata = combined_metadata.copy()
-                chunk_metadata['chunk_id'] = i
-                chunk_metadata['chunk_text'] = chunk
-                chunk_metadata['total_chunks'] = len(chunks)
+                chunk_metadata['chunk_text'] = chunk_text
+                chunk_metadata['total_chunks'] = len(chunk_data)
                 
                 point = PointStruct(
                     id=str(uuid.uuid4()),
@@ -166,14 +167,14 @@ class UnifiedIngestion:
                     collection_name=collection_name,
                     points=points
                 )
-                print(f"  ✓ Ingested {len(points)} chunks into collection '{collection_name}'")
+                print(f"Ingested {len(points)} chunks into collection '{collection_name}'")
                 return True
             else:
-                print(f"  ✗ No valid chunks created for {file_path}")
+                print(f"No valid chunks created for {file_path}")
                 return False
                 
         except Exception as e:
-            print(f"  ✗ Error ingesting {file_path}: {e}")
+            print(f"Error ingesting {file_path}: {e}")
             return False
     
     def ingest_directory(self, directory: str, file_extensions: List[str] = None) -> Dict:
@@ -260,12 +261,13 @@ def main():
     data_dirs = [
         config['data']['major_catalogs_path'],
         config['data']['minor_catalogs_path'],
-        config['data']['course_catalogs_path']
+        #config['data']['course_catalogs_path']
     ]
-    
     if os.path.exists(config['data']['general_knowledge_path']):
         data_dirs.append(config['data']['general_knowledge_path'])
-    
+    # Add 4_year_plans if present
+    if '4_year_plans_path' in config['data'] and os.path.exists(config['data']['4_year_plans_path']):
+        data_dirs.append(config['data']['4_year_plans_path'])
     stats = ingestion.bulk_ingest(data_dirs)
     
     print(f"\n=== Final Results ===")

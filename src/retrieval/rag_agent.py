@@ -1,5 +1,5 @@
 from utils.config_loader import load_config
-from .reranker import get_reranker
+from .reranker import BGEReranker
 from .unified_rag import UnifiedRAG
 
 
@@ -10,7 +10,7 @@ class RAGAgent:
             self.rag = UnifiedRAG()
         else:
             self.rag = rag_system
-        self.reranker = get_reranker()
+        self.reranker = BGEReranker()
         self.config = load_config()
     
     def answer(self, query: str, student_program: str = None, student_year: str = None, 

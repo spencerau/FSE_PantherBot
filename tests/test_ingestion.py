@@ -55,16 +55,14 @@ def temp_collection():
     except:
         pass
 
-# Helper functions for testing
 def ingest_text_to_collection(text, collection_name):
     """Helper function to ingest text directly to a specific collection"""
     ingestion = UnifiedIngestion()
-    
-    chunks = ingestion._chunk_text(text)
+    chunk_tuples = ingestion._chunk_text_with_metadata(text, {})
+    chunks = [chunk_text for chunk_text, _ in chunk_tuples]
     ingested_count = 0
-    
     for i, chunk in enumerate(chunks):
-        if len(chunk.strip()) > 10:  # Only ingest meaningful chunks
+        if len(chunk.strip()) > 10:
             embedding = ingestion._get_embedding(chunk)
             point_id = abs(hash(chunk)) % 1000000  # Ensure positive integer
             

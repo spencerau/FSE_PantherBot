@@ -8,6 +8,10 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from utils.config_loader import load_config
 from utils.ollama_api import get_ollama_api
+from utils.text_preprocessing import preprocess_for_embedding
+from retrieval.bm25 import BM25Retriever
+from retrieval.fusion import HybridRetriever
+from retrieval.reranker import BGEReranker
 
 
 class UnifiedRAG:
@@ -22,11 +26,35 @@ class UnifiedRAG:
         self.collections = self.config['qdrant']['collections']
         self.ollama_api = get_ollama_api()
         
+        self.hybrid_disabled = os.getenv('HYBRID_DISABLED', 'false').lower() == 'true'
+        self.rerank_disabled = os.getenv('RERANK_DISABLED', 'false').lower() == 'true'
+        
+        self.bm25_retriever = None
+        if not self.hybrid_disabled and os.getenv('OPENSEARCH_URL'):
+            try:
+                self.bm25_retriever = BM25Retriever()
+            except Exception as e:
+                print(f"BM25 initialization failed: {e}")
+        
+        self.reranker = None
+        self.rerank_disabled = os.getenv('RERANK_DISABLED', 'false').lower() == 'true'
+        
+    def _get_reranker(self):
+        if self.reranker is None and not self.rerank_disabled:
+            try:
+                print("Initializing reranker (first use)...")
+                self.reranker = BGEReranker()
+            except Exception as e:
+                print(f"Reranker initialization failed: {e}")
+                self.reranker = False
+        return self.reranker if self.reranker is not False else None
+        
     def _get_embedding(self, text: str) -> List[float]:
         try:
+            processed_text = preprocess_for_embedding([text], 'query', self.config.get('embedding', {}))[0]
             embedding = self.ollama_api.get_embeddings(
                 model=self.embedding_model,
-                prompt=text
+                prompt=processed_text
             )
             return embedding
         except Exception as e:
@@ -98,10 +126,25 @@ class UnifiedRAG:
         conditions = []
         
         if student_program:
+            program_mappings = {
+                'Computer Science': 'cs',
+                'Computer Engineering': 'ce', 
+                'Software Engineering': 'se',
+                'Electrical Engineering': 'ee',
+                'Data Science': 'ds',
+                'cs': 'cs',
+                'ce': 'ce',
+                'se': 'se', 
+                'ee': 'ee',
+                'ds': 'ds'
+            }
+            
+            program_code = program_mappings.get(student_program, student_program.lower())
+            
             conditions.append(
                 FieldCondition(
                     key="program",
-                    match=MatchValue(value=student_program.lower())
+                    match=MatchValue(value=program_code)
                 )
             )
         
@@ -129,44 +172,74 @@ class UnifiedRAG:
                          student_program: str = None, student_year: str = None,
                          top_k: int = 5) -> List[Dict]:
         try:
-            query_embedding = self._get_embedding(query)
-            if query_embedding is None:
-                return []
-            
-            filter_condition = self._build_filter(student_program, student_year)
-            
-            search_results = self.client.search(
-                collection_name=collection_name,
-                query_vector=query_embedding,
-                query_filter=filter_condition,
-                limit=top_k,
-                with_payload=True,
-                with_vectors=False
-            )
-            
-            results = []
-            for result in search_results:
-                results.append({
-                    'text': result.payload.get('chunk_text', ''),
-                    'metadata': result.payload,
-                    'score': result.score,
-                    'collection': collection_name
-                })
-            
-            return results
-            
+            if self.bm25_retriever and not self.hybrid_disabled:
+                return self._hybrid_search(query, collection_name, student_program, student_year, top_k)
+            else:
+                return self._dense_search(query, collection_name, student_program, student_year, top_k)
         except Exception as e:
             print(f"Error searching collection {collection_name}: {e}")
             return []
+    
+    def _dense_search(self, query: str, collection_name: str, 
+                     student_program: str = None, student_year: str = None,
+                     top_k: int = 5) -> List[Dict]:
+        query_embedding = self._get_embedding(query)
+        if query_embedding is None:
+            return []
+        
+        filter_condition = self._build_filter(student_program, student_year)
+        
+        search_results = self.client.query_points(
+            collection_name=collection_name,
+            query=query_embedding,
+            query_filter=filter_condition,
+            limit=top_k,
+            with_payload=True,
+            with_vectors=False
+        ).points
+        
+        results = []
+        for result in search_results:
+            results.append({
+                'text': result.payload.get('chunk_text', ''),
+                'metadata': result.payload,
+                'score': result.score,
+                'score_dense': result.score,
+                'collection': collection_name
+            })
+        
+        return results
+    
+    def _hybrid_search(self, query: str, collection_name: str,
+                      student_program: str = None, student_year: str = None,
+                      top_k: int = 5) -> List[Dict]:
+        k_dense = self.config.get('retrieval', {}).get('k_dense', 40)
+        k_sparse = self.config.get('retrieval', {}).get('k_sparse', 40)
+        
+        dense_results = self._dense_search(query, collection_name, student_program, student_year, k_dense)
+        
+        sparse_results = []
+        if self.bm25_retriever:
+            sparse_results = self.bm25_retriever.search(query, top_k=k_sparse)
+        
+        if dense_results and sparse_results:
+            from retrieval.fusion import reciprocal_rank_fusion
+            fused_results = reciprocal_rank_fusion(
+                dense_results, sparse_results,
+                k=self.config.get('retrieval', {}).get('rrf_k', 60),
+                weights=self.config.get('retrieval', {}).get('fuse_weights', {'dense': 0.6, 'sparse': 0.4})
+            )
+            return fused_results[:top_k]
+        
+        return dense_results[:top_k]
     
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
                                   top_k_per_collection: int = 8) -> List[Dict]:
         all_results = []
         
-        major_chunks = self.config['retrieval']['major_catalogs_chunks']
+        major_chunks = int(self.config['retrieval']['major_catalogs_chunks'])
         minor_chunks = self.config['retrieval']['minor_catalogs_chunks']
-        course_chunks = self.config['retrieval']['course_listings_chunks']
         
         if 'major_catalogs' in collection_names:
             major_results = self.search_collection(
@@ -178,19 +251,6 @@ class UnifiedRAG:
             else:
                 fallback_results = self.search_collection(
                     query, 'major_catalogs', None, student_year, top_k=major_chunks//2
-                )
-                all_results.extend(fallback_results)
-        
-        if 'course_listings' in collection_names:
-            course_results = self.search_collection(
-                query, 'course_listings', None, student_year, 
-                top_k=course_chunks
-            )
-            if course_results:
-                all_results.extend(course_results)
-            else:
-                fallback_results = self.search_collection(
-                    query, 'course_listings', None, None, top_k=course_chunks//2
                 )
                 all_results.extend(fallback_results)
         
@@ -216,41 +276,53 @@ class UnifiedRAG:
     def answer_question(self, query: str, student_program: str = None, 
                        student_year: str = None, top_k: int = 10, 
                        enable_thinking: bool = True, show_thinking: bool = False,
-                       use_streaming: bool = True) -> tuple:
+                       use_streaming: bool = True, test_mode: bool = False) -> tuple:
         
-        collections_to_search = [
-            self.collections['general_knowledge'],
-            self.collections['major_catalogs'], 
-            self.collections['course_listings']
-        ]
-        
+        collections_to_search = []
+
+        if student_program and student_year:
+            collections_to_search.append(self.collections['major_catalogs'])
+        else:
+            collections_to_search = [
+                self.collections['general_knowledge'],
+                self.collections['major_catalogs']
+            ]
+
         minor_keywords = ['minor']
         if any(keyword in query.lower() for keyword in minor_keywords):
             collections_to_search.append(self.collections['minor_catalogs'])
-        
+
         collections_to_search = list(dict.fromkeys(collections_to_search))
-        
+
         retrieved_chunks = self.search_multiple_collections(
             query, collections_to_search, student_program, student_year, 
             top_k_per_collection=top_k
         )
-        
-        # Use config-based total for maximum chunks
+
         config_total = (
-            self.config['retrieval']['major_catalogs_chunks'] + 
-            self.config['retrieval']['course_listings_chunks'] + 
-            self.config['retrieval']['minor_catalogs_chunks']
+            int(self.config['retrieval']['major_catalogs_chunks']) + 
+            int(self.config['retrieval']['minor_catalogs_chunks'])
         )
-        max_chunks = max(config_total, top_k)  # Use whichever is higher
+        max_chunks = max(config_total, top_k)
         retrieved_chunks = retrieved_chunks[:max_chunks]
+        
+        if self._get_reranker() and not self.rerank_disabled and retrieved_chunks:
+            try:
+                rerank_top_k = self.config.get('reranker', {}).get('top_k_rerank', 12)
+                retrieved_chunks = self._get_reranker().rerank(query, retrieved_chunks, top_k=rerank_top_k)
+            except Exception as e:
+                print(f"Reranking failed: {e}")
         
         if not retrieved_chunks:
             return ("I don't have enough information to answer your question. "
                    "Please contact academic advising for assistance."), []
         
+        if test_mode:
+            return "Test mode: retrieval successful", retrieved_chunks
+        
         context_parts = []
         for chunk in retrieved_chunks:
-            text = chunk['text']
+            text = chunk.get('text', chunk.get('chunk_text', ''))
             metadata = chunk['metadata']
             
             source_info = ""

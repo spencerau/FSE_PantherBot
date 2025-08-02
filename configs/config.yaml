@@ -8,29 +8,35 @@ system:
 qdrant:
   host: "localhost"
   port: 6333
-  timeout: 60
+  timeout: 150
   collections:
     major_catalogs: "major_catalogs"
     minor_catalogs: "minor_catalogs"
-    course_listings: "course_listings"
+    #course_listings: "course_listings"
     general_knowledge: "general_knowledge"
+    4_year_plans: "4_year_plans"
 
 # Embedding Configuration
 embedding:
   model: "nomic-embed-text"
-  chunk_size: 2750
-  chunk_overlap: 250
+  #chunk_size: 2000
+  #chunk_overlap: 250
   batch_size: 32
   ollama_host: "localhost"
   ollama_port: 11434
+  add_prefixes: true
+  lowercase: false
+  normalize_unicode: true
+  collapse_whitespace: true
+  dehyphenate: true
 
 # LLM Configuration
 llm:
-  model: "deepseek-r1:8b"
+  model: "deepseek-r1:1.5b"
   temperature: 0.1
   top_p: 0.6
-  max_tokens: 3000
-  timeout: 60
+  max_tokens: 4000
+  timeout: 180
   system_prompt: >
     You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
     
@@ -56,17 +62,32 @@ llm:
 data:
   major_catalogs_path: "data/major_catalogs"
   minor_catalogs_path: "data/minor_catalogs"
-  course_catalogs_path: "data/course_listings"
+  #course_catalogs_path: "data/course_listings"  # No longer used
   general_knowledge_path: "data/general_knowledge"
+  4_year_plan_path: "data/4_year_plan"
 
 # Retrieval Configuration
 retrieval:
   top_k: 15
   rerank_top_k: 10
   enable_reranking: true
-  major_catalogs_chunks: 2
-  minor_catalogs_chunks: 1
-  course_listings_chunks: 5
+  major_catalogs_chunks: 10
+  minor_catalogs_chunks: 3
+  #course_listings_chunks: 12  # No longer used
+  k_dense: 40
+  k_sparse: 40
+  rrf_k: 60
+  fuse_weights:
+    dense: 0.6
+    sparse: 0.4
+
+# Chunker Configuration
+chunker:
+  strategy: "recursive"
+  target_tokens: 1000
+  min_tokens: 1
+  overlap_ratio: 0.15
+  respect_headings: true
 
 # Reranker Configuration
 reranker:
@@ -75,3 +96,11 @@ reranker:
   batch_size: 32
   pdf_weight: 1.0
   course_weight: 1.0
+  max_candidates_for_rerank: 200
+  top_k_rerank: 12
+  activation: "sigmoid"
+
+mcp:
+  host: "127.0.0.1"
+  port: 8765
+  transport: "stdio"

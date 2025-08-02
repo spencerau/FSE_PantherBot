@@ -23,8 +23,15 @@ This project is a locally hosted AI-powered academic advising platform designed 
 
 - Only need to rebuild containers if making changes to Dockerfiles or requirements.txt files
 
-<!-- ## Rowboat Stuff
-`docker compose -f rowboat/docker-compose.yml -f rowboat_overrides/docker-compose.local.yml down`
-`docker compose -f rowboat/docker-compose.yml -f rowboat_overrides/docker-compose.local.yml up -d`
+# MCP Server
+To run the MCP server:
+```bash
+scripts/run_mcp.sh
+```
+Configure host, port, and transport in `configs/default.yaml`.
 
-- Head to localhost:3000 to test out the rowboat interface -->
+## Streamlit MCP Mode
+In the Streamlit app, enable "Use MCP server" to route requests through MCP tools. The "Debug" expander shows retrieval lists, fused ranks, rerank scores, and citations.
+
+## Slack Bot Integration
+A Slack bot can call MCP tools via an MCP client. Use the stable tool/resource names and schemas as defined in the MCP server.

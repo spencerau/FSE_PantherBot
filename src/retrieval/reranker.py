@@ -1,18 +1,27 @@
-import requests
 import os
-from typing import List, Dict, Tuple
+import math
+from typing import List, Dict, Any
 from utils.config_loader import load_config
-from utils.ollama_api import get_ollama_api
 
 
 class BGEReranker:
-    
     def __init__(self):
         self.config = load_config()
-        self.model = self.config.get('reranker', {}).get('model', 'BAAI/bge-reranker-v2-m3')
-        self.top_k = self.config.get('reranker', {}).get('top_k', 5)
+        self.model_name = self.config.get('reranker', {}).get('model', 'BAAI/bge-reranker-v2-m3')
+        self.top_k = self.config.get('reranker', {}).get('top_k_rerank', 12)
         self.batch_size = self.config.get('reranker', {}).get('batch_size', 32)
-        self.ollama_api = get_ollama_api()
+        self.max_candidates = self.config.get('reranker', {}).get('max_candidates_for_rerank', 200)
+        self.activation = self.config.get('reranker', {}).get('activation', 'sigmoid')
+        self.model = None
+        self._initialize_model()
+    
+    def _initialize_model(self):
+        try:
+            from sentence_transformers import CrossEncoder
+            self.model = CrossEncoder(self.model_name, trust_remote_code=True)
+        except ImportError:
+            print("sentence-transformers not available, using fallback reranker")
+            self.model = None
     
     def rerank(self, query: str, documents: List[Dict], top_k: int = None) -> List[Dict]:
         if not documents:
@@ -21,35 +30,42 @@ class BGEReranker:
         if top_k is None:
             top_k = self.top_k
         
-        pairs = []
-        for doc in documents:
-            pairs.append([query, doc.get('text', '')])
+        candidates = documents[:self.max_candidates]
         
-        try:
-            scores = self._call_reranker_api(pairs)
-            
-            reranked_docs = []
-            for i, doc in enumerate(documents):
-                new_doc = doc.copy()
-                if i < len(scores):
-                    new_doc['rerank_score'] = scores[i]
-                else:
-                    new_doc['rerank_score'] = 0.0
-                reranked_docs.append(new_doc)
-            
-            reranked_docs.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
-            return reranked_docs[:top_k]
-            
-        except Exception as e:
-            print(f"Reranking failed, returning original order: {e}")
-            return sorted(documents, key=lambda x: x.get('score', 0), reverse=True)[:top_k]
+        if self.model is not None:
+            scores = self._rerank_with_model(query, candidates)
+        else:
+            scores = self._fallback_rerank(query, candidates)
+        
+        reranked_docs = []
+        for i, doc in enumerate(candidates):
+            new_doc = doc.copy()
+            new_doc['rerank_score'] = scores[i] if i < len(scores) else 0.0
+            reranked_docs.append(new_doc)
+        
+        reranked_docs.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
+        return reranked_docs[:top_k]
     
-    def _call_reranker_api(self, pairs: List[List[str]]) -> List[float]:
-        scores = []
-        for query, text in pairs:
-            score = self._calculate_simple_relevance(query, text)
-            scores.append(score)
+    def _rerank_with_model(self, query: str, documents: List[Dict]) -> List[float]:
+        pairs = [[query, doc.get('text', '')] for doc in documents]
         
+        all_scores = []
+        for i in range(0, len(pairs), self.batch_size):
+            batch_pairs = pairs[i:i + self.batch_size]
+            batch_scores = self.model.predict(batch_pairs)
+            
+            if self.activation == 'sigmoid':
+                batch_scores = [1 / (1 + math.exp(-score)) for score in batch_scores]
+            
+            all_scores.extend(batch_scores)
+        
+        return all_scores
+    
+    def _fallback_rerank(self, query: str, documents: List[Dict]) -> List[float]:
+        scores = []
+        for doc in documents:
+            score = self._calculate_simple_relevance(query, doc.get('text', ''))
+            scores.append(score)
         return scores
     
     def _calculate_simple_relevance(self, query: str, text: str) -> float:
@@ -98,65 +114,8 @@ class BGEReranker:
             
             if 'major' in collection or 'minor' in collection:
                 doc['rerank_score'] *= pdf_weight
-            elif 'course' in collection or 'listing' in collection:
+            elif 'course' in collection:
                 doc['rerank_score'] *= course_weight
         
         reranked.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
         return reranked
-
-
-class SimpleReranker:
-    
-    def __init__(self):
-        self.config = load_config()
-        self.top_k = self.config.get('reranker', {}).get('top_k', 5)
-    
-    def rerank(self, query: str, documents: List[Dict], top_k: int = None) -> List[Dict]:
-        if not documents:
-            return []
-        
-        if top_k is None:
-            top_k = self.top_k
-        
-        query_terms = query.lower().split()
-        
-        scored_docs = []
-        for doc in documents:
-            text = doc.get('text', '').lower()
-            metadata = doc.get('metadata', {})
-            
-            base_score = doc.get('score', 0.0)
-            
-            tf_score = sum(text.count(term) for term in query_terms)
-            tf_score = min(tf_score / 10.0, 1.0)
-            
-            type_boost = 0.0
-            if any(keyword in query.lower() for keyword in ['requirement', 'degree', 'major']):
-                if metadata.get('ProgramType') == 'major':
-                    type_boost = 0.2
-            elif any(keyword in query.lower() for keyword in ['course', 'schedule', 'offered']):
-                if 'course' in doc.get('collection', '').lower():
-                    type_boost = 0.2
-            
-            final_score = base_score + tf_score + type_boost
-            
-            doc_copy = doc.copy()
-            doc_copy['rerank_score'] = final_score
-            scored_docs.append(doc_copy)
-        
-        scored_docs.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
-        return scored_docs[:top_k]
-
-
-def get_reranker():
-    config = load_config()
-    reranker_model = config.get('reranker', {}).get('model', 'simple')
-    
-    if 'bge' in reranker_model.lower():
-        return BGEReranker()
-    else:
-        return SimpleReranker()
-
-
-class Reranker(SimpleReranker):
-    pass
