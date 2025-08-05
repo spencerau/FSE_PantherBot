@@ -43,7 +43,11 @@ def test_rag_pipeline_real():
         print('='*60)
         
         try:
-            answer, context_chunks = rag_system.answer_question(query)
+            answer, context_chunks = rag_system.answer_question(
+                query, 
+                enable_reranking=False,  # Use faster mode for tests
+                use_streaming=False      # Return string instead of generator
+            )
             
             print(f"\nANSWER:")
             print(f"{answer}")
@@ -84,7 +88,11 @@ def test_unified_rag_basic():
     rag_system = UnifiedRAG()
     
     query = "What is Computer Science?"
-    answer, context_chunks = rag_system.answer_question(query)
+    answer, context_chunks = rag_system.answer_question(
+        query, 
+        enable_reranking=False,  # Use faster mode for tests
+        use_streaming=False      # Return string instead of generator
+    )
     result = {"answer": answer, "context": context_chunks}
     
     assert isinstance(result, dict), "Result should be a dictionary"
@@ -108,7 +116,11 @@ def test_unified_rag_collections():
     ]
     
     for query, expected_collections in test_cases:
-        answer, context_chunks = rag_system.answer_question(query)
+        answer, context_chunks = rag_system.answer_question(
+            query, 
+            enable_reranking=False,  # Use faster mode for tests
+            use_streaming=False      # Return string instead of generator
+        )
         result = {"answer": answer, "context": context_chunks}
         
         assert len(result['context']) > 0, f"No context retrieved for query: {query}"
@@ -124,3 +136,45 @@ def test_unified_rag_collections():
         
         assert any(expected in found_collections for expected in expected_collections), \
             f"None of expected collections {expected_collections} found in {found_collections}"
+
+
+def test_4_year_plans_rag():
+    rag_system = UnifiedRAG()
+    
+    test_cases = [
+        ("What courses should I take in my first year as a Computer Science major?", "cs"),
+        ("Show me the 4-year plan for Computer Engineering", "ce"),
+        ("What is the recommended course sequence for Software Engineering?", "se")
+    ]
+    
+    for query, program in test_cases:
+        print(f"\n{'='*50}")
+        print(f"Testing 4-year plans: {query}")
+        print(f"Program: {program}")
+        print('='*50)
+        
+        answer, context_chunks = rag_system.answer_question(
+            query,
+            student_program=program,
+            enable_reranking=False,  # Use faster mode for tests
+            use_streaming=False      # Return string instead of generator
+        )
+        
+        assert isinstance(answer, str), "Answer should be a string"
+        assert len(answer) > 0, "Answer should not be empty"
+        assert len(context_chunks) > 0, "Should have retrieved context chunks"
+        
+        # Check if 4_year_plans collection is included
+        collections_found = set()
+        for chunk in context_chunks:
+            collection = chunk.get('collection', 'unknown')
+            collections_found.add(collection)
+        
+        print(f"Collections found: {list(collections_found)}")
+        print(f"Answer length: {len(answer)} characters")
+        print(f"Context chunks: {len(context_chunks)}")
+        
+        # Should find some relevant collections (4_year_plans or major_catalogs)
+        relevant_collections = {"4_year_plans", "major_catalogs"}
+        has_relevant = any(col in collections_found for col in relevant_collections)
+        assert has_relevant, f"No relevant collections found. Expected one of {relevant_collections}, got {collections_found}"

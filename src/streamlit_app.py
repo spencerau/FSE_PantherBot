@@ -21,6 +21,10 @@ def main():
         with st.spinner("Initializing AI advisor..."):
             st.session_state.rag_system = UnifiedRAG()
     
+    if not hasattr(st.session_state.rag_system.answer_question, '__code__') or 'enable_reranking' not in st.session_state.rag_system.answer_question.__code__.co_varnames:
+        with st.spinner("Updating AI advisor..."):
+            st.session_state.rag_system = UnifiedRAG()
+    
     rag = st.session_state.rag_system
     
     with st.sidebar:
@@ -40,11 +44,11 @@ def main():
             key="student_program"
         )
         
-        years = ["2022", "2023", "2024"]
+        years = ["2022", "2023", "2024", "2025"]
         student_year = st.selectbox(
             "Catalog year (year you entered):",
             years,
-            index=2,  # Default to 2024
+            index=0,  # Default to 2022
             key="student_year"
         )
         
@@ -56,6 +60,11 @@ def main():
                 gen_stats = rag.get_collection_stats('general_knowledge')
                 if 'error' not in gen_stats:
                     st.info(f"General knowledge: {gen_stats['points_count']} documents")
+            
+            if st.button("🔄 Clear Cache & Reload", help="Force reload the AI system"):
+                if 'rag_system' in st.session_state:
+                    del st.session_state.rag_system
+                st.rerun()
         
         st.header("AI Settings")
         
@@ -81,6 +90,13 @@ def main():
             value=True,
             help="Show responses as they're generated for a more interactive experience.",
             key="use_streaming"
+        )
+        
+        enable_reranking = st.checkbox(
+            "Enable Reranking",
+            value=False,
+            help="Use AI reranking for better results (slower, ~30s first use).",
+            key="enable_reranking"
         )
         
         debug_mode = st.checkbox(
@@ -128,7 +144,8 @@ def main():
                         top_k=15,
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
-                        use_streaming=st.session_state.get('use_streaming', True)
+                        use_streaming=st.session_state.get('use_streaming', True),
+                        enable_reranking=st.session_state.get('enable_reranking', False)
                     )
                     
                     if st.session_state.get('use_streaming', True) and hasattr(answer, '__iter__') and not isinstance(answer, str):
@@ -169,11 +186,11 @@ def main():
                                     if meta_info:
                                         st.write(f"Metadata: {', '.join(meta_info)}")
                                 
-                                text_preview = chunk['text'][:200] + "..." if len(chunk['text']) > 200 else chunk['text']
+                                text_preview = chunk['text']
                                 st.text_area(
                                     f"Content preview:",
                                     text_preview,
-                                    height=100,
+                                    height=200,
                                     key=f"source_{i}",
                                     disabled=True
                                 )
@@ -245,10 +262,8 @@ def main():
         "What courses are offered for my program?",
         "What math courses do I need for graduation?",
         "What are the GPA requirements for my program?",
-        "Can you explain the capstone project requirements?",
         "What electives can I take for my major?",
-        "How do I apply for graduation?",
-        "What are the admission requirements for graduate programs?"
+        "What are some good classes to take for my junior year?",
     ]
     
     for question in example_questions:

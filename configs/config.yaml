@@ -12,9 +12,16 @@ qdrant:
   collections:
     major_catalogs: "major_catalogs"
     minor_catalogs: "minor_catalogs"
-    #course_listings: "course_listings"
     general_knowledge: "general_knowledge"
     4_year_plans: "4_year_plans"
+
+data:
+  major_catalogs_path: "data/major_catalogs"
+  minor_catalogs_path: "data/minor_catalogs"
+  major_catalog_json_path: "data/major_catalog_json"
+  minor_catalog_json_path: "data/minor_catalog_json"
+  general_knowledge_path: "data/general_knowledge"
+  4_year_plans: "data/4_year_plans"
 
 # Embedding Configuration
 embedding:
@@ -30,9 +37,17 @@ embedding:
   collapse_whitespace: true
   dehyphenate: true
 
+# Chunker Configuration
+chunker:
+  strategy: "recursive"
+  target_tokens: 1250
+  min_tokens: 500
+  overlap_ratio: 0.1
+  respect_headings: true
+
 # LLM Configuration
 llm:
-  model: "deepseek-r1:1.5b"
+  model: "deepseek-r1:8b"
   temperature: 0.1
   top_p: 0.6
   max_tokens: 4000
@@ -59,35 +74,21 @@ llm:
     
     Format your responses clearly and be thorough when you have good context to work with.
 
-data:
-  major_catalogs_path: "data/major_catalogs"
-  minor_catalogs_path: "data/minor_catalogs"
-  #course_catalogs_path: "data/course_listings"  # No longer used
-  general_knowledge_path: "data/general_knowledge"
-  4_year_plan_path: "data/4_year_plan"
-
 # Retrieval Configuration
 retrieval:
-  top_k: 15
-  rerank_top_k: 10
+  top_k: 10
+  rerank_top_k: 8
   enable_reranking: true
-  major_catalogs_chunks: 10
-  minor_catalogs_chunks: 3
-  #course_listings_chunks: 12  # No longer used
+  major_catalogs_chunks: 8
+  minor_catalogs_chunks: 0
+  4_year_plans_chunks: 0
+  
   k_dense: 40
   k_sparse: 40
   rrf_k: 60
   fuse_weights:
     dense: 0.6
     sparse: 0.4
-
-# Chunker Configuration
-chunker:
-  strategy: "recursive"
-  target_tokens: 1000
-  min_tokens: 1
-  overlap_ratio: 0.15
-  respect_headings: true
 
 # Reranker Configuration
 reranker:

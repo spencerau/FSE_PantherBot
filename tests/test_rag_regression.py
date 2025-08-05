@@ -40,7 +40,8 @@ def test_rag_regression(rag_system, query_data):
         query,
         student_program=major,
         student_year=year,
-        use_streaming=False
+        use_streaming=False,
+        enable_reranking=False  # Use faster mode for tests
     )
     
     if isinstance(answer, str):
@@ -80,7 +81,8 @@ def test_2022_catalog_queries(rag_system, test_queries):
             query_data['question'],
             student_program=query_data.get('major'),
             student_year='2022',
-            use_streaming=False
+            use_streaming=False,
+            enable_reranking=False  # Use faster mode for tests
         )
         
         print(f"Chunks retrieved: {len(chunks)}")
@@ -98,7 +100,8 @@ def test_2023_catalog_queries(rag_system, test_queries):
             query_data['question'],
             student_program=query_data.get('major'),
             student_year='2023',
-            use_streaming=False
+            use_streaming=False,
+            enable_reranking=False  # Use faster mode for tests
         )
         
         print(f"Chunks retrieved: {len(chunks)}")
@@ -116,7 +119,8 @@ def test_2024_catalog_queries(rag_system, test_queries):
             query_data['question'],
             student_program=query_data.get('major'),
             student_year='2024',
-            use_streaming=False
+            use_streaming=False,
+            enable_reranking=False  # Use faster mode for tests
         )
         
         print(f"Chunks retrieved: {len(chunks)}")
@@ -140,7 +144,8 @@ def test_write_evaluation_report(rag_system, test_queries):
                 student_program=query_data.get('major'),
                 student_year=query_data['year'],
                 use_streaming=False,
-                test_mode=True
+                test_mode=True,
+                enable_reranking=False  # Use faster mode for tests
             )
             query_time = time.time() - start_time
             
@@ -285,7 +290,8 @@ def test_full_llm_evaluation(rag_system, test_queries):
                 student_program=query_data.get('major'),
                 student_year=query_data['year'],
                 use_streaming=False,
-                test_mode=False
+                test_mode=False,
+                enable_reranking=False  # Use faster mode for tests
             )
             query_time = time.time() - start_time
             

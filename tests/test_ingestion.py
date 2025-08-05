@@ -266,3 +266,50 @@ def test_ingest_directory():
         print(f"Collection points before: {before_count}, after: {after_count}")
     except Exception as e:
         pytest.fail(f"Failed to verify collection after ingestion: {e}")
+
+
+def test_4_year_plan_metadata_extraction():
+    """Test that 4-year plan filenames are correctly parsed for metadata"""
+    ingestion = UnifiedIngestion()
+    
+    test_cases = [
+        ("ce_2023_example_4yearplan.pdf", {"subject": "Computer Engineering", "year": "2023"}),
+        ("cs_2023_example_4yearplan.pdf", {"subject": "Computer Science", "year": "2023"}),
+        ("se_2023_example_4yearplan.pdf", {"subject": "Software Engineering", "year": "2023"}),
+        ("ds_2023_example_4yearplan.pdf", {"subject": "Data Science", "year": "2023"}),
+        ("ee_2023_example_4yearplan.pdf", {"subject": "Electrical Engineering", "year": "2023"}),
+    ]
+    
+    for filename, expected in test_cases:
+        metadata = ingestion._extract_metadata_from_path(filename)
+        
+        print(f"Testing filename: {filename}")
+        print(f"Expected: {expected}")
+        print(f"Actual: {metadata}")
+        
+        assert metadata.get('subject') == expected['subject'], \
+            f"Subject mismatch for {filename}: expected {expected['subject']}, got {metadata.get('subject')}"
+        assert metadata.get('year') == expected['year'], \
+            f"Year mismatch for {filename}: expected {expected['year']}, got {metadata.get('year')}"
+
+
+def test_4_year_plan_collection_mapping():
+    """Test that 4-year plan files get mapped to the correct collection"""
+    ingestion = UnifiedIngestion()
+    
+    test_cases = [
+        "ce_2023_example_4yearplan.pdf",
+        "cs_2023_example_4yearplan.pdf", 
+        "data/4_year_plans/se_2023_example_4yearplan.pdf"
+    ]
+    
+    for filepath in test_cases:
+        metadata = ingestion._extract_metadata_from_path(filepath)
+        
+        print(f"Testing filepath: {filepath}")
+        print(f"Extracted metadata: {metadata}")
+        
+        # Check that the metadata contains the 4_year_plans collection type
+        collection_type = metadata.get('collection_type', '')
+        assert collection_type == "4_year_plans", \
+            f"4-year plan file {filepath} should map to '4_year_plans' collection, got '{collection_type}'"

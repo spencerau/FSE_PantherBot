@@ -159,7 +159,7 @@ class UnifiedRAG:
         if document_type:
             conditions.append(
                 FieldCondition(
-                    key="document_type",
+                    key="doc_type",
                     match=MatchValue(value=document_type)
                 )
             )
@@ -233,6 +233,30 @@ class UnifiedRAG:
         
         return dense_results[:top_k]
     
+    def _find_best_4_year_plan_year(self, student_year: str, student_program: str) -> str:
+        """
+        Find the best available 4-year plan year for a student.
+        Since 2022 doesn't have 4-year plans, students should use the next available year.
+        """
+        if not student_year or not student_program:
+            return None
+            
+        available_years = ['2025', '2024', '2023']
+        
+        if student_year in available_years:
+            return student_year
+            
+        student_year_int = int(student_year) if student_year.isdigit() else 0
+        
+        best_year = None
+        for year in sorted(available_years):
+            year_int = int(year)
+            if year_int >= student_year_int:
+                best_year = year
+                break
+        
+        return best_year or available_years[0]
+    
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
                                   top_k_per_collection: int = 8) -> List[Dict]:
@@ -246,19 +270,21 @@ class UnifiedRAG:
                 query, 'major_catalogs', student_program, student_year, 
                 top_k=major_chunks
             )
-            if major_results:
-                all_results.extend(major_results)
-            else:
-                fallback_results = self.search_collection(
-                    query, 'major_catalogs', None, student_year, top_k=major_chunks//2
-                )
-                all_results.extend(fallback_results)
+            all_results.extend(major_results)
         
         if 'minor_catalogs' in collection_names:
             minor_results = self.search_collection(
                 query, 'minor_catalogs', student_program, student_year, top_k=minor_chunks
             )
             all_results.extend(minor_results)
+        
+        if '4_year_plans' in collection_names and student_program:
+            best_year = self._find_best_4_year_plan_year(student_year, student_program)
+            
+            plan_results = self.search_collection(
+                query, '4_year_plans', student_program, best_year, top_k=2 
+            )
+            all_results.extend(plan_results)
         
         if 'general_knowledge' in collection_names:
             used_chunks = len(all_results)
@@ -276,7 +302,8 @@ class UnifiedRAG:
     def answer_question(self, query: str, student_program: str = None, 
                        student_year: str = None, top_k: int = 10, 
                        enable_thinking: bool = True, show_thinking: bool = False,
-                       use_streaming: bool = True, test_mode: bool = False) -> tuple:
+                       use_streaming: bool = True, test_mode: bool = False,
+                       enable_reranking: bool = None) -> tuple:
         
         collections_to_search = []
 
@@ -287,6 +314,9 @@ class UnifiedRAG:
                 self.collections['general_knowledge'],
                 self.collections['major_catalogs']
             ]
+
+        if student_program and self.config.get('retrieval', {}).get('4_year_plans_chunks', 0) > 0:
+            collections_to_search.append(self.collections['4_year_plans'])
 
         minor_keywords = ['minor']
         if any(keyword in query.lower() for keyword in minor_keywords):
@@ -306,12 +336,16 @@ class UnifiedRAG:
         max_chunks = max(config_total, top_k)
         retrieved_chunks = retrieved_chunks[:max_chunks]
         
-        if self._get_reranker() and not self.rerank_disabled and retrieved_chunks:
-            try:
-                rerank_top_k = self.config.get('reranker', {}).get('top_k_rerank', 12)
-                retrieved_chunks = self._get_reranker().rerank(query, retrieved_chunks, top_k=rerank_top_k)
-            except Exception as e:
-                print(f"Reranking failed: {e}")
+        should_rerank = enable_reranking if enable_reranking is not None else not self.rerank_disabled
+        
+        if should_rerank and not self.rerank_disabled and retrieved_chunks:
+            reranker = self._get_reranker()
+            if reranker:
+                try:
+                    rerank_top_k = self.config.get('reranker', {}).get('top_k_rerank', 12)
+                    retrieved_chunks = reranker.rerank(query, retrieved_chunks, top_k=rerank_top_k)
+                except Exception as e:
+                    print(f"Reranking failed: {e}")
         
         if not retrieved_chunks:
             return ("I don't have enough information to answer your question. "
@@ -333,14 +367,11 @@ class UnifiedRAG:
         
         context = "\n\n".join(context_parts)
         
-        prompt = f"""Based on the following context from Chapman University's academic catalogs, please answer the student's question.
+        prompt = f"""Context from Chapman University's academic catalogs:
 
-Context:
-{context}
+        {context}
 
-Student Question: {query}
-
-Please provide a helpful, accurate answer based only on the information provided in the context. If the context doesn't contain enough information, say so and recommend the student contact academic advising."""
+        Student Question: {query}"""
         
         answer = self._get_llm_response(prompt, enable_thinking=enable_thinking, 
                                        show_thinking=show_thinking, use_streaming=use_streaming)

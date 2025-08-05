@@ -69,29 +69,34 @@ def process_file(file_path, backup=True, safe_mode=False):
                 print(f"Created backup: {backup_path}")
                 
         temp_output = file_path + ".tmp"
-        
         try:
-            remove_hyperlinks_from_pdf(file_path, temp_output, safe_mode=False)
+            remove_hyperlinks_from_pdf(file_path, temp_output, safe_mode=safe_mode)
             os.replace(temp_output, file_path)
             print(f"Successfully processed: {file_path}")
             return True
         except Exception as e:
-            print(f"Standard mode failed for {file_path}: {e}")
-            if not safe_mode:
-                return False
-                
-            print(f"Trying safe mode for {file_path}")
-            try:
-                remove_hyperlinks_from_pdf(file_path, temp_output, safe_mode=True)
-                os.replace(temp_output, file_path)
-                print(f"Safe mode successfully processed: {file_path}")
-                return True
-            except Exception as e:
-                print(f"Safe mode also failed for {file_path}: {e}")
-                return False
+            print(f"Processing failed for {file_path}: {e}")
+            return False
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
         return False
+
+
+def process_directory_recursive(directory_path, make_backup=True, safe_mode=False):
+    """Process all PDF files in a directory and its subdirectories."""
+    success = 0
+    failed = 0
+    
+    for root, dirs, files in os.walk(directory_path):
+        for filename in files:
+            if filename.lower().endswith('.pdf'):
+                file_path = os.path.join(root, filename)
+                if process_file(file_path, backup=make_backup, safe_mode=safe_mode):
+                    success += 1
+                else:
+                    failed += 1
+    
+    return success, failed
 
 
 if __name__ == "__main__":
@@ -107,15 +112,7 @@ if __name__ == "__main__":
     safe_mode = args.safe
     
     if os.path.isdir(target_path):
-        success = 0
-        failed = 0
-        for filename in os.listdir(target_path):
-            if filename.lower().endswith('.pdf'):
-                file_path = os.path.join(target_path, filename)
-                if process_file(file_path, backup=make_backup, safe_mode=safe_mode):
-                    success += 1
-                else:
-                    failed += 1
+        success, failed = process_directory_recursive(target_path, make_backup, safe_mode)
         print(f"Directory processing completed: {success} successful, {failed} failed")
         
     elif os.path.isfile(target_path) and target_path.lower().endswith('.pdf'):

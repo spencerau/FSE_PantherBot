@@ -169,7 +169,9 @@ def test_student_profile_retrieval():
         answer, context_chunks = rag_system.answer_question(
             profile['query'],
             student_program=profile['program_code'],
-            student_year=profile['year']
+            student_year=profile['year'],
+            enable_reranking=False,  # Use faster mode for tests
+            use_streaming=False      # Return string instead of generator
         )
         
         assert isinstance(answer, str), "Answer should be a string"
@@ -216,3 +218,86 @@ def test_metadata_accuracy():
     print(f"2024 year matches: {year_matches}/{len(results)}")
     
     assert cs_matches > 0, "Should find Computer Science documents"
+
+
+def test_4_year_plans_retrieval():
+    rag_system = UnifiedRAG()
+    
+    test_cases = [
+        ("cs", "Computer Science 4-year plan"),
+        ("ce", "Computer Engineering graduation path"),
+        ("se", "Software Engineering degree plan"),
+        ("ds", "Data Science curriculum plan"),
+        ("ee", "Electrical Engineering 4-year plan")
+    ]
+    
+    for program_code, query in test_cases:
+        results = rag_system.search_collection(
+            query=query,
+            collection_name="4_year_plans",
+            top_k=3,
+            student_program=program_code
+        )
+        
+        print(f"Program {program_code}: {len(results)} results")
+        
+        if len(results) > 0:
+            for result in results[:2]:
+                metadata = result.get('metadata', {})
+                subject = metadata.get('subject', 'Unknown')
+                year = metadata.get('year', 'Unknown')
+                print(f"  Document: {subject} ({year})")
+                
+                # Check that subject matches program
+                if program_code == "cs":
+                    assert "Computer Science" in subject or "CS" in subject
+                elif program_code == "ce":
+                    assert "Computer Engineering" in subject or "CE" in subject
+                elif program_code == "se":
+                    assert "Software Engineering" in subject or "SE" in subject
+                elif program_code == "ds":
+                    assert "Data Science" in subject or "DS" in subject
+                elif program_code == "ee":
+                    assert "Electrical Engineering" in subject or "EE" in subject
+
+
+def test_4_year_plans_with_unified_search():
+    rag_system = UnifiedRAG()
+    
+    test_cases = [
+        {
+            "program": "cs",
+            "query": "What courses should I take in my first year for Computer Science?",
+            "expected_collections": ["4_year_plans", "major_catalogs"]
+        },
+        {
+            "program": "ce",
+            "query": "Show me the 4-year plan for Computer Engineering",
+            "expected_collections": ["4_year_plans"]
+        }
+    ]
+    
+    for case in test_cases:
+        answer, context_chunks = rag_system.answer_question(
+            case["query"],
+            student_program=case["program"],
+            enable_reranking=False,  # Use faster mode for tests
+            use_streaming=False      # Return string instead of generator
+        )
+        
+        assert isinstance(answer, str), "Answer should be a string"
+        assert len(answer) > 0, "Answer should not be empty"
+        assert len(context_chunks) > 0, "Should have retrieved context chunks"
+        
+        collections_found = set()
+        for chunk in context_chunks:
+            collection = chunk.get('collection', 'unknown')
+            collections_found.add(collection)
+        
+        print(f"Query: {case['query']}")
+        print(f"Program: {case['program']}")
+        print(f"Collections found: {list(collections_found)}")
+        print(f"Expected collections: {case['expected_collections']}")
+        
+        has_expected = any(exp in collections_found for exp in case['expected_collections'])
+        assert has_expected, f"None of expected collections {case['expected_collections']} found in {collections_found}"

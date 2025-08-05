@@ -1,0 +1,439 @@
+{
+  "program": "Computer Science, B.S.",
+  "institution": "Chapman University",
+  "academic_year": "2022-2023",
+  "requirements": {
+    "GPA": {
+      "lower_division": 2.5,
+      "major": 2.0
+    },
+    "grade_requirement": "C- or higher",
+    "upper_division_units": 21
+  },
+  "sections": [
+    {
+      "name": "Grand Challenges Initiative",
+      "credits": 3,
+      "courses": [
+        {
+          "course_number": "SCI 150",
+          "name": "Grand Challenges in Science and Engineering I",
+          "prerequisite": null,
+          "description": "This research seminar is a continuation of the Grand Challenges FFC. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 200 or SCI 250. Letter grade. (Offered every semester.) 1 credit"
+        },
+        {
+          "course_number": "SCI 200",
+          "name": "Grand Challenges in Science and Engineering II",
+          "prerequisite": "SCI 150",
+          "description": "Prerequisite, SCI 150. This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 150 or SCI 250. Letter grade. (Offered every semester.) 1 credit"
+        },
+        {
+          "course_number": "SCI 250",
+          "name": "Grand Challenges in Science and Engineering III",
+          "prerequisite": "SCI 200",
+          "description": "Prerequisite, SCI 200. This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 150 or SCI 200. Letter grade. (Offered every semester.) 1 credit"
+        }
+      ]
+    },
+    {
+      "name": "Lower-Division Core Requirements",
+      "credits": "23–24",
+      "courses": [
+        {
+          "course_number": "ENGR 101",
+          "name": "Foundations of Design and Fabrication",
+          "prerequisite": null,
+          "description": "Students gain first-hand experience with design and fabrication as a foundation of engineering. Using technologies such as additive manufacturing (eg. 3D printing), embedded systems and software, and electronics, students will work together to develop innovative solutions to interesting problems. This course is offered in a hybrid format only. Pass/No Pass. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "MATH 215",
+          "name": "Introduction to Linear Algebra and Differential Equations",
+          "prerequisite": "MATH 111 or MATH 116",
+          "description": "Prerequisite, MATH 111 or MATH 116. Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. (Offered fall semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 230",
+          "name": "Computer Science I",
+          "prerequisite": null,
+          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 231",
+          "name": "Computer Science II",
+          "prerequisite": "CPSC 230 or equivalent",
+          "description": "Prerequisite, CPSC 230, or equivalent. This course is a comprehensive study of object-oriented computing with a mainstream programming language, Java. The course introduces the principal features of the language with a focus on object-oriented development, code reuse, and large program structure. The course also covers advance topics such as concurrency and graphical user interfaces. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "MATH 250",
+          "name": "Discrete Mathematics I",
+          "prerequisite": "MATH 101 or equivalent",
+          "description": "Prerequisite, MATH 101 or equivalent. This course provides the student with an introduction to the fundamental mathematics of discrete phenomena and computation. This is a key course in the CPSC curriculum as it provides the theoretical background needed for many upper-division courses including Data Structures (combinatorics, formal languages), Logic Design (Boolean algebras, number representation) and Integrated Circuit Design (automata theory, finite state minimization, graph layout). Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        }
+      ],
+      "math_sequences": [
+        {
+          "sequence": 1,
+          "courses": [
+            {
+              "course_number": "MATH 110",
+              "name": "Single Variable Calculus I",
+              "prerequisite": "MATH 101 or equivalent",
+              "description": "Prerequisite, MATH 101 or equivalent. Students study single variable functions, limits and continuity, differentiation, applications of derivatives (approximations, curve plotting, optimization), antiderivatives, the definite integral, and applications of integration. Students who take MATH 109 or MATH 110 may not also receive credit for MATH 115. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "MATH 111",
+              "name": "Single Variable Calculus II",
+              "prerequisite": "MATH 110 or MATH 115",
+              "description": "Prerequisite, MATH 110 or MATH 115. Further techniques and applications of integration, transcendental functions, exponential models, logistic equations, infinite and power series, Taylor’s theorem, parametric equations, and polar coordinates. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "MATH 210",
+              "name": "Multivariable Calculus",
+              "prerequisite": "MATH 111",
+              "description": "Prerequisite, MATH 111. Students learn the calculus of functions of two or more variables, vector-valued functions, multiple integrals, and integration in vector fields. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade with Pass/No Pass option. (Offered fall semester.) 3 credits"
+            }
+          ]
+        },
+        {
+          "sequence": 2,
+          "courses": [
+            {
+              "course_number": "MATH 115",
+              "name": "Accelerated Calculus Part I: Differentiation and Integration",
+              "prerequisite": "MATH 101 or equivalent",
+              "description": "Prerequisite, MATH 101 or equivalent. This course is an intensive introduction to the calculus of elementary functions and its applications to science. Students study fundamental concepts of limits, continuity, and derivatives, and explore the derivatives and integrals of polynomials, rational functions, exponentials, logarithms, and trigonometric functions, followed by the chain rule, implicit differentiation, logarithmic differentiation, applications of differentiation, optimization, definite integrals, Riemann sums and the fundamental theorem of Calculus, applications of integration, integration techniques and methods, sequences and series, introduction to differential equations, power series. Students who take MATH 109 or MATH 110 may not also receive credit for MATH 115. Letter grade. (Offered fall semester.) 4 credits"
+            },
+            {
+              "course_number": "MATH 116",
+              "name": "Accelerated Calculus Part II: Series, Differential Equations and Multivariable Calculus",
+              "prerequisite": "MATH 115",
+              "description": "Prerequisite, MATH 115. This course is the second part of an intensive introduction to the calculus of elementary functions and its applications to science. Students will explore Taylor Series, model exponential growth, sinusoidal oscillation, and logistic convergence through simple differential equations, continue with calculus of functions of two or more variables and of vector-valued functions. Optimization of functions of several variables, Lagrange multipliers, multiple integrals and integration of vector fields, divergence and curl, line and surface integration, Green, Stokes, and Divergence Theorems. This is the second part of a two-semester accelerated Calculus course. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade. (Offered spring semester.) 4 credits"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "General Science Requirement",
+      "credits": 8,
+      "approved_sequences": [
+        {
+          "sequence": 1,
+          "courses": [
+            {
+              "course_number": "BIOL 204",
+              "name": "From Molecules to Cells: Evolution of Life on Earth",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 204L. Principles of biology as a chronology of life on earth. Course focuses on the important evolutionary breakthroughs during the history of life that survive to the present day as biological principles: replication by nucleic acids, biochemical systems, gene expression and control, mitosis, meiosis, Mendelian genetics, and protist diversity. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "BIOL 204L",
+              "name": "From Molecules to Cells: Evolution of Life on Earth, Lab",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 204. Laboratory component taken with lecture section of From Molecules to Cells: Evolution of Life on Earth (Gen Biol I). Letter grade with Pass/No Pass option. (Offered every semester.) 1 credit"
+            },
+            {
+              "course_number": "BIOL 205",
+              "name": "Evolution and Diversity of Multicellular Organisms",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 205L. Evolution of fungi, plants, and animals (invertebrates and vertebrates); including development, anatomy, physiology, and ecology. Letter grade with Pass/No Pass option. (Offered spring semester.) 3 credits"
+            },
+            {
+              "course_number": "BIOL 205L",
+              "name": "Evolution and Diversity of Multicellular Organisms, Lab",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 205. Laboratory component taken with Evolution and Diversity of Multicellular Organisms (Gen Biol II) lecture section. Letter grade with Pass/No Pass option. (Offered spring semester.) 1 credit"
+            }
+          ]
+        },
+        {
+          "sequence": 2,
+          "courses": [
+            {
+              "course_number": "BIOL 204",
+              "name": "From Molecules to Cells: Evolution of Life on Earth",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 204L. Principles of biology as a chronology of life on earth. (Same as sequence 1.) 3 credits"
+            },
+            {
+              "course_number": "BIOL 204L",
+              "name": "From Molecules to Cells: Evolution of Life on Earth, Lab",
+              "prerequisite": null,
+              "description": "Corequisite, BIOL 204. Laboratory component taken with lecture section. (Same as sequence 1.) 1 credit"
+            },
+            {
+              "course_number": "BIOL 208",
+              "name": "Introduction to Molecular Genetics, Lecture and Laboratory",
+              "prerequisite": "BIOL 204 or AP/IB Biology score of 4 or 5",
+              "description": "Principles of molecular genetics with emphasis on molecular biology of DNA, RNA, and gene expression. This course includes a lecture and required laboratory component held at different times. Letter grade. (Offered every semester.) 4 credits"
+            }
+          ]
+        },
+        {
+          "sequence": 3,
+          "courses": [
+            {
+              "course_number": "CHEM 140",
+              "name": "General Chemistry I",
+              "prerequisite": null,
+              "description": "Corequisite, CHEM 140L. Introduction to fundamental concepts in chemistry: atomic and molecular structure, periodic table, stoichiometry, chemical bonding, equations and reactions, and kinetic theory of gases. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "CHEM 140L",
+              "name": "General Chemistry I Laboratory",
+              "prerequisite": null,
+              "description": "Corequisite, CHEM 140. Laboratory component taken with General Chemistry I. (Offered every semester.) 1 credit"
+            },
+            {
+              "course_number": "CHEM 150",
+              "name": "General Chemistry II",
+              "prerequisite": "CHEM 140, CHEM 140L",
+              "description": "Prerequisites, CHEM 140, CHEM 140L. Corequisite, CHEM 150L. This is a continuation of General Chemistry I. It features thermodynamics, chemical equilibrium, kinetics, solids and liquids, electrochemistry, etc. (Offered spring semester.) 3 credits"
+            },
+            {
+              "course_number": "CHEM 150L",
+              "name": "General Chemistry II Laboratory",
+              "prerequisite": "CHEM 140, CHEM 140L",
+              "description": "Prerequisites, CHEM 140, CHEM 140L. Corequisite, CHEM 150. Laboratory component taken with General Chemistry II. (Offered spring semester.) 1 credit"
+            }
+          ]
+        },
+        {
+          "sequence": 4,
+          "courses": [
+            {
+              "course_number": "PHYS 101",
+              "name": "General Physics I",
+              "prerequisite": "MATH 110 or MATH 115",
+              "description": "Prerequisite, MATH 110 or MATH 115. Corequisite, PHYS 101L or previous credit for PHYS 101L. Students learn how to apply the core principles of calculus-based physics to everyday situations, including connections to chemistry, computation, and engineering. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include symmetry, particles and fields, measurement error, reference frames, kinematics, conservation (of energy, momentum, angular momentum), interactions, transfer (as power, force, torque), and small oscillations. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "PHYS 101L",
+              "name": "General Physics I Laboratory",
+              "prerequisite": "MATH 110 or MATH 115",
+              "description": "Prerequisite, MATH 110, or MATH 115. Corequisite, PHYS 101 or previous credit for PHYS 101. Students solidify understanding of the physical concepts explored in PHYS 101 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 101 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered every semester.) 1 credit"
+            },
+            {
+              "course_number": "PHYS 102",
+              "name": "General Physics II",
+              "prerequisite": "PHYS 101 and MATH 111 or MATH 115",
+              "description": "Prerequisites, PHYS 101, and MATH 111, or MATH 115. Corequisite, PHYS 102L or previous credit for PHYS 102L. Students explore the principles of electricity and magnetism and learn to understand the roles they play in our everyday experiences. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include the study of electromagnetic fields and motions of charged objects using vector calculus, DC and AC circuit design, magnetic induction and wireless power, and basic properties of light and electromagnetic radiation. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+            },
+            {
+              "course_number": "PHYS 102L",
+              "name": "General Physics II Laboratory",
+              "prerequisite": "PHYS 101",
+              "description": "Prerequisites, PHYS 101. Corequisite, PHYS 102 or previous credit for PHYS 102. Students solidify understanding of the physical concepts explored in PHYS 102 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 102 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered every semester.) 1 credit"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Colloquium Requirement",
+      "credits": 6,
+      "courses": [
+        {
+          "course_number": "CPSC 298",
+          "name": "Computer Science Colloquium",
+          "prerequisite": null,
+          "description": "Students must complete six 1-credit sections of CPSC 298 – Computer Science Colloquium."
+        }
+      ]
+    },
+    {
+      "name": "Upper-Division Requirements",
+      "credits": 25,
+      "courses": [
+        {
+          "course_number": "CENG 330",
+          "name": "Digital Logic Design I",
+          "prerequisite": "CPSC 231 or CENG 231",
+          "description": "Prerequisite, CPSC 231 or CENG 231. Corequisite, CENG 330L. Students learn the fundamental principles and practice of digital logic. The course covers binary numbers and arithmetic. Students study Boolean algebra as a method of reasoning about sequential circuits including truth tables and Karnaugh maps, logic minimization, gates and flip-flops, sequential logic and combinatorial logic. The course requires one hour of supervised work in a laboratory in addition to three hours per week of lecture. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CENG 330L",
+          "name": "Digital Logic Design I Lab",
+          "prerequisite": "CENG 231 or CPSC 231",
+          "description": "Prerequisite, CENG 231 or CPSC 231. Corequisite, CENG 330. Laboratory component of CENG 330. Letter grade with Pass/No Pass option. (Offered every semester.) 1 credit"
+        },
+        {
+          "course_number": "CPSC 350",
+          "name": "Data Structures and Algorithms",
+          "prerequisite": "CPSC 231 or CENG 231",
+          "description": "Prerequisite, CPSC 231 or CENG 231. Students study core data structures and algorithms, such as arrays, stacks, lists, queues, trees, hash tables, graphs; search and sort. Students engage on projects that involve individually chosen advanced data structures and algorithms. The focus is on applications of data structures and algorithms, utilization of existing practical data sets, and performance trade-offs. Letter grade. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CENG 351",
+          "name": "Computer Architecture I",
+          "prerequisite": "CENG 330",
+          "description": "Prerequisite, CENG 330. Students learn the organization and structure of the major hardware components of computers to understand the mechanics of information transfer and control within a digital computer system and the fundamentals of logic design. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 353",
+          "name": "Data Communications and Computer Networks",
+          "prerequisite": "CENG 231 or CPSC 231",
+          "description": "Prerequisite, CENG 231 or CPSC 231. Students explore the principles and techniques of data communications and give special emphasis to networks and distributed systems. The I.S.O. Reference Model for open systems interconnection will be investigated and the function and operation of each protocol layer analyzed in detail. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 354",
+          "name": "Programming Languages",
+          "prerequisite": "MATH 250, CPSC 350",
+          "description": "Prerequisites, MATH 250, CPSC 350. Students develop an understanding of the organization and design of programming languages through writing interpreters for three different toy languages illustrating a range of programming concepts from pure functional languages to imperative languages with memory management. Moreover, the course will open windows into topics of programming languages research such as parsing, operational and denotational semantics, term rewriting, Hoare logic, verification, and theorem proving. Letter grade with Pass/No Pass option. (Offered fall semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 380",
+          "name": "Operating Systems",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisite, CPSC 350. The course emphasizes the major principles of operating system design and the interrelationship between the operating system and the hardware. Letter grade. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 406",
+          "name": "Algorithm Analysis",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisite, CPSC 350. Students study ideas and techniques useful for designing and analyzing data structures and algorithms. In particular, the analytic tools needed for analyzing upper bounds for algorithms and lower bounds for problems will be covered. Problem areas include sorting, graph-based problems, dynamic programming, combinatorial algorithms, computational geometry, encryption, parallel and distributed models, and NP-completeness. Letter grade with Pass/No Pass option. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 408",
+          "name": "Database Management",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisite, CPSC 350. Students learn data management concepts and the representation and structure of data in the context of applications and system software. The emphasis is on design of databases and developing applications in a client-server environment using SQL as the query language. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        }
+      ]
+    },
+    {
+      "name": "Electives",
+      "credits": 12,
+      "notes": "Chosen with advisor approval; at least three must be upper-division",
+      "courses": [
+        {
+          "course_number": "CPSC 285",
+          "name": "Social and Ethical Issues in Computing",
+          "prerequisite": null,
+          "description": "This course considers a range of ethical and social issues related to the effects of computers on how we live, focusing on broad social issues as well as individual responsibilities. Privacy and intellectual property (e.g. P2P downloading), software licenses, software reliability, and risks. Letter grade with Pass/No Pass option. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "SE 300",
+          "name": "Software Requirements and Testing",
+          "prerequisite": "CPSC 231",
+          "description": "Prerequisite, CPSC 231. Corequisite, SE 310. Students are introduced to the tools and techniques used to elicit, capture, and test software requirements from the perspective of delivering a working software system. In addition to covering standard terminology for software requirements specifications, this course gives an in-depth treatment of formal testing techniques used to ensure software quality and requirement satisfaction. (Offered fall semester.) 3 credits"
+        },
+        {
+          "course_number": "SE 310",
+          "name": "Software Design",
+          "prerequisite": "CPSC 231",
+          "description": "Prerequisite, CPSC 231. Corequisite, SE 300. Students gain hands-on experience designing software from a formal set of functional and non-functional software requirements. (Offered fall semester.) 3 credits"
+        },
+        {
+          "course_number": "SE 320",
+          "name": "The Software Development Lifecycle",
+          "prerequisite": "CPSC 350, SE 300, SE 310",
+          "description": "Prerequisites, CPSC 350, SE 300, SE 310. Students apply their theoretical knowledge of the software development lifecycle to a year-long project spanning all facets of the requirements, design, implementation, test, and maintenance processes. (Offered spring semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 349",
+          "name": "Human Factors",
+          "prerequisite": "CENG 231 or CPSC 231",
+          "description": "Prerequisite, CENG 231 or CPSC 231. Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade with Pass/No Pass option. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 355",
+          "name": "Human Computer Interaction",
+          "prerequisite": "CPSC 231",
+          "description": "Prerequisite, CPSC 231. Students study the foundations of human-interaction, with emphasis on user-centered design methodologies. Topics such as usability, human factors, user studies, and multi-model interfaces will be explored, and the theory put into practice through programming projects that develop graphical user interfaces and applications for the Android or iPhone/iPad. Letter grade with Pass/No Pass option. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 356",
+          "name": "Android Application Development",
+          "prerequisite": "CPSC 231",
+          "description": "Prerequisite, CPSC 231. An introduction to app development using the Android operating system and development kit. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as smart phones and tablets. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 357",
+          "name": "iOS Application Development",
+          "prerequisite": "CPSC 231",
+          "description": "Prerequisite, CPSC 231. An introduction to app development using the iOS operating system and Swift. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as iPads, iPhones, and watches. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 358",
+          "name": "Assistive Technology",
+          "prerequisite": "Recommended preparation, CPSC 230",
+          "description": "Recommended preparation, CPSC 230. An introduction to assistive technologies (AT). In particular, students will study social, cultural, and economic factors of disability as they pertain to AT. This will be accomplished by studying existing practices and challenges, designing new user experiences, and integrating new technologies into the AT space. (Offered fall semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 359",
+          "name": "Computer-Supported Cooperative Work",
+          "prerequisite": "CPSC 355",
+          "description": "Prerequisite, CPSC 355. Computer-supported cooperative work explores the technical, organizational, and social issues involved in designing, developing, deploying, and evaluating computational and communication tools to support groups, organizations, communities, and networks. This course will provide an initial survey of CSCW research and practices in the past 25 years and give students hands-on experience through a group design project aimed at orienting students to design for cooperative activities. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 360",
+          "name": "Computer Graphics",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisite, CPSC 350. The fundamental concepts of graphics software, hardware, and standards are examined. The course gives special emphasis to three-dimensional graphics and provides an introduction to graphical user interfaces. (Offered interterm, alternate years.) 3 credits"
+        },
+        {
+          "course_number": "ISP 363",
+          "name": "Cybersecurity I",
+          "prerequisite": "CPSC 353",
+          "description": "Prerequisite, CPSC 353. Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. (Offered every year.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 370",
+          "name": "Topics in Computer Science",
+          "prerequisite": null,
+          "description": "May be repeated for credit. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 390",
+          "name": "Artificial Intelligence",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisite, CPSC 350. Students study the tools, techniques, and applications of artificial intelligence. Students will be introduced to the programming techniques utilized in artificial intelligence applications. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 392",
+          "name": "Introduction to Data Science",
+          "prerequisite": "CPSC 230, and MATH 203 or MATH 303 or MGSC 209",
+          "description": "Prerequisites, CPSC 230, and MATH 203 or MATH 303 or MGSC 209. This course provides a survey of algorithms, tools, and techniques for computing with Big Data. Students will be exposed to fundamental concepts in data mining, machine learning, and information retrieval systems, with special emphasis on statistical techniques for data visualization and analysis. Recent advances in high performance computing, such as map-reduce, will be presented in the context of Big Data. Students will apply data mining algorithms to data sets from biology, chemistry, social media, and industry. (Offered every semester.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 393",
+          "name": "Machine Learning",
+          "prerequisite": "CPSC 392",
+          "description": "Prerequisite, CPSC 392. This course provides a survey of algorithmic techniques for machine learning, including statistical techniques for pattern recognition. Topics include neural networks, deep learning, support vector machines, and kernel methods. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 402",
+          "name": "Compiler Construction",
+          "prerequisite": "CPSC 350, CPSC 354",
+          "description": "Prerequisites, CPSC 350, CPSC 354. Students will learn the software tools and programming techniques needed to design and build a prototype implementation of a domain-specific language. On the theoretical side, students will learn enough of the mathematical underpinnings of the tools to apply them with confidence. On the practical side, students will write a grammar and build a lexer, parser, type checker, and interpreter for a fragment of C++. Letter grade with Pass/No Pass option. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 430",
+          "name": "Computational Economics",
+          "prerequisite": "MATH 110 and CPSC 230 or CPSC 236 or consent of instructor",
+          "description": "Prerequisites, MATH 110 and CPSC 230 or CPSC 236 or consent of instructor. This course will introduce students to the computational tools required to understand electronic exchange systems and implement economic experiments. Students will be required to become familiar with numerical analysis, computer simulation and programming of experiments. Letter grade. (Offered as needed.) 4 credits"
+        },
+        {
+          "course_number": "CPSC 445",
+          "name": "High Performance Computing",
+          "prerequisite": "CPSC 350 or consent of instructor",
+          "description": "Prerequisite, CPSC 350, or consent of instructor. The course introduces students to parallel computing architectures and programming models. Students learn and practice parallel programming techniques using shared memory and message passing. Course topics include parallel computing fundamentals, Unix and C, shared memory parallel computing (with OpenMP), message passing parallel computing (with MPI), parallel performance evaluation, and multilevel parallel computing (with OpenMP and MPI combined). (Offered alternate years.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 453",
+          "name": "Network Implementation and Security",
+          "prerequisite": "CPSC 353",
+          "description": "Prerequisite, CPSC 353. Students explore the principles and techniques for implementing TCP/IP based networks using Microsoft Windows and Linux servers and clients, including the skills to configure, customize, optimize, troubleshoot, and integrate networks. (Offered as needed.) 3 credits"
+        },
+        {
+          "course_number": "CPSC 458",
+          "name": "Web Engineering",
+          "prerequisite": "CPSC 350",
+          "description": "Prerequisites, CPSC 350. Students explore the principles and techniques for developing and managing web applications using HTML5, CSS and JavaScript, as well as other web development frameworks such as Ruby on Rails. Students will acquire skills to develop, install, configure, customize, optimize, and troubleshoot web applications. Letter grade with Pass/No Pass option. (Offered as needed.) 3 credits"
+        }
+      ]
+    }
+  ],
+  "total_credits": "77–78"
+}

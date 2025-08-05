@@ -17,7 +17,6 @@ class RAGAgent:
                top_k: int = None, rerank_top_k: int = None, enable_thinking: bool = True,
                show_thinking: bool = False, use_streaming: bool = True) -> tuple:
         
-        # Use config defaults if not specified
         if top_k is None:
             top_k = self.config['retrieval']['top_k']
         if rerank_top_k is None:
