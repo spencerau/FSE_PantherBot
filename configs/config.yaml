@@ -1,24 +1,107 @@
-model_llm:
-  model_name: "deepseek-r1:1.5b"
+# Academic Advisor RAG System Configuration
+system:
+  name: "Fowler School of Engineering Academic Advisor"
+  version: "1.0.0"
+  description: "Unified collection-based RAG system for academic advising"
+
+# Qdrant Vector Database Configuration
+qdrant:
+  host: "localhost"
+  port: 6333
+  timeout: 150
+  collections:
+    major_catalogs: "major_catalogs"
+    minor_catalogs: "minor_catalogs"
+    general_knowledge: "general_knowledge"
+    4_year_plans: "4_year_plans"
+
+data:
+  major_catalogs_path: "data/major_catalogs"
+  minor_catalogs_path: "data/minor_catalogs"
+  major_catalog_json_path: "data/major_catalog_json"
+  minor_catalog_json_path: "data/minor_catalog_json"
+  general_knowledge_path: "data/general_knowledge"
+  4_year_plans: "data/4_year_plans"
+
+# Embedding Configuration
+embedding:
+  model: "nomic-embed-text"
+  #chunk_size: 2000
+  #chunk_overlap: 250
+  batch_size: 32
+  ollama_host: "localhost"
+  ollama_port: 11434
+  add_prefixes: true
+  lowercase: false
+  normalize_unicode: true
+  collapse_whitespace: true
+  dehyphenate: true
+
+# Chunker Configuration
+chunker:
+  strategy: "recursive"
+  target_tokens: 1250
+  min_tokens: 500
+  overlap_ratio: 0.1
+  respect_headings: true
+
+# LLM Configuration
+llm:
+  model: "deepseek-r1:8b"
   temperature: 0.1
   top_p: 0.6
-  max_tokens: 2000
+  max_tokens: 4000
+  timeout: 180
   system_prompt: >
-    You are an expert AI academic advisor serving the Fowler School of
-    Engineering's undergraduate students within Chapman University. 
-    You provide accurate, clear guidance on degree requirements, course selection, 
-    prerequisites, and school resources. Always remind students to verify any
-    information with a faculty academic advisor or peer advisor, and
-    encourage them to double-check deadlines, graduation requirements,
-    or registration instructions with official campus resources.
-    When you don't know an answer, direct them to appropriate university
-    staff. Be professional, friendly, and supportive.
+    You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
+    
+    Your role is to provide accurate, helpful guidance to undergraduate students about:
+    - Degree requirements and graduation planning
+    - Course schedules and availability
+    - Prerequisites and course sequencing
+    - Academic policies and procedures
+    - Program-specific information
+    
+    IMPORTANT GUIDELINES:
+    - Use the information provided in the context from university catalogs as your primary source
+    - When you have relevant context, provide specific and detailed answers based on that information
+    - Be specific about course codes, credit hours, and requirements when available in the context
+    - If the context contains partial information, provide what you can and note what might be missing
+    - Only recommend contacting academic advisors if the context truly lacks the needed information
+    - Be supportive and encouraging in your responses
+    - Focus on the student's specific program and catalog year when provided
+    - Trust the context provided - it comes from official university documents
+    
+    Format your responses clearly and be thorough when you have good context to work with.
 
-embedding:
-  embed_model: "nomic-embed-text"
-  chunk_size: 400
-  chunk_overlap: 80
+# Retrieval Configuration
+retrieval:
+  top_k: 10
+  rerank_top_k: 8
+  enable_reranking: true
+  major_catalogs_chunks: 8
+  minor_catalogs_chunks: 0
+  4_year_plans_chunks: 0
+  
+  k_dense: 40
+  k_sparse: 40
+  rrf_k: 60
+  fuse_weights:
+    dense: 0.6
+    sparse: 0.4
 
-qdrant:
-  url: "http://localhost:6333"
-  collection: "pantherbot"
+# Reranker Configuration
+reranker:
+  model: "BAAI/bge-reranker-v2-m3"
+  top_k: 10
+  batch_size: 32
+  pdf_weight: 1.0
+  course_weight: 1.0
+  max_candidates_for_rerank: 200
+  top_k_rerank: 12
+  activation: "sigmoid"
+
+mcp:
+  host: "127.0.0.1"
+  port: 8765
+  transport: "stdio"

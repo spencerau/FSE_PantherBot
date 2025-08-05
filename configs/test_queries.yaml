@@ -1,0 +1,81 @@
+queries:
+  - year: "2022"
+    major_or_minor: "major"
+    major: "Computer Science"
+    question: "What are the core requirements for a Computer Science major in the 2022 catalog?"
+    must_contain: ["CPSC", "core", "requirement"]
+    must_cite_substring: ["Computer Science", "2022"]
+
+  - year: "2022"
+    major_or_minor: "major"
+    major: "Computer Science"
+    question: "How many units are required for graduation with a Computer Science degree?"
+    must_contain: ["units", "graduation"]
+    must_cite_substring: ["Computer Science", "units"]
+
+  - year: "2022"
+    major_or_minor: "minor"
+    question: "What courses are required for a Computer Science minor in 2022?"
+    must_contain: ["minor", "Computer Science"]
+    must_cite_substring: ["minor", "CPSC"]
+
+  - year: "2023"
+    major_or_minor: "major"
+    major: "Software Engineering"
+    question: "What are the prerequisites for CPSC 340 in the 2023 Software Engineering program?"
+    must_contain: ["CPSC 340", "prerequisite"]
+    must_cite_substring: ["CPSC 340", "prerequisite"]
+
+  - year: "2023"
+    major_or_minor: "major"
+    major: "Data Science"
+    question: "What math courses are required for Data Science majors in 2023?"
+    must_contain: ["math", "Data Science"]
+    must_cite_substring: ["MATH", "Data Science"]
+
+  - year: "2023"
+    major_or_minor: "minor"
+    question: "How many courses are needed for an Analytics minor?"
+    must_contain: ["Analytics", "minor"]
+    must_cite_substring: ["Analytics", "minor"]
+
+  - year: "2024"
+    major_or_minor: "major"
+    major: "Computer Engineering"
+    question: "What is the capstone requirement for Computer Engineering in 2024?"
+    must_contain: ["capstone", "Computer Engineering"]
+    must_cite_substring: ["capstone", "Computer Engineering"]
+
+  - year: "2024"
+    major_or_minor: "major"
+    major: "Electrical Engineering"
+    question: "What are the laboratory requirements for Electrical Engineering students?"
+    must_contain: ["laboratory", "lab", "Electrical Engineering"]
+    must_cite_substring: ["lab", "Electrical Engineering"]
+
+  - year: "2024"
+    major_or_minor: "minor"
+    question: "What programming languages are covered in the Game Development Programming minor?"
+    must_contain: ["Game Development", "programming"]
+    must_cite_substring: ["Game Development", "programming"]
+
+  - year: "2022"
+    major_or_minor: "major"
+    major: "Computer Science"
+    question: "Are there any elective requirements for Computer Science majors?"
+    must_contain: ["elective", "Computer Science"]
+    must_cite_substring: ["elective", "Computer Science"]
+
+  - year: "2023"
+    major_or_minor: "major"
+    major: "Software Engineering"
+    question: "What is the difference between Software Engineering and Computer Science programs?"
+    must_contain: ["Software Engineering", "Computer Science", "difference"]
+    must_cite_substring: ["Software Engineering", "Computer Science"]
+
+  - year: "2024"
+    major_or_minor: "major"
+    major: "Data Science"
+    question: "What statistics courses are required for Data Science in 2024?"
+    must_contain: ["statistics", "Data Science"]
+    must_cite_substring: ["STAT", "Data Science"]

@@ -19,7 +19,17 @@ def load_config(config_name="config.yaml"):
     
     try:
         with open(config_path, 'r') as file:
-            return yaml.safe_load(file)
+            config = yaml.safe_load(file)
+        
+        # Override with environment variables if they exist
+        if 'QDRANT_HOST' in os.environ:
+            config['qdrant']['host'] = os.environ['QDRANT_HOST']
+        
+        if 'OLLAMA_HOST' in os.environ:
+            config['embedding']['ollama_host'] = os.environ['OLLAMA_HOST']
+            config['llm']['ollama_host'] = os.environ.get('OLLAMA_HOST', config['embedding']['ollama_host'])
+        
+        return config
     except FileNotFoundError:
         raise FileNotFoundError(f"Config file not found: {config_path}")
     except yaml.YAMLError as e:

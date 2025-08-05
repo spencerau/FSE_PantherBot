@@ -6,4 +6,7 @@ tiktoken
 qdrant-client
 streamlit
 pytest
-#ollama
+pymupdf
+sentence-transformers
+mcp
+fastmcp
