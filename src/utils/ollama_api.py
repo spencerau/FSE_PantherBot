@@ -6,8 +6,9 @@ import os
 
 class OllamaAPI:
     
-    def __init__(self, base_url: str = None):
+    def __init__(self, base_url: str = None, timeout: int = 300):
         self.base_url = base_url or f"http://{self._get_ollama_host()}:11434"
+        self.timeout = timeout
         self.session = requests.Session()
         self.session.headers.update({
             'Content-Type': 'application/json',
@@ -46,7 +47,7 @@ class OllamaAPI:
             payload["think"] = think
         
         try:
-            response = self.session.post(url, json=payload, timeout=60)
+            response = self.session.post(url, json=payload, timeout=self.timeout)
             response.raise_for_status()
             data = response.json()
             content = data.get('message', {}).get('content', '')
@@ -75,7 +76,7 @@ class OllamaAPI:
             payload["think"] = think
         
         try:
-            response = self.session.post(url, json=payload, stream=True, timeout=60)
+            response = self.session.post(url, json=payload, stream=True, timeout=self.timeout)
             response.raise_for_status()
             
             accumulated_content = ""
@@ -127,7 +128,7 @@ class OllamaAPI:
             content = ""
             
             try:
-                response = self.session.post(url, json=payload, stream=True, timeout=60)
+                response = self.session.post(url, json=payload, stream=True, timeout=self.timeout)
                 response.raise_for_status()
                 
                 for line in response.iter_lines():
@@ -149,7 +150,7 @@ class OllamaAPI:
                 return {"thinking": "", "content": ""}
         else:
             try:
-                response = self.session.post(url, json=payload, timeout=60)
+                response = self.session.post(url, json=payload, timeout=self.timeout)
                 response.raise_for_status()
                 data = response.json()
                 message = data.get('message', {})
@@ -190,8 +191,8 @@ class OllamaAPI:
 
 _ollama_api = None
 
-def get_ollama_api() -> OllamaAPI:
+def get_ollama_api(timeout: int = 300) -> OllamaAPI:
     global _ollama_api
     if _ollama_api is None:
-        _ollama_api = OllamaAPI()
+        _ollama_api = OllamaAPI(timeout=timeout)
     return _ollama_api

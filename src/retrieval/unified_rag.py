@@ -24,7 +24,8 @@ class UnifiedRAG:
         )
         self.embedding_model = self.config['embedding']['model']
         self.collections = self.config['qdrant']['collections']
-        self.ollama_api = get_ollama_api()
+        llm_timeout = self.config.get('llm', {}).get('timeout', 300)
+        self.ollama_api = get_ollama_api(timeout=llm_timeout)
         
         self.hybrid_disabled = os.getenv('HYBRID_DISABLED', 'false').lower() == 'true'
         self.rerank_disabled = os.getenv('RERANK_DISABLED', 'false').lower() == 'true'
@@ -67,9 +68,9 @@ class UnifiedRAG:
             if use_streaming:
                 return self._get_llm_response_stream(prompt, enable_thinking, show_thinking)
             else:
-                response = self.ollama_api.chat(
-                    model=self.config['llm']['model'],
-                    messages=[
+                chat_params = {
+                    'model': self.config['llm']['model'],
+                    'messages': [
                         {
                             'role': 'system',
                             'content': self.config['llm']['system_prompt']
@@ -79,15 +80,19 @@ class UnifiedRAG:
                             'content': prompt
                         }
                     ],
-                    stream=False,
-                    think=enable_thinking,
-                    hide_thinking=not show_thinking,
-                    options={
+                    'stream': False,
+                    'hide_thinking': not show_thinking,
+                    'options': {
                         'temperature': self.config['llm']['temperature'],
                         'top_p': self.config['llm']['top_p'],
                         'num_predict': self.config['llm']['max_tokens']
                     }
-                )
+                }
+                
+                if 'deepseek' in self.config['llm']['model'].lower():
+                    chat_params['think'] = enable_thinking
+                
+                response = self.ollama_api.chat(**chat_params)
                 return response
         except Exception as e:
             print(f"Error getting LLM response: {e}")
@@ -96,9 +101,9 @@ class UnifiedRAG:
     def _get_llm_response_stream(self, prompt: str, enable_thinking: bool = True, 
                                 show_thinking: bool = False):
         try:
-            for chunk in self.ollama_api.chat_stream(
-                model=self.config['llm']['model'],
-                messages=[
+            stream_params = {
+                'model': self.config['llm']['model'],
+                'messages': [
                     {
                         'role': 'system',
                         'content': self.config['llm']['system_prompt']
@@ -108,14 +113,18 @@ class UnifiedRAG:
                         'content': prompt
                     }
                 ],
-                think=enable_thinking,
-                hide_thinking=not show_thinking,
-                options={
+                'hide_thinking': not show_thinking,
+                'options': {
                     'temperature': self.config['llm']['temperature'],
                     'top_p': self.config['llm']['top_p'],
                     'num_predict': self.config['llm']['max_tokens']
                 }
-            ):
+            }
+            
+            if 'deepseek' in self.config['llm']['model'].lower():
+                stream_params['think'] = enable_thinking
+            
+            for chunk in self.ollama_api.chat_stream(**stream_params):
                 yield chunk
         except Exception as e:
             print(f"Error getting streaming LLM response: {e}")

@@ -1,0 +1,410 @@
+{
+  "program": "Electrical Engineering, B.S.",
+  "institution": "Chapman University",
+  "academic_year": "2023–2024",
+  "requirements": {
+    "GPA": {
+      "lower_division": 2.5,
+      "major": 2.0
+    },
+    "grade_requirement": "C- or higher",
+    "upper_division_units": 21,
+    "notes": "Majors must enroll in FFC 100B - First Year Foundations: Grand Challenges in Science and Engineering to satisfy GE."
+  },
+  "sections": [
+    {
+      "name": "Grand Challenges Initiative",
+      "credits": 3,
+      "notes": "Every student who is not a transfer student must complete the Grand Challenges Initiative.",
+      "courses": [
+        {
+          "course_number": "SCI 150",
+          "name": "Grand Challenges in Science and Engineering I",
+          "credit_hours": 1,
+          "description": "This research seminar is a continuation of the Grand Challenges FFC. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 200 or SCI 250. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "SCI 200",
+          "name": "Grand Challenges in Science and Engineering II",
+          "prerequisite": "SCI 150",
+          "credit_hours": 1,
+          "description": "This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 150 or SCI 250. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "SCI 250",
+          "name": "Grand Challenges in Science and Engineering III",
+          "prerequisite": "SCI 200",
+          "credit_hours": 1,
+          "description": "This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with SCI 150 or SCI 200. Letter grade. (Offered every semester.)"
+        }
+      ]
+    },
+    {
+      "name": "Lower-Division Core Requirements",
+      "credits": "39-40",
+      "notes": "All lower-division courses must be completed with a grade of C- or higher.",
+      "courses": [
+        {
+          "course_number": "ENGR 101",
+          "name": "Foundations of Design and Fabrication",
+          "credit_hours": 3,
+          "description": "Students gain first-hand experience with design and fabrication as a foundation of engineering. Using technologies such as additive manufacturing (eg. 3D printing), embedded systems and software, and electronics, students will work together to develop innovative solutions to interesting problems. This course is offered in a hybrid format only. Pass/No Pass. (Offered every semester.)"
+        },
+        {
+          "course_number": "PHYS 101",
+          "name": "General Physics I",
+          "prerequisite": "MATH 110 or MATH 115",
+          "corequisite": "PHYS 101L or previous credit for PHYS 101L",
+          "credit_hours": 3,
+          "description": "Students learn how to apply the core principles of calculus-based physics to everyday situations, including connections to chemistry, computation, and engineering. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include symmetry, particles and fields, measurement error, reference frames, kinematics, conservation (of energy, momentum, angular momentum), interactions, transfer (as power, force, torque), and small oscillations. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "PHYS 101L",
+          "name": "General Physics I Laboratory",
+          "prerequisite": "MATH 110, or MATH 115",
+          "corequisite": "PHYS 101 or previous credit for PHYS 101",
+          "credit_hours": 1,
+          "description": "Students solidify understanding of the physical concepts explored in PHYS 101 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 101 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "PHYS 102",
+          "name": "General Physics II",
+          "prerequisite": "PHYS 101, and MATH 111, or MATH 115",
+          "corequisite": "PHYS 102L or previous credit for PHYS 102L",
+          "credit_hours": 3,
+          "description": "Students explore the principles of electricity and magnetism and learn to understand the roles they play in our everyday experiences. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include the study of electromagnetic fields and motions of charged objects using vector calculus, DC and AC circuit design, magnetic induction and wireless power, and basic properties of light and electromagnetic radiation. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+        },
+        {
+          "course_number": "PHYS 102L",
+          "name": "General Physics II Laboratory",
+          "prerequisite": "PHYS 101",
+          "corequisite": "PHYS 102 or previous credit for PHYS 102",
+          "credit_hours": 1,
+          "description": "Students solidify understanding of the physical concepts explored in PHYS 102 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 102 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+        },
+        {
+          "course_number": "EENG 200",
+          "name": "Electronics and Circuits I",
+          "prerequisite": "MATH 110 or MATH 115",
+          "corequisite": "EENG 200L",
+          "credit_hours": 3,
+          "description": "Students begin their study of electronics and circuits by studying electricity (current, energy, voltage, power), electronic components (resistors, capacitors, diodes, etc), and fundamental laws for circuits. Students will gain hands on experience building circuits with solderless breadboards in a separate laboratory component. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "EENG 200L",
+          "name": "Lab - Electronics and Circuits I",
+          "prerequisite": "MATH 110 or MATH 115",
+          "corequisite": "EENG 200",
+          "credit_hours": 1,
+          "description": "Lab component of EENG 200. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "EENG 201",
+          "name": "Digital Signals and Filters",
+          "prerequisite": "MATH 111 or MATH 116",
+          "credit_hours": 3,
+          "description": "Students are introduced to concepts of signal processing focusing on spectrum representation, sampling and aliasing, FIR and IIR filters, frequency response of FIR filters, discrete Fourier and z-Transforms. Letter grade with Pass/No Pass option. (Offered every year.)"
+        },
+        {
+          "course_number": "PHYS 201",
+          "name": "General Physics III",
+          "prerequisite": "PHYS 102",
+          "credit_hours": 3,
+          "description": "Students continue exploring the principles of physics and their applications to microscopic and macroscopic phenomena. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include waves, sound, thermodynamics, fluids, relativity, and quantum theory. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "MATH 215",
+          "name": "Introduction to Linear Algebra and Differential Equations",
+          "prerequisite": "MATH 111 or MATH 116",
+          "credit_hours": 3,
+          "description": "Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. (Offered fall semester.)"
+        },
+        {
+          "course_number": "CPSC 230",
+          "name": "Computer Science I",
+          "credit_hours": 3,
+          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. (Offered every semester.)"
+        },
+        {
+          "course_number": "CENG 231",
+          "name": "Systems Programming",
+          "prerequisite": "CPSC 230",
+          "corequisite": "CENG 231L",
+          "credit_hours": 3,
+          "description": "This course introduces students to concepts and techniques in systems programming with the programming languages C and C++ in a *nix environment. Students will gain insight into hardware-software interfaces through hands-on projects involving system calls, concurrency, network programming, memory mapping, and low-level mechanisms for inter-process communication. A laboratory component will allow students to implement conceptual ideas in code for enterprise, real-time, and embedded hardware targets. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        },
+        {
+          "course_number": "CENG 231L",
+          "name": "Lab - Systems Programming",
+          "prerequisite": "CPSC 230",
+          "corequisite": "CENG 231",
+          "credit_hours": 1,
+          "description": "Laboratory component of CENG 231. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+        }
+      ],
+      "math_sequences": [
+        {
+          "notes": "Students only need to complete one of the math sequences listed below.",
+          "sequence": 1,
+          "courses": [
+            {
+              "course_number": "MATH 110",
+              "name": "Single Variable Calculus I",
+              "prerequisite": "MATH 101 or equivalent",
+              "credit_hours": 3,
+              "description": "Students study single variable functions, limits and continuity, differentiation, applications of derivatives (approximations, curve plotting, optimization), antiderivatives, the definite integral, and applications of integration. Students who take MATH 109 or MATH 110 may not also receive credit for MATH 115. Letter grade with Pass/No Pass option. (Offered every semester.)"
+            },
+            {
+              "course_number": "MATH 111",
+              "name": "Single Variable Calculus II",
+              "prerequisite": "MATH 110 or MATH 115",
+              "credit_hours": 3,
+              "description": "Further techniques and applications of integration, transcendental functions, exponential models, logistic equations, infinite and power series, Taylor’s theorem, parametric equations, and polar coordinates. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade with Pass/No Pass option. (Offered every semester.)"
+            },
+            {
+              "course_number": "MATH 210",
+              "name": "Multivariable Calculus",
+              "prerequisite": "MATH 111",
+              "credit_hours": 3,
+              "description": "Students learn the calculus of functions of two or more variables, vector-valued functions, multiple integrals, and integration in vector fields. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+            }
+          ]
+        },
+        {
+          "sequence": 2,
+          "courses": [
+            {
+              "course_number": "MATH 115",
+              "name": "Accelerated Calculus Part I: Differentiation and Integration",
+              "prerequisite": "MATH 101 or equivalent",
+              "credit_hours": 4,
+              "description": "This course is an intensive introduction to the calculus of elementary functions and its applications to science. Students study fundamental concepts of limits, continuity, and derivatives, and explore the derivatives and integrals of polynomials, rational functions, exponentials, logarithms, and trigonometric functions, followed by the chain rule, implicit differentiation, logarithmic differentiation, applications of differentiation, optimization, definite integrals, Riemann sums and the fundamental theorem of Calculus, applications of integration, integration techniques and methods, sequences and series, introduction to differential equations, power series. Students who take MATH 109 or MATH 110 may not also receive credit for MATH 115. Letter grade. (Offered fall semester.)"
+            },
+            {
+              "course_number": "MATH 116",
+              "name": "Accelerated Calculus Part II: Series, Differential Equations and Multivariable Calculus",
+              "prerequisite": "MATH 115",
+              "credit_hours": 4,
+              "description": "This course is the second part of an intensive introduction to the calculus of elementary functions and its applications to science. Students will explore Taylor Series, model exponential growth, sinusoidal oscillation, and logistic convergence through simple differential equations, continue with calculus of functions of two or more variables and of vector-valued functions. Optimization of functions of several variables, Lagrange multipliers, multiple integrals and integration of vector fields, divergence and curl, line and surface integration, Green, Stokes, and Divergence Theorems. This is the second part of a two-semester accelerated Calculus course. Students who take MATH 111 or MATH 210 may not also receive credit for MATH 116. Letter grade. (Offered spring semester.)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Applications Requirement",
+      "credits": 3,
+      "courses": [
+        {
+          "course_number": "EENG 398",
+          "name": "Topics in Advanced Engineering Applications",
+          "credit_hours": 1,
+          "description": "Students must complete three 1-credit sections of EENG 398 - Topics in Advanced Engineering Applications."
+        }
+      ]
+    },
+    {
+      "name": "Upper-Division Requirements",
+      "credits": 25,
+      "notes": "All upper division courses must be completed with a grade of C- or higher.",
+      "courses": [
+        {
+          "course_number": "EENG 300",
+          "name": "Electronics and Circuits II",
+          "prerequisite": "EENG 200",
+          "corequisite": "EENG 300L",
+          "credit_hours": 3,
+          "description": "Students continue their study of circuits, moving into digital and mixed signal circuit design. Topics include transistors, diodes, AC and DC analysis, analyzing circuit response, and integrated circuits. Students will gain hands on experience in the lab by prototyping circuits, simulating complex designs, and designing and analyzing simple PCB circuits. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+        },
+        {
+          "course_number": "EENG 300L",
+          "name": "Lab - Electronics and Circuits II",
+          "prerequisite": "EENG 200L",
+          "corequisite": "EENG 300",
+          "credit_hours": 1,
+          "description": "Lab component of EENG 300. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+        },
+        {
+          "course_number": "EENG 310",
+          "name": "Engineering Mathematics",
+          "prerequisite": "MATH 215",
+          "credit_hours": 3,
+          "description": "Students are introduced to mathematical methods for engineers. The class covers topics including matrix theory, complex variables, Laplace and Fourier series, probability theory, and mathematical statistics. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 320",
+          "name": "Microelectronics I",
+          "prerequisite": "EENG 200, PHYS 102 or PHYS 108",
+          "corequisite": "EENG 320L",
+          "credit_hours": 3,
+          "description": "Students are introduced to the fundamental semiconductor devices such as diodes, MOSFETs and BJTs. The I-V characteristics, DC models, and AC small signal models of these devices are utilized in circuit design. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 320L",
+          "name": "Microelectronics I Lab",
+          "prerequisite": "EENG 200, PHYS 102 or PHYS 108",
+          "corequisite": "EENG 320",
+          "credit_hours": 1,
+          "description": "Lab component of EENG 320. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 330",
+          "name": "Digital Logic Design I",
+          "prerequisite": "CPSC 231 or CENG 231",
+          "corequisite": "CENG 330L",
+          "credit_hours": 3,
+          "description": "Students learn the fundamental principles and practice of digital logic. The course covers binary numbers and arithmetic. Students study Boolean algebra as a method of reasoning about sequential circuits including truth tables and Karnaugh maps, logic minimization, gates and flip-flops, sequential logic and combinatorial logic. The course requires one hour of supervised work in a laboratory in addition to three hours per week of lecture. Letter grade. (Offered spring semester.)"
+        },
+        {
+          "course_number": "CENG 330L",
+          "name": "Lab - Digital Logic Design I",
+          "prerequisite": "CENG 231 or CPSC 231",
+          "corequisite": "CENG 330",
+          "credit_hours": 1,
+          "description": "Laboratory component of CENG 330. Letter grade. (Offered spring semester.)"
+        },
+        {
+          "course_number": "EENG 330",
+          "name": "Electromagnetics I",
+          "prerequisite": "MATH 116 or MATH 210, PHYS 102",
+          "credit_hours": 3,
+          "description": "Students are introduced to electromagnetism and Maxwell’s equations. The covered topics include electrostatics, magnetostatics, properties of conductive, dielectric, and magnetic materials, static fields in the presence of matter, and separation of variables in electromagnetic theory. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 366",
+          "name": "Digital Logic Design II",
+          "prerequisite": "CENG 330",
+          "corequisite": "CENG 366L",
+          "credit_hours": 3,
+          "description": "This course introduces combinational and sequential logic circuits, including decoders, multiplexers, flip-flops, arithmetic circuits, and implementations of finite state machines using hardware design languages and FPGA boards. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 366L",
+          "name": "Lab - Digital Logic Design II",
+          "prerequisite": "CENG 330",
+          "corequisite": "CENG 366",
+          "credit_hours": 1,
+          "description": "Laboratory Component of CENG 366. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 410",
+          "name": "Control Systems",
+          "prerequisite": "EENG 310",
+          "credit_hours": 3,
+          "description": "Students explore topics related to control systems including linear systems, transfer functions, Laplace transforms, frequency-response, transient response, and feedback through a combination of analytical and computational techniques. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        }
+      ]
+    },
+    {
+      "name": "Electives",
+      "notes": "Students can choose 3 courses as electives from the courses below. Elective courses must be taken for a letter grade.",
+      "credit_hours": 9,
+      "courses": [
+        {
+          "course_number": "CENG 350",
+          "name": "Embedded Systems",
+          "prerequisite": "CENG 231",
+          "credit_hours": 3,
+          "description": "An in-depth study of the high-level abstract modeling concepts and the lower-level fundamental programming aspects of real-time embedded systems development. The primary focus is in the design, development and validation of microprocessor-based real-time embedded systems. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 351",
+          "name": "Computer Architecture I",
+          "prerequisite": "CENG 330",
+          "credit_hours": 3,
+          "description": "Students learn the organization and structure of the major hardware components of computers to understand the mechanics of information transfer and control within a digital computer system and the fundamentals of logic design. (Offered fall semester.)"
+        },
+        {
+          "course_number": "CENG 353",
+          "name": "Wireless Communication",
+          "prerequisite": "CPSC 353",
+          "credit_hours": 3,
+          "description": "Wireless networks play an increasingly important role in the world of communications. This course provides an introduction to various current and next generation wireless networking technologies, and undertakes a detailed exploration of fundamental architectural and design principles used at all layers. Related protocols and their performance are studied using formal analytical tools and realistic simulations. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 353",
+          "name": "Data Communications and Computer Networks",
+          "prerequisite": "CENG 231 or CPSC 231",
+          "credit_hours": 3,
+          "description": "Students explore the principles and techniques of data communications and give special emphasis to networks and distributed systems. The I.S.O. Reference Model for open systems interconnection will be investigated and the function and operation of each protocol layer analyzed in detail. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "EENG 370",
+          "name": "Topics in Electrical Engineering",
+          "credit_hours": 3,
+          "description": "Advanced topics in Electrical Engineering. Letter grade with Pass/No Pass option. Repeatable for credit if the topic is different. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 381",
+          "name": "Modeling and Simulation",
+          "prerequisite": "CENG 231",
+          "credit_hours": 3,
+          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 382",
+          "name": "Digital Signal Processing",
+          "prerequisite": "CENG 381, MATH 116 or MATH 210",
+          "credit_hours": 3,
+          "description": "This course covers the techniques and tools of modern digital signal processing. Techniques for processing signals are examined including discrete-time linear systems, finite impulse response digital filters, infinite impulse response digital filters, fast Fourier transforms, response of LTI systems to statistical signals, digital filter design, and applications. Students will gain insight into evaluating DSP systems and justifying choices among alternative designs. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 390",
+          "name": "Robotics",
+          "prerequisite": "CENG 231 or CPSC 231, EENG 200",
+          "credit_hours": 3,
+          "description": "Students discover the fundamentals of kinematics, dynamics, and control of robot manipulators, robotic vision, and sensing. In addition, elementary principles on proximity, tactile, and force sensing, vision sensors, camera calibration, stereo construction, and motion detection are presented. Students gain hands on experience through a series of assignments in which they build and test their own robot. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 420",
+          "name": "Microelectronics II",
+          "prerequisite": "EENG 300, EENG 320",
+          "credit_hours": 3,
+          "description": "Students design integrated circuit amplifiers like differential amplifiers, power amplifiers, and multi-stage operational amplifiers, including their frequency response and design tradeoffs. Op-amp based circuits like active filters and oscillators are also introduced. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 430",
+          "name": "Electromagnetics II",
+          "prerequisite": "EENG 310, EENG 330",
+          "credit_hours": 3,
+          "description": "Students are introduced to advanced concepts in electromagnetic field theory. The covered topics include time-varying Maxwell’s equations, Poynting’s theorem, plane wave propagation, and transmission lines. In addition, students will be introduced to the basics of wave confinement in waveguides and antenna radiation. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 440",
+          "name": "Solid State Electronics",
+          "prerequisite": "PHYS 201, EENG 320",
+          "credit_hours": 3,
+          "description": "Students will be introduced to energy band structures and lattice structures of semiconductor materials and their impact on the device operation. Semiconductor devices such as MOSFETs, BJTs, lasers and solar cells will be explored. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "EENG 450",
+          "name": "Photonics",
+          "prerequisite": "EENG 430",
+          "credit_hours": 3,
+          "description": "Students are introduced to the fundamentals of photonics. The covered topics include fundamental electromagnetic concepts (duality, equivalence, etc.), advanced analysis techniques for photonic systems, and photonic resonators. In addition, students will be introduced to the basics of solid-state devices such as light-emitting diodes, solar cells, photodetectors, and lasers. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 465",
+          "name": "Integrated Circuit Design I",
+          "prerequisite": "CENG 330",
+          "credit_hours": 3,
+          "description": "This course introduces the students to the analysis and design of digital integrated circuits including Combinational (static and dynamic) and Sequential logic integrated circuits using CMOS technology. Students will learn transistor structure, circuit schematic, and physical layout design, layout design rule check, layout vs. schematic check, circuit extraction, and simulation using CAD tools. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CENG 466",
+          "name": "Integrated Circuit Design II",
+          "prerequisite": "CENG 330, CENG 465",
+          "recommended_prerequisite": "PHYS 102",
+          "credit_hours": 3,
+          "description": "The course integrates theoretical and functional ideas from Digital Logic II with the physical electronics covered in Integrated Circuit Design I toward the design of realworld integrated circuits. The course also introduces the student to VLSI CAD tools for physical design. (Offered as a reading and conference only.)"
+        }
+      ]
+    }
+  ],
+  "total_credits": "79-80",
+  "metadata": {
+    "year": "2023",
+    "subject": "Electrical Engineering",
+    "program_type": "Major"
+  }
+}
