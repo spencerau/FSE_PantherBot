@@ -1,0 +1,324 @@
+{
+  "program": "Data Science, B.S.",
+  "institution": "Chapman University",
+  "academic_year": "2025–2026",
+  "requirements": {
+    "GPA": {
+      "lower_division": 2.5,
+      "major": 2.0
+    },
+    "grade_requirement": "C- or higher",
+    "upper_division_units": 21,
+    "notes": "Majors must enroll in FFC 100B - First Year Foundations: Grand Challenges in Science and Engineering to satisfy GE."
+  },
+  "sections": [
+    {
+      "name": "Grand Challenges Initiative",
+      "credits": 3,
+      "notes": "Every student who is not a transfer student must complete the Grand Challenges Initiative.",
+      "courses": [
+        {
+          "course_number": "GCI 150",
+          "name": "Grand Challenges in Science and Engineering I",
+          "credit_hours": 1,
+          "description": "This research seminar is a continuation of the Grand Challenges FFC. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with GCI 200 or GCI 250. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "GCI 200",
+          "name": "Grand Challenges in Science and Engineering II",
+          "prerequisite": "GCI 150",
+          "credit_hours": 1,
+          "description": "This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with GCI 150 or GCI 250. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "GCI 250",
+          "name": "Grand Challenges in Science and Engineering III",
+          "prerequisite": "GCI 200",
+          "credit_hours": 1,
+          "description": "This seminar is a continuation of the Grand Challenges in Science and Engineering series. It is designed to provide a mentored experience for teams as they pursue possible solutions to their grand challenges. Faculty serving as team mentors will use evidence-based approaches to improve students’ critical thinking, problem-solving and communication skills. Faculty are joined by a number of external experts who provide students with additional insights into their challenges, introduce them to a diversity of careers in science, and serve as the foundation of a professional network. In this phase, teams are encouraged to grow, evolve, and even recruit new members across campus, as it becomes clearer what skills are needed to advance towards their goals. This course may not be taken concurrently with GCI 150 or GCI 200. Letter grade. (Offered every semester.)"
+        }
+      ]
+    },
+    {
+      "name": "Lower-Division Core Requirements",
+      "credits": 27,
+      "notes": "All lower division courses must be completed with a grade of C- or higher.",
+      "courses": [
+        {
+          "course_number": "ENGR 101",
+          "name": "Foundations of Design and Fabrication",
+          "credit_hours": 3,
+          "description": "Students gain first-hand experience with design and fabrication as a foundation of engineering. Using technologies such as additive manufacturing (eg. 3D printing), embedded systems and software, and electronics, students will work together to develop innovative solutions to interesting problems. This course is offered in a hybrid format only. Pass/No Pass. (Offered every semester.)"
+        },
+        {
+          "course_number": "MATH 110",
+          "name": "Single Variable Calculus I",
+          "prerequisite": "MATH 101 or equivalent",
+          "credit_hours": 3,
+          "description": "Students study single variable functions, limits and continuity, differentiation, applications of derivatives (approximations, curve plotting, optimization), antiderivatives, the definite integral, and applications of integration. Students who take MATH 109 or MATH 110 may not also receive credit for MATH 115. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "ECON 200",
+          "name": "Principles of Microeconomics",
+          "prerequisite": "MATH 100 or equivalent",
+          "credit_hours": 3,
+          "description": "Decision-making with scarce resources, supply and demand, pricing in competitive and non-competitive markets, capital theory, resource pricing, public choice, environmental economics, international trade, and comparative economic systems. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "MATH 203",
+          "name": "Introduction to Statistics",
+          "prerequisite": "MATH 100 or equivalent",
+          "credit_hours": 3,
+          "description": "This course provides a progressive, detailed, and practical introduction to essential topics in classical statistics. The main concepts covered in this class include the following: design of experiments and sampling, descriptive statistics methods, correlation and regression analysis, probability and probability distribution, sampling distributions, and inferential statistics methods. This course is intended for students in a wide variety of areas of study so a variety of examples from different fields are used to illustrate the concepts. The course is taught in an interactive setting where students will learn how to use statistical software while learning introductory statistics concepts. Some sections of this course may be offered as hybrid courses or online only. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "MGSC 220",
+          "name": "Foundations of Business Analytics",
+          "prerequisite": "MGSC 209 or MATH 203 or PSY 203 with a minimum grade of C-",
+          "credit_hours": 3,
+          "description": "This course focuses on building models and describing data in spreadsheets to solve business problems. Topics in descriptive, predictive and prescriptive analytics are covered including data visualization, multiple regression, simulation and linear optimization. Emphasis is placed on theory, application of theory using appropriate software and on managerial interpretation of results. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 230",
+          "name": "Computer Science I",
+          "prerequisite": "MATH 100",
+          "credit_hours": 3,
+          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 231",
+          "name": "Computer Science II",
+          "prerequisite": "CPSC 230 or equivalent",
+          "credit_hours": 3,
+          "description": "This course is a comprehensive study of object-oriented computing with a mainstream programming language, Java. The course introduces the principal features of the language with a focus on object-oriented development, code reuse, and large program structure. The course also covers advance topics such as concurrency and graphical user interfaces. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 285",
+          "name": "Social and Ethical Issues in Computing",
+          "credit_hours": 3,
+          "description": "This course considers a range of ethical and social issues related to the effects of computers on how we live, focusing on broad social issues as well as individual responsibilities. Privacy and intellectual property (e.g. P2P downloading), software licenses, software reliability, and risks. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 293",
+          "name": "Mathematical Foundations of Machine Learning",
+          "prerequisite": "CPSC 230, MATH 203, MATH 110 or MATH 115",
+          "credit_hours": 3,
+          "description": "A concise overview of the mathematical foundations of machine learning, including key intermediate concepts from calculus, linear algebra, probability, statistics, and optimization. Letter grade with Pass/No Pass option. (Offered every year.)"
+        }
+      ]
+    },
+    {
+      "name": "Colloquium Requirement",
+      "credits": 5,
+      "notes": "Students must complete five 1-credit sections of CPSC 298 - Computer Science Colloquium.",
+      "courses": [
+        {
+          "course_number": "CPSC 298",
+          "name": "Computer Science Colloquium",
+          "credit_hours": 1,
+          "description": "Exposure to topics in computer science through directed reading, guest speakers, and practicums. P/NP. May be repeated for credit to fulfill six total credits. (Offered every year.)"
+        }
+      ]
+    },
+    {
+      "name": "Upper-Division Requirements",
+      "credits": 30,
+      "notes": "All upper division courses must be completed with a grade of C- or higher.",
+      "courses": [
+        {
+          "course_number": "MGSC 310",
+          "name": "Statistical Models in Business Analytics",
+          "prerequisite": "MGSC 220 with a minimum grade of C-",
+          "credit_hours": 3,
+          "description": "A rigorous introduction to descriptive and inferential statistics in analytics with applications in accounting, finance, marketing and operations. The course focuses on data mining: logistic regression, nearest neighbor, decision trees, naïve Bayes and others, following a review of basic introductory statistical methods. The course introduces theories and concepts in estimation including choice of technique, model choice and false discovery. Students are required to implement and interpret modeling scripts in using R statistical software. Letter grade. (Offered every year.)"
+        },
+        {
+          "course_number": "CPSC 349",
+          "name": "Human Factors",
+          "prerequisite": "CPSC 230 or GAME 230",
+          "credit_hours": 3,
+          "description": "Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade with Pass/No Pass option. (Offered every year.)"
+        },
+        {
+          "course_number": "CPSC 350",
+          "name": "Data Structures and Algorithms",
+          "prerequisite": "CPSC 231 or CENG 231",
+          "credit_hours": 3,
+          "description": "Students study core data structures and algorithms, such as arrays, stacks, lists, queues, trees, hash tables, graphs; search and sort. Students engage on projects that involve individually chosen advanced data structures and algorithms. The focus is on applications of data structures and algorithms, utilization of existing practical data sets, and performance trade-offs. Letter grade. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 353",
+          "name": "Data Communications and Computer Networks",
+          "prerequisite": "CENG 231 or CPSC 231 or CPSC 236",
+          "credit_hours": 3,
+          "description": "Students explore the principles and techniques of data communications and give special emphasis to networks and distributed systems. The I.S.O. Reference Model for open systems interconnection will be investigated and the function and operation of each protocol layer analyzed in detail. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 355",
+          "name": "Human Computer Interaction",
+          "prerequisite": "CENG 231 or CPSC 231 or CPSC 236, CPSC 349",
+          "credit_hours": 3,
+          "description": "Students study the foundations of human-interaction, with emphasis on user-centered design methodologies. Topics such as usability, human factors, user studies, and multi-model interfaces will be explored, and the theory put into practice through programming projects that develop graphical user interfaces and applications for the Android or iPhone/iPad. (Offered every year.)"
+        },
+        {
+          "course_number": "CPSC 390",
+          "name": "Artificial Intelligence",
+          "prerequisite": "CPSC 350",
+          "credit_hours": 3,
+          "description": "Students study the tools, techniques, and applications of artificial intelligence. Students will be introduced to the programming techniques utilized in artificial intelligence applications. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 392",
+          "name": "Introduction to Data Science",
+          "prerequisite": "CPSC 230, MATH 203 or MATH 303 or MGSC 209",
+          "credit_hours": 3,
+          "description": "This course provides a survey of algorithms, tools, and techniques for computing with Big Data. Students will be exposed to fundamental concepts in data mining, machine learning, and information retrieval systems, with special emphasis on statistical techniques for data visualization and analysis. Recent advances in high performance computing, such as map-reduce, will be presented in the context of Big Data. Students will apply data mining algorithms to data sets from biology, chemistry, social media, and industry. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "CPSC 393",
+          "name": "Machine Learning",
+          "prerequisite": "CPSC 392",
+          "credit_hours": 3,
+          "description": "This course provides a survey of algorithmic techniques for machine learning, including statistical techniques for pattern recognition. Topics include neural networks, deep learning, support vector machines, and kernel methods. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 408",
+          "name": "Database Management",
+          "prerequisite": "CPSC 350",
+          "credit_hours": 3,
+          "description": "Students learn data management concepts and the representation and structure of data in the context of applications and system software. The emphasis is on design of databases and developing applications in a client-server environment using SQL as the query language. Letter grade with Pass/No Pass option. (Offered every semester.)"
+        },
+        {
+          "course_number": "MGSC 410",
+          "name": "Applied Business Analytics",
+          "prerequisite": "MGSC 310, CPSC 392 with a minimum grade of C- in each prerequisite",
+          "credit_hours": 3,
+          "description": "This course provides a hands-on opportunity for students to integrate and apply the analytics skills and knowledge learned throughout the course to real world data. The course will reinforce the methods and techniques typically used in analytics including data preparation, building and evaluating wide variety of models and interpreting and presenting the results. Students work in teams on a large scale analytics project. At the end of the course, students submit a report summarizing their analyses and study outcomes, and present their results to the class. (Offered every year.)"
+        }
+      ]
+    },
+    {
+      "name": "Electives",
+      "notes": "Choose three courses (9 credits) from the list below. Elective course must be taken for a letter grade.",
+      "credit_hours": 9,
+      "courses": [
+        {
+          "course_number": "MATH 303",
+          "name": "Biostatistics",
+          "prerequisite": "MATH 101 or equivalent, or MATH 109 with a grade C or above",
+          "credit_hours": 3,
+          "description": "This course will provide a comprehensive introduction to various statistical methods with emphasis on applications in biology, medicine, and public health. Main concepts such as sampling distributions, contingency tables, linear, logistic and survival analysis will be studied with a mathematically rigorous approach. Letter grade. (Offered as needed.)"
+        },
+        {
+          "course_number": "ENV 310",
+          "name": "Geographic Information Systems, Lecture and Laboratory",
+          "credit_hours": 4,
+          "description": "Structure, concepts, and application of geographic information systems (GIS): computer-based systems designed to process large spatial databases. Productive use of GIS in physical and social sciences, environmental management, and regional planning is investigated through applied exercises and problems. This course includes a lecture and required laboratory component held at different times. (Offered spring semester.)"
+        },
+        {
+          "course_number": "CPSC 358",
+          "name": "Assistive Technology",
+          "recommended_prerequisite": "CPSC 230",
+          "credit_hours": 3,
+          "description": "An introduction to assistive technologies (AT). In particular, students will study social, cultural, and economic factors of disability as they pertain to AT. This will be accomplished by studying existing practices and challenges, designing new user experiences, and integrating new technologies into the AT space. (Offered fall semester.)"
+        },
+        {
+          "course_number": "CPSC 359",
+          "name": "Computer-Supported Cooperative Work",
+          "prerequisite": "CPSC 355",
+          "credit_hours": 3,
+          "description": "Computer-supported cooperative work explores the technical, organizational, and social issues involved in designing, developing, deploying, and evaluating computational and communication tools to support groups, organizations, communities, and networks. This course will provide an initial survey of CSCW research and practices in the past 25 years and give students hands-on experience through a group design project aimed at orienting students to design for cooperative activities. (Offered every year.)"
+        },
+        {
+          "course_number": "MATH 360",
+          "name": "Probability Theory",
+          "prerequisite": "MATH 116 or MATH 210",
+          "credit_hours": 3,
+          "description": "This course introduces the fundamental concepts of probability theory. Topics include counting techniques, probability, conditional probability, Bayes theorem, multivariate distributions, discrete and continuous probability distributions, functions of random variables, marginal distributions, Central Limit Theorem and sampling distributions. This course is a prerequisite for Mathematical Statistics. Letter grade. (Offered fall semester, alternate years.)"
+        },
+        {
+          "course_number": "MATH 361",
+          "name": "Mathematical Statistics",
+          "prerequisite": "MATH 360",
+          "credit_hours": 3,
+          "description": "This course introduces the fundamental concepts in statistics. Topics include modes of convergence, maximum likelihood, UMVUE, Rao-Kramer theorem, sufficiency and completeness, Lehmann-Scheffe theorem, confidence intervals, hypothesis testing, generalized likelihood ratio test, tests for genetic association, contingency tables, linear models. (Offered spring semester, alternate years.)"
+        },
+        {
+          "course_number": "ISP 363",
+          "name": "Cybersecurity 1",
+          "prerequisite": "CPSC 353",
+          "credit_hours": 3,
+          "description": "Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. Letter grade with Pass/No Pass option. (Offered every year.)"
+        },
+        {
+          "course_number": "MGSC 406",
+          "name": "Advanced Experimental Design and Statistics",
+          "prerequisite": "MATH 203 or MGSC 209 or equivalent, and advanced standing",
+          "credit_hours": 3,
+          "description": "Advanced statistics as employed in the construction and optimization of experimental designs and subsequent analysis of data. Between-designs and one- and two-way ANOVA in detail from a linear modeling and least squares perspective (to match basic econometrics); power planning; general tests of contrasts; within-designs and repeated measures designs. Letter grade. (Offered spring semester.)"
+        },
+        {
+          "course_number": "CPSC 430",
+          "name": "Computational Economics",
+          "prerequisite": "MATH 110, CPSC 230 or CPSC 236 or consent of instructor",
+          "credit_hours": 4,
+          "description": "This course will introduce students to the computational tools required to understand electronic exchange systems and implement economic experiments. Students will be required to become familiar with numerical analysis, computer simulation and programming of experiments. Letter grade. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 435",
+          "name": "BioMedical Informatics",
+          "prerequisite": "CPSC 230",
+          "credit_hours": 3,
+          "description": "Students are introduced to contemporary research topics in medical informatics, including computational techniques for the collection, management, retrieval, and analysis of biomedical data. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 445",
+          "name": "High Performance Computing",
+          "prerequisite": "CPSC 350 or consent of instructor",
+          "credit_hours": 3,
+          "description": "The course introduces students to parallel computing architectures and programming models. Students learn and practice parallel programming techniques using shared memory and message passing. Course topics include parallel computing fundamentals, Unix and C, shared memory parallel computing (with OpenMP), message passing parallel computing (with MPI), parallel performance evaluation, and multilevel parallel computing (with OpenMP and MPI combined). (Offered alternate years.)"
+        },
+        {
+          "course_number": "ECON 452",
+          "name": "Econometrics",
+          "prerequisite": "ECON 200, ECON 201, MATH 109 or MATH 110, MGSC 209 or MATH 203, with a minimum grade of C- in each prerequisite and ACBE major, or computational science, or economics, or mathematics minor, or enrollment in the Applied Statistical Analysis Certificate program",
+          "credit_hours": 3,
+          "description": "Mathematical and statistical tools to measure economic phenomena. This will involve mathematical formulation of economic theories and statistical inference relating economic theory to empirical analysis. Letter grade. (Offered spring semester.)"
+        },
+        {
+          "course_number": "CPSC 458",
+          "name": "Web Engineering",
+          "prerequisite": "CPSC 350",
+          "credit_hours": 3,
+          "description": "Students explore the principles and techniques for developing and managing web applications using HTML5, CSS and JavaScript, as well as other web development frameworks such as Ruby on Rails. Students will acquire skills to develop, install, configure, customize, optimize, and troubleshoot web applications. (Offered Spring Semester.)"
+        },
+        {
+          "course_number": "MGSC 496",
+          "name": "Special Topics in Management Science (Applied Analytics and Decision Making)",
+          "credit_hours": 3,
+          "description": "In-depth study of a specific area, content of course changes every semester. May be repeated once. (Offered as needed.)"
+        }
+      ]
+    },
+    {
+      "name": "Professional Portfolio",
+      "credits_required": 1,
+      "note": "Students must complete a 1-credit section of ENGR 397 - Engineering Portfolio Design.",
+      "courses": [
+        {
+          "course_number": "ENGR 397",
+          "name": "Engineering Portfolio Design",
+          "prerequisite": "Senior standing only",
+          "credit_hours": 1,
+          "description": "Students develop and publish a professional portfolio highlighting skills developed, projects completed, and competencies gained over the course of their students. Students will learn to build a personal brand in preparation for entering the engineering workforce. Pass/No Pass. (Offered every year.)"
+        }
+      ]
+    }
+  ],
+  "total_credits": 75,
+  "metadata": {
+    "year": "2025",
+    "subject": "Data Science",
+    "program_type": "Major"
+  }
+}

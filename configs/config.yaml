@@ -40,18 +40,18 @@ embedding:
 # Chunker Configuration
 chunker:
   strategy: "recursive"
-  target_tokens: 1250
+  target_tokens: 1000
   min_tokens: 500
   overlap_ratio: 0.1
   respect_headings: true
 
 # LLM Configuration
 llm:
-  model: "deepseek-r1:8b"
+  model: "gemma3:4b"
   temperature: 0.1
   top_p: 0.6
   max_tokens: 4000
-  timeout: 180
+  timeout: 300
   system_prompt: >
     You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
     
@@ -78,7 +78,7 @@ llm:
 retrieval:
   top_k: 10
   rerank_top_k: 8
-  enable_reranking: true
+  enable_reranking: false
   major_catalogs_chunks: 8
   minor_catalogs_chunks: 0
   4_year_plans_chunks: 0

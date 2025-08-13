@@ -1,7 +1,7 @@
 {
   "program": "Computer Science, B.S.",
   "institution": "Chapman University",
-  "academic_year": "2022–2023",
+  "academic_year": "2023–2024",
   "requirements": {
     "GPA": {
       "lower_division": 2.5,
@@ -135,15 +135,31 @@
           "courses": [
             {
               "course_number": "BIOL 204",
-              "name": "From Molecules to Cells: Evolution of Life on Earth",
-              "credit_hours": 4,
+              "name": "From Molecules to Cells: Evolution of Life on Earth (Gen Biol I)",
+              "corequisite": "BIOL 204L",
+              "credit_hours": 3,
               "description": "Principles of biology as a chronology of life on earth. Course focuses on the important evolutionary breakthroughs during the history of life that survive to the present day as biological principles: replication by nucleic acids, biochemical systems, gene expression and control, mitosis, meiosis, Mendelian genetics, and protist diversity. Letter grade with Pass/No Pass option. (Offered every semester.)"
             },
             {
+              "course_number": "BIOL 204L",
+              "name": "From Molecules to Cells: Evolution of Life on Earth (Gen Biol I), Lab",
+              "corequisite": "BIOL 204",
+              "credit_hours": 1,
+              "description": " Laboratory component taken with lecture section of From Molecules to Cells: Evolution of Life on Earth (Gen Biol I) Letter grade with Pass/No Pass option. (Offered every semester.)"
+            },
+            {
               "course_number": "BIOL 205",
-              "name": "Evolution and Diversity of Multicellular Organisms",
-              "credit_hours": 4,
+              "name": "Evolution and Diversity of Multicellular Organisms (Gen Biol II)",
+              "corequisite": "BIOL 205L",
+              "credit_hours": 3,
               "description": "Evolution of fungi, plants, and animals (invertebrates and vertebrates); including development, anatomy, physiology, and ecology. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+            },
+            {
+              "course_number": "BIOL 205L",
+              "name": "Evolution and Diversity of Multicellular Organisms (Gen Biol II), Lab",
+              "corequisite": "BIOL 205",
+              "credit_hours": 1,
+              "description": "Laboratory component taken with Evolution and Diversity of Multicellular Organisms (Gen Biol II) lecture section. Letter grade with Pass/No Pass option. (Offered spring semester.)"
             }
           ]
         },
@@ -257,19 +273,19 @@
       "notes": "All upper division courses must be completed with a grade of C- or higher.",
       "courses": [
         {
-          "course_number": "CPSC 330",
+          "course_number": "CENG 330",
           "name": "Digital Logic Design I",
           "prerequisite": "CPSC 231 or CENG 231",
           "credit_hours": 3,
           "description": "Students learn the fundamental principles and practice of digital logic. The course covers binary numbers and arithmetic. Students study Boolean algebra as a method of reasoning about sequential circuits including truth tables and Karnaugh maps, logic minimization, gates and flip-flops, sequential logic and combinatorial logic. The course requires one hour of supervised work in a laboratory in addition to three hours per week of lecture. Letter grade with Pass/No Pass option. (Offered every semester.)"
         },
         {
-          "course_number": "CPSC 330L",
+          "course_number": "CENG 330L",
           "name": "Digital Logic Design I Lab",
           "prerequisite": "CENG 231 or CPSC 231",
-          "corequisite": "CPSC 330",
+          "corequisite": "CENG 330",
           "credit_hours": 1,
-          "description": "Laboratory component of CPSC 330. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "Laboratory component of CENG 330. Letter grade with Pass/No Pass option. (Offered every semester.)"
         },
         {
           "course_number": "CPSC 350",
@@ -279,9 +295,9 @@
           "description": "Students study core data structures and algorithms, such as arrays, stacks, lists, queues, trees, hash tables, graphs; search and sort. Students engage on projects that involve individually chosen advanced data structures and algorithms. The focus is on applications of data structures and algorithms, utilization of existing practical data sets, and performance trade-offs. Letter grade. (Offered every semester.)"
         },
         {
-          "course_number": "CPSC 351",
+          "course_number": "CENG 351",
           "name": "Computer Architecture I",
-          "prerequisite": "CPSC 330",
+          "prerequisite": "CENG 330",
           "credit_hours": 3,
           "description": "Students learn the organization and structure of the major hardware components of computers to understand the mechanics of information transfer and control within a digital computer system and the fundamentals of logic design. Letter grade with Pass/No Pass option. (Offered every semester.)"
         },
@@ -309,7 +325,7 @@
         {
           "course_number": "CPSC 406",
           "name": "Algorithm Analysis",
-          "prerequisite": "CPSC 350",
+          "prerequisite": "MATH 250, CPSC 350",
           "credit_hours": 3,
           "description": "Students study ideas and techniques useful for designing and analyzing data structures and algorithms. In particular, the analytic tools needed for analyzing upper bounds for algorithms and lower bounds for problems will be covered. Problem areas include sorting, graph-based problems, dynamic programming, combinatorial algorithms, computational geometry, encryption, parallel and distributed models, and NP-completeness. Letter grade with Pass/No Pass option. (Offered as needed.)"
         },
@@ -332,12 +348,6 @@
           "name": "Social and Ethical Issues in Computing",
           "credit_hours": 3,
           "description": "This course considers a range of ethical and social issues related to the effects of computers on how we live, focusing on broad social issues as well as individual responsibilities. Privacy and intellectual property (e.g. P2P downloading), software licenses, software reliability, and risks. Letter grade with Pass/No Pass option. (Offered every semester.)"
-        },
-        {
-          "course_number": "ENGR 300",
-          "name": "3D Printing and Design",
-          "credit_hours": 3,
-          "description": "Student are exposed to the complete lifecycle of the 3D printing process. Students will begin by assembling their own fused deposition modeling (FDM) printer, learning the design and function of each hardware component and how they combine to produce a finished print. Students will learn the characteristics of all major filament types, nozzle sizes and types, how to slice 3D models and adjust slicer settings to produce quality gcode, how to resolve common print errors, and how to post-process prints (including wood and metal finishing). Students will also learn to design their own 3D models for printing, culminating in a final, independent project of their own creation. Letter grade with Pass/No Pass option. (Offered as needed.)"
         },
         {
           "course_number": "SE 300",
@@ -372,7 +382,7 @@
         {
           "course_number": "CPSC 355",
           "name": "Human Computer Interaction",
-          "prerequisite": "CPSC 231",
+          "prerequisite": "CPSC 349",
           "credit_hours": 3,
           "description": "Students study the foundations of human-interaction, with emphasis on user-centered design methodologies. Topics such as usability, human factors, user studies, and multi-model interfaces will be explored, and the theory put into practice through programming projects that develop graphical user interfaces and applications for the Android or iPhone/iPad. Letter grade with Pass/No Pass option. (Offered every year.)"
         },
@@ -385,7 +395,7 @@
         },
         {
           "course_number": "CPSC 357",
-          "name": "iOS Application Development ",
+          "name": "iOS Application Development",
           "prerequisite": "CPSC 231",
           "credit_hours": 3,
           "description": "An introduction to app development using the iOS operating system and Swift. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as ipads, iphones, and watches. (Offered every year.)"
@@ -425,6 +435,13 @@
           "description": "May be repeated for credit. (Offered as needed.)"
         },
         {
+          "course_number": "CENG 381",
+          "name": "Modeling and Simulation",
+          "prerequisite": "CENG 231",
+          "credit_hours": 3,
+          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade with Pass/No Pass option. (Offered as needed.)"
+        },
+        {
           "course_number": "CPSC 390",
           "name": "Artificial Intelligence",
           "prerequisite": "CPSC 350",
@@ -453,13 +470,6 @@
           "description": "Students will learn the software tools and programming techniques needed to design and build a prototype implementation of a domain-specific language. On the theoretical side, students will learn enough of the mathematical underpinnings of the tools to apply them with confidence. On the practical side, students will write a grammar and build a lexer, parser, type checker, and interpreter for a fragment of C++. Letter grade with Pass/No Pass option. (Offered as needed.)"
         },
         {
-          "course_number": "CPSC 430",
-          "name": "Computational Economics",
-          "prerequisite": "MATH 110, CPSC 230 or CPSC 236 or consent of instructor",
-          "credit_hours": 4,
-          "description": "This course will introduce students to the computational tools required to understand electronic exchange systems and implement economic experiments. Students will be required to become familiar with numerical analysis, computer simulation and programming of experiments. Letter grade. (Offered as needed.)"
-        },
-        {
           "course_number": "CPSC 445",
           "name": "High Performance Computing",
           "prerequisite": "CPSC 350 or consent of instructor",
@@ -472,13 +482,20 @@
           "prerequisite": "CPSC 353",
           "credit_hours": 3,
           "description": "Students explore the principles and techniques for implementing TCP/IP based networks using Microsoft Windows and Linux servers and clients, including the skills to configure, customize, optimize, troubleshoot, and integrate networks. (Offered as needed.)"
+        },
+        {
+          "course_number": "CPSC 458",
+          "name": "Web Engineering",
+          "prerequisite": "CPSC 350",
+          "credit_hours": 3,
+          "description": "Students explore the principles and techniques for developing and managing web applications using HTML5, CSS and JavaScript, as well as other web development frameworks such as Ruby on Rails. Students will acquire skills to develop, install, configure, customize, optimize, and troubleshoot web applications. (Offered as needed.)"
         }
       ]
     }
   ],
   "total_credits": "77-78",
   "metadata": {
-    "year": "2022",
+    "year": "2023",
     "subject": "Computer Science",
     "program_type": "Major"
   }

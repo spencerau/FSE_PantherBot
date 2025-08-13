@@ -8,5 +8,5 @@ streamlit
 pytest
 pymupdf
 sentence-transformers
-mcp
+#mcp
 fastmcp
