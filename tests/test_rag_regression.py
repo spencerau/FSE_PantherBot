@@ -27,21 +27,33 @@ def test_queries():
 
 @pytest.mark.parametrize("query_data", 
     yaml.safe_load(open(Path(__file__).parent / '../configs' / 'test_queries.yaml'))['queries'],
-    ids=lambda q: f"{q['year']}_{q['major_or_minor']}_{q.get('major', 'general')}"
+    ids=lambda q: f"{q.get('year', 'null')}_{q['major_or_minor']}_{q.get('major', 'general')}"
 )
 def test_rag_regression(rag_system, query_data):
     query = query_data['question']
-    year = query_data['year']
+    year = query_data.get('year')
     major = query_data.get('major')
     must_contain = query_data.get('must_contain', [])
     must_cite = query_data.get('must_cite_substring', [])
+    expected_collections = query_data.get('expected_collections', [])
+    
+    # Convert major names to program codes if needed
+    program_mappings = {
+        'Computer Science': 'cs',
+        'Computer Engineering': 'ce', 
+        'Software Engineering': 'se',
+        'Electrical Engineering': 'ee',
+        'Data Science': 'ds'
+    }
+    program_code = program_mappings.get(major, major) if major else None
     
     answer, chunks = rag_system.answer_question(
         query,
-        student_program=major,
+        student_program=program_code,  # Use program code instead of full name
         student_year=year,
         use_streaming=False,
-        enable_reranking=False  # Use faster mode for tests
+        enable_reranking=False,  # Use faster mode for tests
+        routing_method="hybrid"  # Use new routing system
     )
     
     if isinstance(answer, str):
@@ -49,10 +61,12 @@ def test_rag_regression(rag_system, query_data):
     else:
         answer_text = str(answer)
     
+    # Check required content
     for required_term in must_contain:
         assert required_term.lower() in answer_text.lower(), \
             f"Answer should contain '{required_term}' for query: {query}"
     
+    # Check citations in chunks
     citation_found = True
     for citation_term in must_cite:
         found_in_chunks = any(
@@ -66,13 +80,18 @@ def test_rag_regression(rag_system, query_data):
     assert citation_found, \
         f"Expected citation terms {must_cite} not found in retrieved chunks for query: {query}"
     
+    if expected_collections:
+        collections_found = set(chunk.get('collection', 'unknown') for chunk in chunks)
+        found_expected = any(expected in collections_found for expected in expected_collections)
+        assert found_expected, \
+            f"Expected collections {expected_collections} but got {list(collections_found)} for query: {query}"
+    
     assert len(chunks) > 0, f"No chunks retrieved for query: {query}"
     assert answer_text.strip() != "", f"Empty answer for query: {query}"
 
 
-@pytest.mark.year("2022")
 def test_2022_catalog_queries(rag_system, test_queries):
-    year_2022_queries = [q for q in test_queries if q['year'] == '2022']
+    year_2022_queries = [q for q in test_queries if q.get('year') == '2022']
     print(f"\nTesting {len(year_2022_queries)} queries for 2022...")
     
     for i, query_data in enumerate(year_2022_queries, 1):
@@ -89,9 +108,8 @@ def test_2022_catalog_queries(rag_system, test_queries):
         assert len(chunks) > 0, f"No chunks for 2022 query: {query_data['question']}"
 
 
-@pytest.mark.year("2023")
 def test_2023_catalog_queries(rag_system, test_queries):
-    year_2023_queries = [q for q in test_queries if q['year'] == '2023']
+    year_2023_queries = [q for q in test_queries if q.get('year') == '2023']
     print(f"\nTesting {len(year_2023_queries)} queries for 2023...")
     
     for i, query_data in enumerate(year_2023_queries, 1):
@@ -108,9 +126,8 @@ def test_2023_catalog_queries(rag_system, test_queries):
         assert len(chunks) > 0, f"No chunks for 2023 query: {query_data['question']}"
 
 
-@pytest.mark.year("2024")
 def test_2024_catalog_queries(rag_system, test_queries):
-    year_2024_queries = [q for q in test_queries if q['year'] == '2024']
+    year_2024_queries = [q for q in test_queries if q.get('year') == '2024']
     print(f"\nTesting {len(year_2024_queries)} queries for 2024...")
     
     for i, query_data in enumerate(year_2024_queries, 1):
@@ -273,7 +290,7 @@ def test_retrieval_only_validation(rag_system, test_queries):
     assert len(retrieval_failures) < len(test_queries) * 0.3, f"Too many retrieval failures: {len(retrieval_failures)}"
 
 
-@pytest.mark.slow
+@pytest.mark.skipif(os.getenv("SKIP_SLOW_TESTS") == "1", reason="Slow test skipped")
 def test_full_llm_evaluation(rag_system, test_queries):
     results = []
     total_queries = len(test_queries)

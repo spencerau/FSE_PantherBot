@@ -12,6 +12,7 @@ from utils.text_preprocessing import preprocess_for_embedding
 from retrieval.bm25 import BM25Retriever
 from retrieval.fusion import HybridRetriever
 from retrieval.reranker import BGEReranker
+from retrieval.query_router import QueryRouter
 
 
 class UnifiedRAG:
@@ -29,6 +30,12 @@ class UnifiedRAG:
         
         self.hybrid_disabled = os.getenv('HYBRID_DISABLED', 'false').lower() == 'true'
         self.rerank_disabled = os.getenv('RERANK_DISABLED', 'false').lower() == 'true'
+        
+        try:
+            self.query_router = QueryRouter(self.ollama_api)
+        except Exception as e:
+            print(f"Warning: Query router initialization failed: {e}")
+            self.query_router = None
         
         self.bm25_retriever = None
         if not self.hybrid_disabled and os.getenv('OPENSEARCH_URL'):
@@ -269,40 +276,121 @@ class UnifiedRAG:
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
                                   top_k_per_collection: int = 8) -> List[Dict]:
+        """
+        Dynamically search multiple collections with intelligent chunk allocation.
+        """
         all_results = []
         
-        major_chunks = int(self.config['retrieval']['major_catalogs_chunks'])
-        minor_chunks = self.config['retrieval']['minor_catalogs_chunks']
+        # Get dynamic chunk allocation based on collections to search
+        chunk_allocation = self._calculate_dynamic_chunk_allocation(collection_names, query)
         
-        if 'major_catalogs' in collection_names:
-            major_results = self.search_collection(
-                query, 'major_catalogs', student_program, student_year, 
-                top_k=major_chunks
-            )
-            all_results.extend(major_results)
-        
-        if 'minor_catalogs' in collection_names:
-            minor_results = self.search_collection(
-                query, 'minor_catalogs', student_program, student_year, top_k=minor_chunks
-            )
-            all_results.extend(minor_results)
-        
-        if '4_year_plans' in collection_names and student_program:
-            best_year = self._find_best_4_year_plan_year(student_year, student_program)
+        # Search each collection with its allocated chunk count
+        for collection_name in collection_names:
+            collection_id = collection_name if collection_name in ['major_catalogs', 'minor_catalogs', 'general_knowledge', '4_year_plans'] else collection_name
+            chunks_for_this_collection = chunk_allocation.get(collection_name, self.config['retrieval']['min_chunks_per_collection'])
             
-            plan_results = self.search_collection(
-                query, '4_year_plans', student_program, best_year, top_k=2 
-            )
-            all_results.extend(plan_results)
-        
-        if 'general_knowledge' in collection_names:
-            used_chunks = len(all_results)
-            remaining_slots = max(0, top_k_per_collection - used_chunks)
-            if remaining_slots > 0:
-                general_results = self.search_collection(
-                    query, 'general_knowledge', None, None, top_k=remaining_slots
+            if collection_name == 'major_catalogs':
+                results = self.search_collection(
+                    query, collection_id, student_program, student_year, 
+                    top_k=chunks_for_this_collection
                 )
-                all_results.extend(general_results)
+                all_results.extend(results)
+            
+            elif collection_name == 'minor_catalogs':
+                results = self.search_collection(
+                    query, collection_id, student_program, student_year, 
+                    top_k=chunks_for_this_collection
+                )
+                all_results.extend(results)
+                
+            elif collection_name == '4_year_plans':
+                if student_program:
+                    best_year = self._find_best_4_year_plan_year(student_year, student_program)
+                    results = self.search_collection(
+                        query, collection_id, student_program, best_year, 
+                        top_k=chunks_for_this_collection
+                    )
+                else:
+                    results = self.search_collection(
+                        query, collection_id, student_program=None, student_year=student_year, 
+                        top_k=chunks_for_this_collection
+                    )
+                all_results.extend(results)
+                
+            elif collection_name == 'general_knowledge':
+                results = self.search_collection(
+                    query, collection_id, student_program=None, student_year=None, 
+                    top_k=chunks_for_this_collection
+                )
+                all_results.extend(results)
+        
+        return all_results
+    
+    def _calculate_dynamic_chunk_allocation(self, collection_names: List[str], query: str) -> Dict[str, int]:
+        """
+        Dynamically calculate how many chunks to retrieve from each collection.
+        """
+        total_budget = self.config['retrieval']['total_retrieval_budget']
+        min_chunks = self.config['retrieval']['min_chunks_per_collection'] 
+        max_chunks = self.config['retrieval']['max_chunks_per_collection']
+        weights = self.config['retrieval']['collection_weights']
+        
+        allocation = {}
+        total_weight = sum(weights.get(col, 0.25) for col in collection_names)
+        
+        remaining_budget = total_budget
+        
+        for collection in collection_names:
+            weight = weights.get(collection, 0.25)
+            base_chunks = int((weight / total_weight) * total_budget)
+            
+            chunks = max(min_chunks, min(max_chunks, base_chunks))
+            allocation[collection] = chunks
+            remaining_budget -= chunks
+        
+        if remaining_budget > 0:
+            priority_collections = self._get_priority_collections(collection_names, query)
+            
+            for collection in priority_collections:
+                if remaining_budget <= 0:
+                    break
+                    
+                current_allocation = allocation.get(collection, 0)
+                if current_allocation < max_chunks:
+                    additional = min(remaining_budget, max_chunks - current_allocation)
+                    allocation[collection] += additional
+                    remaining_budget -= additional
+        
+        return allocation
+    
+    def _get_priority_collections(self, collection_names: List[str], query: str) -> List[str]:
+        """
+        Determine priority order for collections based on query content.
+        """
+        query_lower = query.lower()
+        priority_order = []
+        
+        if any(word in query_lower for word in ['major', 'degree', 'graduation', 'requirement', 'prerequisite']):
+            if 'major_catalogs' in collection_names:
+                priority_order.append('major_catalogs')
+        
+        if any(word in query_lower for word in ['year', 'semester', 'sequence', 'freshman', 'sophomore', 'plan']):
+            if '4_year_plans' in collection_names:
+                priority_order.append('4_year_plans')
+        
+        if any(word in query_lower for word in ['minor']):
+            if 'minor_catalogs' in collection_names:
+                priority_order.append('minor_catalogs')
+        
+        if any(word in query_lower for word in ['policy', 'registration', 'deadline', 'gpa']):
+            if 'general_knowledge' in collection_names:
+                priority_order.append('general_knowledge')
+        
+        for col in collection_names:
+            if col not in priority_order:
+                priority_order.append(col)
+        
+        return priority_order
         
         all_results.sort(key=lambda x: x['score'], reverse=True)
         
@@ -312,24 +400,33 @@ class UnifiedRAG:
                        student_year: str = None, top_k: int = 10, 
                        enable_thinking: bool = True, show_thinking: bool = False,
                        use_streaming: bool = True, test_mode: bool = False,
-                       enable_reranking: bool = None) -> tuple:
+                       enable_reranking: bool = None, routing_method: str = 'hybrid') -> tuple:
         
-        collections_to_search = []
-
-        if student_program and student_year:
-            collections_to_search.append(self.collections['major_catalogs'])
+        if self.query_router:
+            collection_names = self.query_router.route_query(
+                query, student_program, student_year, method=routing_method
+            )
+            collections_to_search = []
+            for name in collection_names:
+                if name in self.collections:
+                    collections_to_search.append(self.collections[name])
         else:
-            collections_to_search = [
-                self.collections['general_knowledge'],
-                self.collections['major_catalogs']
-            ]
+            collections_to_search = []
 
-        if student_program and self.config.get('retrieval', {}).get('4_year_plans_chunks', 0) > 0:
-            collections_to_search.append(self.collections['4_year_plans'])
+            if student_program and student_year:
+                collections_to_search.append(self.collections['major_catalogs'])
+            else:
+                collections_to_search = [
+                    self.collections['general_knowledge'],
+                    self.collections['major_catalogs']
+                ]
 
-        minor_keywords = ['minor']
-        if any(keyword in query.lower() for keyword in minor_keywords):
-            collections_to_search.append(self.collections['minor_catalogs'])
+            if student_program:
+                collections_to_search.append(self.collections['4_year_plans'])
+
+            minor_keywords = ['minor']
+            if any(keyword in query.lower() for keyword in minor_keywords):
+                collections_to_search.append(self.collections['minor_catalogs'])
 
         collections_to_search = list(dict.fromkeys(collections_to_search))
 
@@ -338,11 +435,8 @@ class UnifiedRAG:
             top_k_per_collection=top_k
         )
 
-        config_total = (
-            int(self.config['retrieval']['major_catalogs_chunks']) + 
-            int(self.config['retrieval']['minor_catalogs_chunks'])
-        )
-        max_chunks = max(config_total, top_k)
+        total_budget = self.config['retrieval']['total_retrieval_budget']
+        max_chunks = max(total_budget, top_k)
         retrieved_chunks = retrieved_chunks[:max_chunks]
         
         should_rerank = enable_reranking if enable_reranking is not None else not self.rerank_disabled

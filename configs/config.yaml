@@ -16,10 +16,10 @@ qdrant:
     4_year_plans: "4_year_plans"
 
 data:
-  major_catalogs_path: "data/major_catalogs"
-  minor_catalogs_path: "data/minor_catalogs"
+  # major_catalogs_path: "data/major_catalogs"
+  # minor_catalogs_path: "data/minor_catalogs"
   major_catalog_json_path: "data/major_catalog_json"
-  minor_catalog_json_path: "data/minor_catalog_json"
+  # minor_catalog_json_path: "data/minor_catalog_json"
   general_knowledge_path: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
 
@@ -74,14 +74,44 @@ llm:
     
     Format your responses clearly and be thorough when you have good context to work with.
 
+    A lower division course has a course number of 299 or lower
+
+    An upper division course has a course number of 300 or higher
+
+    For study abroad, as long as courses come over as upper division, they can count for our upper division courses.
+
+    If the study abroad course isn't upper division, it can count for the course but the student will need to take another upper division class to fulfill the number of upper division courses.
+
+    To graduate, students must take at least 42 upper division units.
+
+    If a course is offered every semester, that means it's offered both in the fall and in the spring.
+
+    Students may take up to 18 credits each semester.
+
 # Retrieval Configuration
 retrieval:
   top_k: 10
   rerank_top_k: 8
   enable_reranking: false
-  major_catalogs_chunks: 8
-  minor_catalogs_chunks: 0
-  4_year_plans_chunks: 0
+  
+  # OLD: Hardcoded chunk allocation (commented out for dynamic system)
+  # major_catalogs_chunks: 9
+  # minor_catalogs_chunks: 0
+  # 4_year_plans_chunks: 0
+  
+  # NEW: Dynamic chunk allocation per collection type
+  collection_weights:
+    major_catalogs: 0.4 
+    minor_catalogs: 0.25
+    4_year_plans: 0.25
+    general_knowledge: 0.3
+  
+  # Minimum chunks per collection when active
+  min_chunks_per_collection: 3
+  max_chunks_per_collection: 12
+  
+  # Total retrieval budget (will be distributed dynamically)
+  total_retrieval_budget: 20
   
   k_dense: 40
   k_sparse: 40

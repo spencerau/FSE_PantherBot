@@ -79,3 +79,41 @@ queries:
     question: "What statistics courses are required for Data Science in 2024?"
     must_contain: ["statistics", "Data Science"]
     must_cite_substring: ["STAT", "Data Science"]
+
+  # New routing system test queries
+  - year: null
+    major_or_minor: "general"
+    question: "How do I book an appointment with an academic advisor?"
+    must_contain: ["appointment", "advisor", "booking"]
+    must_cite_substring: ["academic advising", "appointment"]
+    expected_collections: ["general_knowledge"]
+
+  - year: null  
+    major_or_minor: "general"
+    question: "When are registration deadlines?"
+    must_contain: ["registration", "deadline"]
+    must_cite_substring: ["registration", "deadline"]
+    expected_collections: ["general_knowledge"]
+
+  - year: "2024"
+    major_or_minor: "scheduling"
+    major: "Computer Science" 
+    question: "What courses should I take in my freshman year for CS?"
+    must_contain: ["freshman", "courses", "Computer Science"]
+    must_cite_substring: ["freshman", "CS", "Computer Science"]
+    expected_collections: ["4_year_plans", "major_catalogs"]
+
+  - year: null
+    major_or_minor: "general"
+    question: "How do I get permission numbers for classes?"
+    must_contain: ["permission", "number"]
+    must_cite_substring: ["permission", "number"]
+    expected_collections: ["general_knowledge"]
+
+  - year: "2024"
+    major_or_minor: "mixed"
+    major: "Computer Science"
+    question: "What are the CS graduation requirements and when should I register?"
+    must_contain: ["graduation", "requirements", "Computer Science", "register"]
+    must_cite_substring: ["Computer Science", "requirements", "registration"]
+    expected_collections: ["major_catalogs", "general_knowledge"]

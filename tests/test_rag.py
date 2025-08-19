@@ -9,7 +9,7 @@ from utils.ollama_api import get_ollama_api
 
 def simple_ollama_llm(prompt, context):
     config = load_config()
-    model = config.get('llm', {}).get('model', 'deepseek-r1:8b')
+    model = config.get('llm', {}).get('model', 'gemma3:4b')
     ollama_api = get_ollama_api()
     
     full_prompt = f"""Context: {context}
@@ -44,9 +44,12 @@ def test_rag_pipeline_real():
         
         try:
             answer, context_chunks = rag_system.answer_question(
-                query, 
+                query,
+                student_program="Computer Science",  # Add student context for better routing
+                student_year="2023",
                 enable_reranking=False,  # Use faster mode for tests
-                use_streaming=False      # Return string instead of generator
+                use_streaming=False,     # Return string instead of generator
+                routing_method="hybrid"  # Use the new routing system
             )
             
             print(f"\nANSWER:")
@@ -89,9 +92,12 @@ def test_unified_rag_basic():
     
     query = "What is Computer Science?"
     answer, context_chunks = rag_system.answer_question(
-        query, 
+        query,
+        student_program="Computer Science",
+        student_year="2024", 
         enable_reranking=False,  # Use faster mode for tests
-        use_streaming=False      # Return string instead of generator
+        use_streaming=False,     # Return string instead of generator
+        routing_method="hybrid"  # Use new routing
     )
     result = {"answer": answer, "context": context_chunks}
     

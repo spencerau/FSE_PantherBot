@@ -1,0 +1,68 @@
+[
+    {
+      "title": "Chapman University Admissions",
+      "url": "https://www.chapman.edu/admission/index.aspx",
+      "category": "Admissions",
+      "description": "Information about undergraduate and graduate admissions at Chapman University."
+    },
+    {
+      "title": "Chapman Canvas Learning Management System",
+      "url": "https://canvas.chapman.edu/",
+      "category": "Academics",
+      "description": "Chapman's Canvas portal for course management and online learning."
+    },
+    {
+      "title": "Chapman Career and Professional Development",
+      "url": "https://www.chapman.edu/campus-services/career/index.aspx",
+      "category": "Career Services",
+      "description": "Career counseling, internship opportunities, and professional development resources for students."
+    },
+    {
+      "title": "Chapman Financial Aid",
+      "url": "https://www.chapman.edu/students/tuition-and-aid/financial-aid/index.aspx",
+      "category": "Financial Aid",
+      "description": "Information on financial aid options, scholarships, and tuition assistance programs."
+    },
+    {
+      "title": "Chapman University Student Life",
+      "url": "https://www.chapman.edu/students/index.aspx",
+      "category": "Student Life",
+      "description": "Resources and services for student organizations, housing, and campus involvement."
+    },
+    {
+      "title": "Chapman Health and Counseling Services",
+      "url": "https://www.chapman.edu/students/health-and-safety/health-services/index.aspx",
+      "category": "Health & Wellness",
+      "description": "Student health and counseling services available on campus."
+    },
+    {
+      "title": "Chapman University Academic Programs",
+      "url": "https://www.chapman.edu/academics/degrees-and-programs.aspx",
+      "category": "Academics",
+      "description": "List of undergraduate, graduate, and professional degree programs offered at Chapman."
+    },
+    {
+      "title": "Chapman Registrar Forms",
+      "url": "www.chapman.edu/registrar/forms",
+      "category": "Academics",
+      "description": "Forms for registration, enrollment, and academic records available through the Registrar's Office."
+    },
+    {
+      "title": "Chapman Academic Advising Appointment Booking",
+      "url": "https://outlook.office365.com/owa/calendar/FSEAcademicAdvising@chapman.edu/bookings/?skipRedirect=1",
+      "category": "Academics",
+      "description": "Book an appointment with an academic advisor through Microsoft Bookings. This link is specifically for program related questions such as courses offered within the Fowler School of Engineering. General Education questions should not be directed here"
+    },
+    {
+      "title": "Fowler School of Engineering Senior Academic Advising",
+      "url": "https://studentsuccess.chapman.edu/manage/login?realm=&amp;r=/portal/brittnie_ferguson",
+      "category": "Academics",
+      "description": "Access the Senior Academic Advising portal for the Fowler School of Engineering. This is the appropriate link for general education related questions. Specific information about Fowler Engineering courses should be directed to the Academic Advising booking"
+    },
+    {
+      "title": "Pre-Approved Transfer Credit Search",
+      "url": "https://tes.collegesource.com/publicview/TES_publicview01.aspx?rid=d1362265-7acd-4ee2-8e6b-853adc8b6b2d&aid=1a01b3f5-6ebe-412d-9ea7-41e5ed981fde",
+      "category": "Academics",
+      "description": "Search for pre-approved transfer credits from other institutions to Chapman University."
+    }
+  ]
