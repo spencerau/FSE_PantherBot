@@ -152,8 +152,37 @@ class PantherSlackBot:
                 'year': os.getenv('STUDENT_CATALOG_YEAR'),
             }
     
+    def _convert_markdown_to_slack(self, text: str) -> str:
+        """Convert Markdown formatting to Slack-compatible formatting"""
+        import re
+        
+        # bold regex
+        text = re.sub(r'\*\*(.*?)\*\*', r'*\1*', text)
+        
+        # bullet points regex
+        text = re.sub(r'^(\s*)[*\-]\s+', r'\1• ', text, flags=re.MULTILINE)
+
+        # numbered lists regex
+        text = re.sub(r'^(\s*)(\d+)\.\s+', r'\1\2. ', text, flags=re.MULTILINE)
+
+        # italic regex
+        text = re.sub(r'(?<!\*)\*([^*\n]+?)\*(?!\*)', r'_\1_', text)
+
+        # headers regex
+        text = re.sub(r'^#+\s*(.*?)$', r'*\1*', text, flags=re.MULTILINE)
+
+        # whitespace cleanup regex
+        text = re.sub(r'\n{3,}', '\n\n', text)
+
+        # hyperlinks regex
+        text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<\2|\1>', text)
+        
+        return text
+    
     def _format_response(self, response: str, sources: list) -> str:
-        formatted = f"PantherBot Academic Assistant\n\n{response}"
+        slack_formatted_response = self._convert_markdown_to_slack(response)
+        
+        formatted = f"*PantherBot Academic Assistant*\n\n{slack_formatted_response}"
         
         if sources:
             formatted += "\n\nSources:\n"
