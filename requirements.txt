@@ -9,4 +9,15 @@ pytest
 pymupdf
 sentence-transformers
 #mcp
-fastmcp
+# fastmcp
+
+# Slack integration
+slack-bolt
+slack-sdk
+python-dotenv
+aiohttp
+pytest-asyncio
+
+# FastAPI for RAG API service
+fastapi
+uvicorn

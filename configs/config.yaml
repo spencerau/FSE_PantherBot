@@ -16,10 +16,10 @@ qdrant:
     4_year_plans: "4_year_plans"
 
 data:
-  major_catalogs_path: "data/major_catalogs"
-  minor_catalogs_path: "data/minor_catalogs"
+  # major_catalogs_path: "data/major_catalogs"
+  # minor_catalogs_path: "data/minor_catalogs"
   major_catalog_json_path: "data/major_catalog_json"
-  minor_catalog_json_path: "data/minor_catalog_json"
+  # minor_catalog_json_path: "data/minor_catalog_json"
   general_knowledge_path: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
 
@@ -74,14 +74,57 @@ llm:
     
     Format your responses clearly and be thorough when you have good context to work with.
 
+    Courses are numbered as follows:
+    001-099 Remedial courses and courses not appropriate for college degree credit but designed to meet specific needs of individuals or groups where degree credit is not required. Remedial
+    courses are noncredit courses.
+    100-299 Lower-division courses for first-year and sophomore levels; first-year level 100-199 and sophomore level 200-299.
+    129, 229, 329, 429 These numbers indicate experimental coursework offered by a department. Experimental courses are designed to offer additional opportunities to explore areas and subjects
+    of special interest and may be repeated for credit if course content is different. Course topics, prerequisites and credits may vary. Some courses require student lab fees. Specific course details
+    will be listed in the course schedule.
+    194, 394 These numbers indicate coursework offered through the Chapman Study Abroad program. Courses have been approved for credit but do not equate to any regular Chapman courses.
+    199, 299, 399, 499 Individual study courses.
+    290, 490 Internship courses.
+    291, 491 Student-faculty research and creative activity courses.
+    300-399 Upper-division courses for junior and senior levels. Sophomores may enroll provided they meet prerequisites and restrictions. First-year students are admitted with written consent of
+    instructor and chair of department offering the course.
+    400-499 Upper-division courses for junior and senior levels. First-year students may not enroll. 
+    500-699 Graduate courses for graduate students and seniors meeting specific guidelines.
+    700-799 Post-master’s and doctoral courses
+
+    For study abroad, as long as courses come over as upper division, they can count for our upper division courses.
+
+    If the study abroad course isn't upper division, it can count for the course but the student will need to take another upper division class to fulfill the number of upper division courses.
+
+    To graduate, students must take at least 42 upper division units.
+
+    If a course is offered every semester, that means it's offered both in the fall and in the spring.
+
+    Students may take up to 18 credits each semester.
+
 # Retrieval Configuration
 retrieval:
   top_k: 10
   rerank_top_k: 8
   enable_reranking: false
-  major_catalogs_chunks: 8
-  minor_catalogs_chunks: 0
-  4_year_plans_chunks: 0
+  
+  # OLD: Hardcoded chunk allocation (commented out for dynamic system)
+  # major_catalogs_chunks: 9
+  # minor_catalogs_chunks: 0
+  # 4_year_plans_chunks: 0
+  
+  # NEW: Dynamic chunk allocation per collection type
+  collection_weights:
+    major_catalogs: 0.4 
+    minor_catalogs: 0.25
+    4_year_plans: 0.25
+    general_knowledge: 0.3
+  
+  # Minimum chunks per collection when active
+  min_chunks_per_collection: 3
+  max_chunks_per_collection: 12
+  
+  # Total retrieval budget (will be distributed dynamically)
+  total_retrieval_budget: 20
   
   k_dense: 40
   k_sparse: 40

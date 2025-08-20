@@ -84,61 +84,132 @@ class UnifiedIngestion:
     def _chunk_text_with_metadata(self, text: str, base_metadata: Dict) -> List[tuple]:
         return self.chunker.chunk_text(text, base_metadata)
     
-    def _extract_json_content_for_embedding(self, json_data: Dict, section_path: str = "") -> List[Dict]:
+    def _extract_json_content_for_embedding(self, json_data, section_path: str = "") -> List[Dict]:
         """
         Extract meaningful text content from JSON for embedding.
         Returns list of content dictionaries with text and metadata.
+        Handles both array format (like important_links.json) and catalog format.
         """
         content_items = []
         
-        if isinstance(json_data, dict):
+        if isinstance(json_data, list):
+            content_items = self._extract_json_array_content(json_data)
+        
+        elif isinstance(json_data, dict):
             if 'program' in json_data and 'sections' in json_data:
-                program_text = f"Program: {json_data.get('program', '')}\n"
-                program_text += f"Institution: {json_data.get('institution', '')}\n"
-                program_text += f"Academic Year: {json_data.get('academic_year', '')}\n"
-                
-                if 'requirements' in json_data:
-                    req = json_data['requirements']
-                    program_text += f"\nAcademic Requirements:\n"
-                    if 'GPA' in req:
-                        program_text += f"• Lower Division GPA Requirement: {req['GPA'].get('lower_division', 'N/A')}\n"
-                        program_text += f"• Major GPA Requirement: {req['GPA'].get('major', 'N/A')}\n"
-                    if 'grade_requirement' in req:
-                        program_text += f"• Minimum Grade Requirement: {req['grade_requirement']}\n"
-                    if 'upper_division_units' in req:
-                        program_text += f"• Upper Division Unit Requirement: {req['upper_division_units']} units\n"
-                
-                if 'total_credits' in json_data:
-                    program_text += f"\nTotal Program Credits: {json_data['total_credits']}\n"
-                
-                content_items.append({
-                    'text': program_text.strip(),
-                    'section_type': 'program_overview',
-                    'section_name': 'Program Information'
-                })
-                
-                for section in json_data.get('sections', []):
-                    section_content = self._process_catalog_section(section)
-                    content_items.extend(section_content)
-                
-                if 'sections' in json_data:
-                    summary_text = f"Program Structure Summary for {json_data.get('program', 'Unknown Program')}:\n\n"
-                    summary_text += "This program consists of the following requirement categories:\n"
-                    
-                    for section in json_data['sections']:
-                        section_name = section.get('name', 'Unknown Section')
-                        section_credits = section.get('credits', 'N/A')
-                        classification = self._classify_section(section_name)
-                        summary_text += f"• {classification}: {section_name} ({section_credits} credits)\n"
-                    
-                    if 'total_credits' in json_data:
-                        summary_text += f"\nTotal Program Credits: {json_data['total_credits']}"
+                content_items = self._extract_catalog_json_content(json_data)
+            
+            else:
+                content_items = self._extract_dict_json_content(json_data)
+        
+        return content_items
+    
+    def _extract_json_array_content(self, json_array: List) -> List[Dict]:
+        """Handle JSON arrays like important_links.json"""
+        content_items = []
+        
+        for item in json_array:
+            if isinstance(item, dict):
+                if 'title' in item and 'url' in item:
+                    text_content = f"Title: {item.get('title', '')}\n"
+                    text_content += f"URL: {item.get('url', '')}\n"
+                    text_content += f"Category: {item.get('category', '')}\n"
+                    text_content += f"Description: {item.get('description', '')}\n"
                     
                     content_items.append({
-                        'text': summary_text.strip(),
-                        'section_type': 'program_structure',
-                        'section_name': 'Program Structure Summary'
+                        'text': text_content.strip(),
+                        'section_type': 'resource_link',
+                        'section_name': item.get('category', 'General Resource'),
+                        'section_classification': 'Resource Links'
                     })
+                
+                else:
+                    text_parts = []
+                    for key, value in item.items():
+                        if isinstance(value, (str, int, float, bool)):
+                            text_parts.append(f"{key.title()}: {value}")
+                    
+                    if text_parts:
+                        content_items.append({
+                            'text': '\n'.join(text_parts),
+                            'section_type': 'structured_data',
+                            'section_name': 'Data Entry',
+                            'section_classification': 'Structured Information'
+                        })
+        
+        return content_items
+    
+    def _extract_dict_json_content(self, json_dict: Dict) -> List[Dict]:
+        """Handle general dictionary JSON structures"""
+        content_items = []
+        
+        text_parts = []
+        for key, value in json_dict.items():
+            if isinstance(value, (str, int, float, bool)):
+                text_parts.append(f"{key.title()}: {value}")
+            elif isinstance(value, list) and value and isinstance(value[0], str):
+                text_parts.append(f"{key.title()}: {', '.join(value)}")
+        
+        if text_parts:
+            content_items.append({
+                'text': '\n'.join(text_parts),
+                'section_type': 'general_info',
+                'section_name': 'General Information',
+                'section_classification': 'Information'
+            })
+        
+        return content_items
+    
+    def _extract_catalog_json_content(self, json_data: Dict) -> List[Dict]:
+        """Handle academic catalog JSON structure (original logic)"""
+        content_items = []
+        
+        program_text = f"Program: {json_data.get('program', '')}\n"
+        program_text += f"Institution: {json_data.get('institution', '')}\n"
+        program_text += f"Academic Year: {json_data.get('academic_year', '')}\n"
+        
+        if 'requirements' in json_data:
+            req = json_data['requirements']
+            program_text += f"\nAcademic Requirements:\n"
+            if 'GPA' in req:
+                program_text += f"• Lower Division GPA Requirement: {req['GPA'].get('lower_division', 'N/A')}\n"
+                program_text += f"• Major GPA Requirement: {req['GPA'].get('major', 'N/A')}\n"
+            if 'grade_requirement' in req:
+                program_text += f"• Minimum Grade Requirement: {req['grade_requirement']}\n"
+            if 'upper_division_units' in req:
+                program_text += f"• Upper Division Unit Requirement: {req['upper_division_units']} units\n"
+        
+        if 'total_credits' in json_data:
+            program_text += f"\nTotal Program Credits: {json_data['total_credits']}\n"
+        
+        content_items.append({
+            'text': program_text.strip(),
+            'section_type': 'program_overview',
+            'section_name': 'Program Information'
+        })
+        
+        for section in json_data.get('sections', []):
+            section_content = self._process_catalog_section(section)
+            content_items.extend(section_content)
+        
+        if 'sections' in json_data:
+            summary_text = f"Program Structure Summary for {json_data.get('program', 'Unknown Program')}:\n\n"
+            summary_text += "This program consists of the following requirement categories:\n"
+            
+            for section in json_data['sections']:
+                section_name = section.get('name', 'Unknown Section')
+                section_credits = section.get('credits', 'N/A')
+                classification = self._classify_section(section_name)
+                summary_text += f"• {classification}: {section_name} ({section_credits} credits)\n"
+            
+            if 'total_credits' in json_data:
+                summary_text += f"\nTotal Program Credits: {json_data['total_credits']}"
+            
+            content_items.append({
+                'text': summary_text.strip(),
+                'section_type': 'program_structure',
+                'section_name': 'Program Structure Summary'
+            })
         
         return content_items
     
@@ -232,6 +303,7 @@ class UnifiedIngestion:
                     'Software Engineering': ('se', 'Software Engineering'),
                     'ElecEng': ('ee', 'Electrical Engineering'),
                     'Electrical Engineering': ('ee', 'Electrical Engineering'),
+                    'DataSci': ('ds', 'Data Science'),
                     'Analytics': ('ds', 'Data Science'),
                     'Data Science': ('ds', 'Data Science')
                 }

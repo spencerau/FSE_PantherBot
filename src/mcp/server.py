@@ -1,9 +1,10 @@
-
 import os
 import sys
 import yaml
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from fastmcp import FastMCP
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from src.pipeline import (
     ingest_documents,
     reindex_collection,
@@ -75,13 +76,12 @@ def answer_with_context_tool(query: str, collection: str, k_dense: int, k_sparse
     answer, citations, debug = answer_with_context(query, collection, k_dense, k_sparse, rrf_k, top_k_rerank)
     return {"answer": answer, "citations": citations, "debug": debug}
 
-@mcp.resource("resource://collections/<name>/documents")
-def collection_documents_resource(uri: str, op: str):
-    if op == "list":
-        return list_collection_documents(uri)
-    if op == "read":
-        return read_document_resource(uri)
+@mcp.resource("resource://collections/{name}/documents")
+def collection_documents_resource(name: str):
+
+    return {"collection": name, "documents": []}
     return None
 
 if __name__ == "__main__":
-    mcp.run()
+    import uvicorn
+    uvicorn.run(mcp.http_app, host="127.0.0.1", port=8765)

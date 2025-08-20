@@ -41,7 +41,7 @@
     {
       "name": "Lower-Division Core Requirements",
       "credits": "23-24",
-      "notes": "All lower division courses must be completed with a grade of C- or higher.",
+      "notes": "These are the required lower division courses for the major. All lower division courses must be completed with a grade of C- or higher.",
       "courses": [
         {
           "course_number": "ENGR 101",
@@ -279,7 +279,7 @@
     {
       "name": "Upper-Division Requirements",
       "credits": 25,
-      "notes": "All upper division courses must be completed with a grade of C- or higher.",
+      "notes": "These are the required upper division courses for the major. All upper division courses must be completed with a grade of C- or higher.",
       "courses": [
         {
           "course_number": "CENG 330",
