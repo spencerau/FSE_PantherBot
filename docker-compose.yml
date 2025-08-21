@@ -14,8 +14,10 @@ services:
       - PYTHONPATH=/app/src
     env_file:
       - ./src/slack/.env
+      - ./src/memory/.env
     depends_on:
       - qdrant
+      - postgres
     restart: unless-stopped
 
   app:
@@ -58,16 +60,31 @@ services:
     ports:
       - "6333:6333"
 
-  # postgresql:
-  #   image: postgres:latest
-  #   volumes:
-  #     - ./postgres_data:/var/lib/postgresql/data
-  #   environment:
-  #     - POSTGRES_USER=your_user
-  #     - POSTGRES_PASSWORD=your_password
-  #     - POSTGRES_DB=your_db
-  #   ports:
-  #     - "5432:5432"
+  postgres:
+    image: postgres:15
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./src/memory/.env
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  memory-compressor:
+    build: .
+    command: bash scripts/memory_compression.sh
+    volumes:
+      - ./src:/app/src
+      - ./configs:/app/configs
+      - ./scripts:/app/scripts
+    environment:
+      - OLLAMA_HOST=host.docker.internal
+      - PYTHONPATH=/app/src
+    env_file:
+      - ./src/memory/.env
+    depends_on:
+      - postgres
+    restart: unless-stopped
 
   # ollama:
   #   image: ollama/ollama

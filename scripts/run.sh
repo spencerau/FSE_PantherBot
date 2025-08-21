@@ -17,15 +17,15 @@ while getopts ":btc" opt; do
       ;;
     \? )
       echo "Usage: $0 [-b] [-t] [-c]"
-      echo "  -b  Enable rebuild of containers"
+      echo "  -b  Rebuild containers"
       echo "  -t  Run tests after starting services"
-      echo "  -c  Clean all Qdrant collections before ingestion"
+      echo "  -c  Clean Qdrant collections and run ingestion"
       echo ""
       echo "Examples:"
-      echo "  ./run.sh           # Normal run with ingestion"
-      echo "  ./run.sh -c        # Clean collections and run with ingestion"
-      echo "  ./run.sh -b        # Rebuild containers and run"
-      echo "  ./run.sh -c -b -t  # Clean, rebuild, run, and test"
+      echo "  ./run.sh           # Start services only (no rebuild, no ingestion)"
+      echo "  ./run.sh -c        # Clean collections and run ingestion"
+      echo "  ./run.sh -b        # Rebuild containers and start services"
+      echo "  ./run.sh -c -b -t  # Clean, rebuild, run ingestion, and test"
       exit 1
       ;;
   esac
@@ -38,7 +38,6 @@ docker compose down
 
 export PYTHONPATH="$PYTHONPATH:$(pwd)/src"
 
-# Clean collections if requested (do this before starting containers)
 if [ "$CLEAN_COLLECTIONS" = true ]; then
   echo "Cleaning all Qdrant collections..."
   echo "Removing qdrant_data directory..."
@@ -47,7 +46,7 @@ if [ "$CLEAN_COLLECTIONS" = true ]; then
 fi
 
 echo "Starting containers..."
-if [ "$BUILD" = true ] || [ "$CLEAN_COLLECTIONS" = true ]; then
+if [ "$BUILD" = true ]; then
   echo "Building and starting containers..."
   docker compose up -d --build
 else
@@ -55,21 +54,16 @@ else
   docker compose up -d
 fi
 
-#echo "Pulling required models..."
-#./pull_models_mac.sh
-
 echo "Waiting for containers to be ready..."
 sleep 5
 
-# echo "Checking if Qdrant is responding..."
-# curl -f http://localhost:6333/collections || echo "Qdrant not yet ready, waiting longer..."
-# sleep 10
-
-# echo "Ingesting data from PDF documents..."
-python src/ingestion/ingest.py
-
-# echo "Checking collections after ingestion..."
-# curl http://localhost:6333/collections
+# Only run ingestion if CLEAN_COLLECTIONS flag is set
+if [ "$CLEAN_COLLECTIONS" = true ]; then
+  echo "Ingesting data from PDF documents..."
+  python src/ingestion/ingest.py
+else
+  echo "Skipping ingestion (use -c flag to clean collections and run ingestion)"
+fi
 
 echo "Running tests..."
 if [ "$RUN_TESTS" = true ]; then

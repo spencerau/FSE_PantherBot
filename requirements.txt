@@ -8,8 +8,6 @@ streamlit
 pytest
 pymupdf
 sentence-transformers
-#mcp
-# fastmcp
 
 # Slack integration
 slack-bolt
@@ -17,6 +15,10 @@ slack-sdk
 python-dotenv
 aiohttp
 pytest-asyncio
+
+# PostgreSQL database
+asyncpg
+psycopg2-binary
 
 # FastAPI for RAG API service
 fastapi

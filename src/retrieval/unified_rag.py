@@ -256,13 +256,15 @@ class UnifiedRAG:
         """
         if not student_year or not student_program:
             return None
+        
+        student_year_str = str(student_year)
             
         available_years = ['2025', '2024', '2023']
         
-        if student_year in available_years:
-            return student_year
+        if student_year_str in available_years:
+            return student_year_str
             
-        student_year_int = int(student_year) if student_year.isdigit() else 0
+        student_year_int = int(student_year_str) if student_year_str.isdigit() else 0
         
         best_year = None
         for year in sorted(available_years):
@@ -281,10 +283,8 @@ class UnifiedRAG:
         """
         all_results = []
         
-        # Get dynamic chunk allocation based on collections to search
         chunk_allocation = self._calculate_dynamic_chunk_allocation(collection_names, query)
         
-        # Search each collection with its allocated chunk count
         for collection_name in collection_names:
             collection_id = collection_name if collection_name in ['major_catalogs', 'minor_catalogs', 'general_knowledge', '4_year_plans'] else collection_name
             chunks_for_this_collection = chunk_allocation.get(collection_name, self.config['retrieval']['min_chunks_per_collection'])
@@ -327,9 +327,6 @@ class UnifiedRAG:
         return all_results
     
     def _calculate_dynamic_chunk_allocation(self, collection_names: List[str], query: str) -> Dict[str, int]:
-        """
-        Dynamically calculate how many chunks to retrieve from each collection.
-        """
         total_budget = self.config['retrieval']['total_retrieval_budget']
         min_chunks = self.config['retrieval']['min_chunks_per_collection'] 
         max_chunks = self.config['retrieval']['max_chunks_per_collection']
@@ -364,9 +361,6 @@ class UnifiedRAG:
         return allocation
     
     def _get_priority_collections(self, collection_names: List[str], query: str) -> List[str]:
-        """
-        Determine priority order for collections based on query content.
-        """
         query_lower = query.lower()
         priority_order = []
         
