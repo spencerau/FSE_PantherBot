@@ -47,6 +47,9 @@ class StudentProfileManager:
         else:
             major_text = text.strip()
         
+        major_text = re.sub(r',\s*\d{4}.*$', '', major_text)
+        major_text = re.sub(r'\s*\d{4}.*$', '', major_text)
+        
         normalized = major_text.lower().strip()
         
         if normalized in self.major_mappings:

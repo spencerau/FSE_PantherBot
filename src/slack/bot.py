@@ -61,22 +61,22 @@ class PantherSlackBot:
         @self.app.message("help")
         async def handle_help(message, say):
             help_text = """
-                PantherBot Help
+        PantherBot Help
 
-                I can help you with:
-                - Course requirements for your major
-                - Academic policies and procedures  
-                - Registration information
-                - 4-year plan guidance
-                - General academic questions
+        I can help you with:
+        - Course requirements for your major
+        - Academic policies and procedures  
+        - Registration information
+        - 4-year plan guidance
+        - General academic questions
 
-                Example questions:
-                - "What are the upper division requirements for Computer Science?"
-                - "How do I register for classes?"
-                - "What courses should I take my freshman year?"
-                - "How do I book an appointment with an academic advisor?"
+        Example questions:
+        - "What are the upper division requirements for Computer Science?"
+        - "How do I register for classes?"
+        - "What courses should I take my freshman year?"
+        - "How do I book an appointment with an academic advisor?"
 
-                Just ask me any academic question and I'll do my best to help!
+        Just ask me any academic question and I'll do my best to help!
             """
             await say(help_text)
         
@@ -165,15 +165,15 @@ Example: 2024""")
         await asyncio.sleep(1)
         
         await say("""
-            To provide you with personalized academic guidance, I need to set up your student profile.
-            First, please tell me your major by providing me with your major:
-            Valid Majors:
-            • Computer Science
-            • Computer Engineering 
-            • Data Science
-            • Software Engineering
-            • Electrical Engineering
-            Example: Computer Science
+        To provide you with personalized academic guidance, I need to set up your student profile.
+        First, please tell me your major by providing me with your major:
+        Valid Majors:
+        • Computer Science
+        • Computer Engineering 
+        • Data Science
+        • Software Engineering
+        • Electrical Engineering
+        Example: Computer Science
         """)
 
     async def _handle_profile_setup(self, text: str, user_id: str, say):
@@ -205,13 +205,13 @@ Example: 2024""")
                 await say(message)
                 await asyncio.sleep(1)
                 await say("""
-                    Now, please tell me your catalog year by providing me with your catalog year:
+                Now, please tell me your catalog year by providing me with your catalog year:
 
-                    Your catalog year is the year you first entered the university.
+                Your catalog year is the year you first entered the university.
 
-                    Valid Catalog Years: 2022, 2023, 2024, 2025
+                Valid Catalog Years: 2022, 2023, 2024, 2025
 
-                    Example: 2024
+                Example: 2024
             """)
             else:
                 await say(f"{message}")
@@ -219,31 +219,30 @@ Example: 2024""")
             
         elif catalog_year and not major:
             await say("""
-                Please provide your major first before setting your catalog year.
+            Please provide your major first before setting your catalog year.
 
-                Valid Majors:
-                • Computer Science
-                • Computer Engineering 
-                • Data Science
-                • Software Engineering
-                • Electrical Engineering
+            Valid Majors:
+            • Computer Science
+            • Computer Engineering 
+            • Data Science
+            • Software Engineering
+            • Electrical Engineering
 
-                Example: Computer Science
+            Example: Computer Science
                 """)
             return
         else:
             await say("""
-                I didn't recognize that format. Please provide your major like this:
+            I didn't recognize that format. Please provide your major like this:
 
-                Computer Science
+            Computer Science
 
-                Valid Majors:
-                • Computer Science
-                • Computer Engineering 
-                • Data Science
-                • Software Engineering
-                • Electrical Engineering
-
+            Valid Majors:
+            • Computer Science
+            • Computer Engineering 
+            • Data Science
+            • Software Engineering
+            • Electrical Engineering
                 """)
             return
 
@@ -262,12 +261,12 @@ Example: 2024""")
                 await say("Please provide your major first before setting your catalog year.")
         else:
             await say("""
-                I need your catalog year to complete your profile.
+            I need your catalog year to complete your profile.
 
-                Example: 2024
-                      
-                Valid Catalog Years: 2022, 2023, 2024, 2025
-                """)
+            Example: 2024
+                    
+            Valid Catalog Years: 2022, 2023, 2024, 2025
+            """)
 
     async def _handle_profile_update(self, text: str, user_id: str, say):
         major = self.student_manager.parse_major_input(text)

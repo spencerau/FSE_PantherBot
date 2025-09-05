@@ -23,9 +23,33 @@ data:
   general_knowledge_path: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
 
+# Cluster Configuration
+cluster:
+  enabled: false
+  # For SSH + container deployment
+  ssh_host: "dgx0.chapman.edu"
+  ssh_user: "spau"
+  ssh_port: 22
+  
+  container_name: "ollama-spencerau"
+  ollama_host: "localhost"
+  ollama_port: 11434
+  
+  max_retries: 3
+  retry_delay: 5
+  health_check_interval: 30
+  
+  gpu_enabled: true
+  memory_limit: "80g"
+  gpu_memory_fraction: 0.8
+
 # Embedding Configuration
 embedding:
+  # compute cluster embedding model
+  # model: "bge-m3:567m"
+  # local laptop embedding model  
   model: "nomic-embed-text"
+  
   #chunk_size: 2000
   #chunk_overlap: 250
   batch_size: 32
@@ -47,11 +71,15 @@ chunker:
 
 # LLM Configuration
 llm:
+  # Cluster deployment with larger model
+  # model: "deepseek-r1:70b"
+  # Local development fallback
   model: "gemma3:4b"
-  temperature: 0.1
-  top_p: 0.6
-  max_tokens: 4000
-  timeout: 300
+  # model: "cogito:3b"
+  temperature: 0.2
+  top_p: 0.7
+  max_tokens: 6000
+  timeout: 600  # Increased timeout for larger model
   system_prompt: >
     You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
     
@@ -105,7 +133,7 @@ llm:
 retrieval:
   top_k: 10
   rerank_top_k: 8
-  enable_reranking: false
+  enable_reranking: true 
   
   # OLD: Hardcoded chunk allocation (commented out for dynamic system)
   # major_catalogs_chunks: 9
@@ -114,28 +142,28 @@ retrieval:
   
   # NEW: Dynamic chunk allocation per collection type
   collection_weights:
-    major_catalogs: 0.4 
-    minor_catalogs: 0.25
+    major_catalogs: 0.5
+    minor_catalogs: 0.15
     4_year_plans: 0.25
-    general_knowledge: 0.3
+    general_knowledge: 0.35
   
   # Minimum chunks per collection when active
-  min_chunks_per_collection: 3
-  max_chunks_per_collection: 12
+  min_chunks_per_collection: 5
+  max_chunks_per_collection: 20
   
   # Total retrieval budget (will be distributed dynamically)
-  total_retrieval_budget: 20
+  total_retrieval_budget: 40
   
-  k_dense: 40
-  k_sparse: 40
+  k_dense: 50
+  k_sparse: 50
   rrf_k: 60
   fuse_weights:
-    dense: 0.6
-    sparse: 0.4
+    dense: 0.7 # semantic search (nomic embed/something sexier on compute cluster)
+    sparse: 0.3
 
 # Reranker Configuration
 reranker:
-  model: "BAAI/bge-reranker-v2-m3"
+  model: "xitao/bge-reranker-v2-m3"
   top_k: 10
   batch_size: 32
   pdf_weight: 1.0
@@ -144,7 +172,7 @@ reranker:
   top_k_rerank: 12
   activation: "sigmoid"
 
-mcp:
-  host: "127.0.0.1"
-  port: 8765
-  transport: "stdio"
+# mcp:
+#   host: "127.0.0.1"
+#   port: 8765
+#   transport: "stdio"

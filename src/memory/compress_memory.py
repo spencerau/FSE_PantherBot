@@ -50,7 +50,7 @@ class MemoryCompressionService:
         try:
             async with self.db_manager.connection_pool.acquire() as conn:
                 result = await conn.execute(
-                    'DELETE FROM raw_messages WHERE processed = TRUE AND timestamp < NOW() - INTERVAL %s DAY',
+                    "DELETE FROM raw_messages WHERE processed = TRUE AND timestamp < NOW() - make_interval(days => $1)",
                     days_old
                 )
             

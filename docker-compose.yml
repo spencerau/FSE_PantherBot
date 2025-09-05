@@ -10,6 +10,7 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - OLLAMA_HOST=host.docker.internal
+      #- OLLAMA_HOST=ollama
       - RERANK_DISABLED=true
       - PYTHONPATH=/app/src
     env_file:
@@ -18,6 +19,7 @@ services:
     depends_on:
       - qdrant
       - postgres
+      #- ollama
     restart: unless-stopped
 
   app:
@@ -31,10 +33,12 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - OLLAMA_HOST=host.docker.internal
+      #- OLLAMA_HOST=ollama
       - PYTHONPATH=/app/src
     depends_on:
       - qdrant
       - tika
+      #- ollama
 
   streamlit:
     build: .
@@ -69,6 +73,11 @@ services:
     ports:
       - "5432:5432"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-pantherbot} -d ${POSTGRES_DB:-pantherbot}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   memory-compressor:
     build: .
@@ -79,11 +88,15 @@ services:
       - ./scripts:/app/scripts
     environment:
       - OLLAMA_HOST=host.docker.internal
+      #- OLLAMA_HOST=ollama
       - PYTHONPATH=/app/src
     env_file:
       - ./src/memory/.env
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      # ollama:
+      #   condition: service_started
     restart: unless-stopped
 
   # ollama:
@@ -101,6 +114,7 @@ services:
   #     resources:
   #       limits:
   #         memory: 8G
+  #   restart: unless-stopped
 
   tika:
     image: apache/tika:latest

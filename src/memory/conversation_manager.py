@@ -8,12 +8,15 @@ from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent))
 from utils.ollama_api import OllamaAPI
+from utils.config_loader import load_config
 from memory.database import DatabaseManager
 
 logger = logging.getLogger(__name__)
 
 class ConversationMemoryManager:
     def __init__(self, compression_threshold: int = 10):
+        self.config = load_config()
+        
         env_path = Path(__file__).parent / '.env'
         if env_path.exists():
             load_dotenv(env_path)
@@ -41,7 +44,7 @@ class ConversationMemoryManager:
             existing_memory = await self.db_manager.get_conversation_memory(slack_user_id)
             context = existing_memory['conversation_summary'] if existing_memory else ""
             
-            compressed_summary = await self._generate_summary(conversation_text, context)
+            compressed_summary = self._generate_summary(conversation_text, context)
             
             total_message_count = (existing_memory['message_count'] if existing_memory else 0) + len(unprocessed_messages)
             
@@ -67,31 +70,26 @@ class ConversationMemoryManager:
                 formatted.append(f"Assistant: {msg['response_text']}")
         return "\n\n".join(formatted)
 
-    async def _generate_summary(self, conversation_text: str, existing_context: str = "") -> str:
+    def _generate_summary(self, conversation_text: str, existing_context: str = "") -> str:
         prompt = f"""
-Summarize this academic advising conversation into key points that would be helpful for future interactions:
+Summarize this advising conversation into key points that would be helpful for future interactions:
 
 Previous context: {existing_context}
 
 Recent conversation:
 {conversation_text}
 
-Focus on:
-- Academic questions asked
-- Course requirements discussed
-- Registration issues
-- Academic goals mentioned
-- Any specific concerns or needs
-
-Provide a concise summary that preserves important academic context for future conversations.
+Provide a concise summary that preserves context for future conversations.
 """
         
         try:
-            response = await self.ollama_api.generate_response(
-                prompt=prompt,
-                model="llama3.2:3b",
-                temperature=0.3,
-                max_tokens=500
+            messages = [{"role": "user", "content": prompt}]
+            model_name = self.config.get('llm', {}).get('model', 'gemma3:4b')
+            response = self.ollama_api.chat(
+                model=model_name,
+                messages=messages,
+                stream=False,
+                temperature=0.35
             )
             return response.strip()
         except Exception as e:

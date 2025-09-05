@@ -7,10 +7,16 @@ from typing import List, Dict, Optional
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.config_loader import load_config
 
 
 class QueryRouter:
     def __init__(self, ollama_api=None):
+        self.config = load_config()
+        
         try:
             self.semantic_model = SentenceTransformer('all-MiniLM-L6-v2')
             self.semantic_enabled = True
@@ -214,8 +220,9 @@ class QueryRouter:
             Collections:"""
 
         try:
+            model_name = self.config.get('llm', {}).get('model', 'llama3.2:1b')
             response = self.ollama_api.chat(
-                model='llama3.2:1b',
+                model=model_name,
                 messages=[{'role': 'user', 'content': prompt}],
                 stream=False,
                 options={'temperature': 0.1, 'num_predict': 30}

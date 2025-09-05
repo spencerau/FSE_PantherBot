@@ -3,11 +3,29 @@ import json
 from typing import List, Dict, Any, Iterator, Optional
 import os
 
+from .config_loader import load_config
+
 
 class OllamaAPI:
     
     def __init__(self, base_url: str = None, timeout: int = 300):
-        self.base_url = base_url or f"http://{self._get_ollama_host()}:11434"
+        config = load_config()
+        
+        if base_url:
+            self.base_url = base_url
+        else:
+            cluster_config = config.get('cluster', {})
+            if cluster_config.get('enabled', False):
+                host = cluster_config.get('ollama_host', 'localhost')
+                port = cluster_config.get('ollama_port', 11434)
+                self.base_url = f"http://{host}:{port}"
+                print(f"Using cluster Ollama at {self.base_url}")
+            else:
+                embedding_config = config.get('embedding', {})
+                host = embedding_config.get('ollama_host', self._get_ollama_host())
+                port = embedding_config.get('ollama_port', 11434)
+                self.base_url = f"http://{host}:{port}"
+        
         self.timeout = timeout
         self.session = requests.Session()
         self.session.headers.update({
@@ -91,7 +109,6 @@ class OllamaAPI:
                         content = data['message']['content']
                         accumulated_content += content
                         
-                        # For streaming, handle thinking formatting
                         if hide_thinking:
                             if '<think>' in content:
                                 in_thinking = True

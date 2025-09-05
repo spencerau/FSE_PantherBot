@@ -1,5 +1,6 @@
 import os
 import math
+import numpy as np
 from typing import List, Dict, Any
 from utils.config_loader import load_config
 
@@ -13,15 +14,26 @@ class BGEReranker:
         self.max_candidates = self.config.get('reranker', {}).get('max_candidates_for_rerank', 200)
         self.activation = self.config.get('reranker', {}).get('activation', 'sigmoid')
         self.model = None
+        self.use_ollama = not self.model_name.startswith('BAAI/')
         self._initialize_model()
     
     def _initialize_model(self):
-        try:
-            from sentence_transformers import CrossEncoder
-            self.model = CrossEncoder(self.model_name, trust_remote_code=True)
-        except ImportError:
-            print("sentence-transformers not available, using fallback reranker")
-            self.model = None
+        if self.use_ollama:
+            try:
+                from utils.ollama_api import get_ollama_api
+                self.ollama_api = get_ollama_api()
+                print(f"Using Ollama reranker: {self.model_name}")
+            except Exception as e:
+                print(f"Failed to initialize Ollama reranker: {e}")
+                self.ollama_api = None
+        else:
+            try:
+                from sentence_transformers import CrossEncoder
+                self.model = CrossEncoder(self.model_name, trust_remote_code=True)
+                print(f"Using HuggingFace reranker: {self.model_name}")
+            except ImportError:
+                print("sentence-transformers not available, using fallback reranker")
+                self.model = None
     
     def rerank(self, query: str, documents: List[Dict], top_k: int = None) -> List[Dict]:
         if not documents:
@@ -32,7 +44,9 @@ class BGEReranker:
         
         candidates = documents[:self.max_candidates]
         
-        if self.model is not None:
+        if self.use_ollama and self.ollama_api:
+            scores = self._rerank_with_ollama(query, candidates)
+        elif self.model is not None:
             scores = self._rerank_with_model(query, candidates)
         else:
             scores = self._fallback_rerank(query, candidates)
@@ -45,6 +59,36 @@ class BGEReranker:
         
         reranked_docs.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
         return reranked_docs[:top_k]
+    
+    def _rerank_with_ollama(self, query: str, documents: List[Dict]) -> List[float]:
+        scores = []
+        
+        for doc in documents:
+            text = doc.get('text', '')
+            
+            try:
+                combined_text = f"Query: {query}\nDocument: {text}"
+                embedding = self.ollama_api.get_embeddings(self.model_name, combined_text)
+                
+                if embedding:
+                    import numpy as np
+                    embedding_array = np.array(embedding)
+                    
+                    if len(embedding_array) > 0:
+                        score = float(embedding_array[0])
+                        score = 1 / (1 + math.exp(-score))
+                    else:
+                        score = 0.0
+                else:
+                    score = self._calculate_simple_relevance(query, text)
+                    
+            except Exception as e:
+                print(f"Ollama reranking failed for document: {e}")
+                score = self._calculate_simple_relevance(query, text)
+            
+            scores.append(score)
+        
+        return scores
     
     def _rerank_with_model(self, query: str, documents: List[Dict]) -> List[float]:
         pairs = [[query, doc.get('text', '')] for doc in documents]
