@@ -1,37 +1,58 @@
 # FSE_PantherBot
-Creating an LLM to assist with Academic Advising within the Chapman Fowler School of Engineering
 
-## Introduction
-This project is a locally hosted AI-powered academic advising platform designed for undergraduate students. It leverages large language models (LLMs) and a Retrieval-Augmented Generation (RAG) pipeline to provide 24/7, context-aware academic support. By integrating document extraction (via Apache Tika), vector search/database (Qdrant), and modern LLMs through Ollama, the system can ingest and understand university catalogs, course data, and other resources, enabling students to ask questions and receive accurate, personalized guidance at any time—without sending their data to the cloud.
+AI-powered academic advising platform for Chapman University's Fowler School of Engineering
 
-## Getting Started
+## Overview
 
-## Streamlit
-- Run `pull_models_mac.sh` once to pull the models into the Ollama Docker Container
-- Run `docker compose up -d` to start the Docker containers
-- Run with `PYTHONPATH=src streamlit run streamlit_app.py`
-- Head to `http://localhost:8501/` to test out the Streamlit interface
+FSE_PantherBot is a sophisticated RAG (Retrieval-Augmented Generation) system that provides 24/7 academic advising support via the Fowler School of Engineering Slack Workspace. It combines multiple AI technologies to deliver personalized, accurate guidance to undergraduate students using university catalogs and policies.
+
+## Architecture
+
+### Core Components
+
+- **Document Ingestion**: Apache Tika extracts content from PDFs and academic catalogs
+- **Embedding Model**: BGE-M3 generates semantic embeddings for documents and queries
+- **Vector Database**: Qdrant stores document embeddings with hybrid search capabilities
+- **Reranker**: BGE-Reranker-V2-M3 improves retrieval relevance
+- **LLM**: GPT-OSS 120B generates final responses via Ollama
+- **Memory System**: PostgreSQL stores conversation history with automatic compression
+
+### Retrieval Pipeline
+
+1. **Query Router**: Combines semantic similarity and LLM-based routing to select appropriate document collections
+2. **Hybrid Search**: Fuses dense (semantic) and sparse (BM25) retrieval for optimal results
+3. **Reranking**: Refines retrieved chunks using cross-encoder model
+4. **Response Generation**: LLM synthesizes answers using retrieved context and conversation memory
+
+### Memory Management
+
+- **Conversation Storage**: PostgreSQL tracks user interactions and chat history
+- **Memory Compression**: Intermediate LLM summarizes conversations to maintain context while reducing tokens
+- **Student Profiles**: Persistent storage of major, catalog year, and academic preferences
 
 ## Configuration
-- See [`configs/README.md`](configs/README.md) for configuration details and options.
+
+All system parameters are configured in `configs/config.yaml`<br>
+See [`configs/README.md`](configs/README.md) for detailed options including:
+
+- Model selection and parameters
+- Retrieval weights and thresholds  
+- Memory compression settings
+- Collection-specific configurations
 
 ## Usage
-- `./run.sh [-b] [-t] [-c]`
-	•	-b : Rebuild the Docker containers before running
-	•	-t : Run all test cases in tests
-	•	-c : Clean all Qdrant collections before ingestion
 
-- Only need to rebuild containers if making changes to Dockerfiles or requirements.txt files
+### Local Deployment
 
-# MCP Server
-To run the MCP server:
+- needs to be updated
+
+### DGX0 Compute Cluster
+
 ```bash
-scripts/run_mcp.sh
+# Sync code to cluster
+./scripts/sync_to_cluster.sh
+
+# Deploy on cluster assuming ssh keys are set up properly
+ssh dgx0.chapman.edu
+./scripts/run_cluster.sh -b -c -f
 ```
-Configure host, port, and transport in `configs/default.yaml`.
-
-## Streamlit MCP Mode
-In the Streamlit app, enable "Use MCP server" to route requests through MCP tools. The "Debug" expander shows retrieval lists, fused ranks, rerank scores, and citations.
-
-## Slack Bot Integration
-A Slack bot can call MCP tools via an MCP client. Use the stable tool/resource names and schemas as defined in the MCP server.
