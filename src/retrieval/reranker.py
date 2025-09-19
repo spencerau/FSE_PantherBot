@@ -149,7 +149,8 @@ class BGEReranker:
         return min(jaccard_score + phrase_boost + academic_boost, 1.0)
     
     def rerank_with_weights(self, query: str, documents: List[Dict], 
-                           pdf_weight: float = 1.0, course_weight: float = 1.0) -> List[Dict]:
+                           pdf_weight: float = 1.0, course_weight: float = 1.0, 
+                           year_plan_weight: float = 1.0) -> List[Dict]:
         reranked = self.rerank(query, documents)
         
         for doc in reranked:
@@ -160,6 +161,8 @@ class BGEReranker:
                 doc['rerank_score'] *= pdf_weight
             elif 'course' in collection:
                 doc['rerank_score'] *= course_weight
+            elif '4_year' in collection or 'year_plan' in collection:
+                doc['rerank_score'] *= year_plan_weight
         
         reranked.sort(key=lambda x: x.get('rerank_score', 0), reverse=True)
         return reranked

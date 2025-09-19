@@ -8,9 +8,19 @@ cd /app
 wait_for_postgres() {
     echo "Waiting for PostgreSQL to be ready..."
     
-    # Source environment variables
+    # Source environment variables only if they're not already set
     if [ -f "src/memory/.env" ]; then
-        export $(grep -v '^#' src/memory/.env | xargs)
+        # Only set variables that aren't already defined
+        while IFS='=' read -r key value; do
+            # Skip comments and empty lines
+            [[ $key =~ ^#.*$ ]] && continue
+            [[ -z "$key" ]] && continue
+            
+            # Only export if not already set
+            if [ -z "${!key}" ]; then
+                export "$key=$value"
+            fi
+        done < <(grep -v '^#' src/memory/.env | grep -v '^$')
     fi
     
     POSTGRES_HOST=${POSTGRES_HOST:-postgres}
@@ -48,6 +58,6 @@ while true; do
     echo "$(date): Running memory compression..."
     python src/memory/compress_memory.py
     
-    echo "$(date): Memory compression completed. Sleeping for 12 hours..."
-    sleep 43200
+    echo "$(date): Memory compression completed. Sleeping for 5 minutes..."
+    sleep 300
 done

@@ -302,15 +302,16 @@ Example: 2024""")
                 query=enhanced_query,
                 student_program=user_info.get('program'),
                 student_year=user_info.get('year'),
-                top_k=self.config['retrieval']['top_k'],
-                enable_reranking=False,
+                top_k=self.config.get('retrieval', {}).get('final_top_k', 15),
+                enable_reranking=self.config.get('retrieval', {}).get('enable_reranking', True),
                 use_streaming=False
             )
             
             formatted_response = self._format_response(answer, retrieved_chunks)
             await say(formatted_response)
+            final_answer = answer
             
-            await self.memory_interface.add_conversation_turn(user_id, query, answer)
+            await self.memory_interface.add_conversation_turn(user_id, query, final_answer)
             
             self.logger.info(f"Processed query for user {user_id}: {query[:50]}...")
             

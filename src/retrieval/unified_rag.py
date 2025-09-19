@@ -92,7 +92,9 @@ class UnifiedRAG:
                     'options': {
                         'temperature': self.config['llm']['temperature'],
                         'top_p': self.config['llm']['top_p'],
-                        'num_predict': self.config['llm']['max_tokens']
+                        'num_predict': self.config['llm']['max_tokens'],
+                        'num_ctx': self.config['llm'].get('context_length', 4096),
+                        **self.config['llm'].get('ollama_options', {})
                     }
                 }
                 
@@ -124,7 +126,9 @@ class UnifiedRAG:
                 'options': {
                     'temperature': self.config['llm']['temperature'],
                     'top_p': self.config['llm']['top_p'],
-                    'num_predict': self.config['llm']['max_tokens']
+                    'num_predict': self.config['llm']['max_tokens'],
+                    'num_ctx': self.config['llm'].get('context_length', 4096),
+                    **self.config['llm'].get('ollama_options', {})
                 }
             }
             
@@ -152,16 +156,23 @@ class UnifiedRAG:
                 'ce': 'ce',
                 'se': 'se', 
                 'ee': 'ee',
-                'ds': 'ds'
+                'ds': 'ds',
+                'CompSci': 'cs',
+                'CompEng': 'ce',
+                'SoftEng': 'se',
+                'ElecEng': 'ee',
+                'DataSci': 'ds'
             }
             
             program_code = program_mappings.get(student_program, student_program.lower())
             
+            program_conditions = [
+                FieldCondition(key="program", match=MatchValue(value=program_code)),
+                FieldCondition(key="program", match=MatchValue(value=student_program)),
+            ]
+            
             conditions.append(
-                FieldCondition(
-                    key="program",
-                    match=MatchValue(value=program_code)
-                )
+                Filter(should=program_conditions)
             )
         
         if student_year:
@@ -181,7 +192,8 @@ class UnifiedRAG:
             )
         
         if conditions:
-            return Filter(must=conditions)
+            filter_obj = Filter(must=conditions)
+            return filter_obj
         return None
     
     def search_collection(self, query: str, collection_name: str, 
@@ -250,10 +262,6 @@ class UnifiedRAG:
         return dense_results[:top_k]
     
     def _find_best_4_year_plan_year(self, student_year: str, student_program: str) -> str:
-        """
-        Find the best available 4-year plan year for a student.
-        Since 2022 doesn't have 4-year plans, students should use the next available year.
-        """
         if not student_year or not student_program:
             return None
         
@@ -278,9 +286,6 @@ class UnifiedRAG:
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
                                   top_k_per_collection: int = 8) -> List[Dict]:
-        """
-        Dynamically search multiple collections with intelligent chunk allocation.
-        """
         all_results = []
         
         chunk_allocation = self._calculate_dynamic_chunk_allocation(collection_names, query)
@@ -306,15 +311,82 @@ class UnifiedRAG:
             elif collection_name == '4_year_plans':
                 if student_program:
                     best_year = self._find_best_4_year_plan_year(student_year, student_program)
+                    self.debug_info.append(f"4-year plan search: program={student_program}, year={student_year}, best_year={best_year}")
+                    
+                    test_filter = self._build_filter(student_program, best_year)
+                    self.debug_info.append(f"Filter being applied: {test_filter}")
+                    
                     results = self.search_collection(
                         query, collection_id, student_program, best_year, 
                         top_k=chunks_for_this_collection
                     )
+                    self.debug_info.append(f"4-year plan search with filters: {len(results)} results")
+                    
+                    if not results and best_year:
+                        self.debug_info.append(f"No results with program filter, trying year-only filter")
+                        results = self.search_collection(
+                            query, collection_id, student_program=None, student_year=best_year, 
+                            top_k=chunks_for_this_collection
+                        )
+                        self.debug_info.append(f"4-year plan search with year-only: {len(results)} results")
+                        
+                        if results:
+                            sample_metadata = results[0].get('metadata', {})
+                            self.debug_info.append(f"Sample metadata from year-only results: {sample_metadata}")
+                            
+                            program_values = set()
+                            for r in results[:5]:
+                                meta = r.get('metadata', {})
+                                if 'program' in meta:
+                                    program_values.add(meta['program'])
+                            self.debug_info.append(f"Program values found in metadata: {list(program_values)}")
+                        
+                        if results and student_program:
+                            filtered_results = []
+                            for result in results:
+                                metadata = result.get('metadata', {})
+                                result_program = metadata.get('program', '').lower()
+                                result_subject = metadata.get('subject', '').lower()
+                                file_name = metadata.get('file_name', '').lower()
+                                
+                                program_mappings = {
+                                    'cs': ['cs', 'computer science', 'compsci', 'cpsc'],
+                                    'se': ['se', 'software engineering', 'softeng'],
+                                    'ce': ['ce', 'computer engineering', 'compeng'],
+                                    'ee': ['ee', 'electrical engineering', 'eleceng'],
+                                    'ds': ['ds', 'data science', 'datasci', 'analytics']
+                                }
+                                
+                                possible_matches = program_mappings.get(student_program.lower(), [student_program.lower()])
+                                
+                                matches = False
+                                for match_term in possible_matches:
+                                    if (match_term in result_program or 
+                                        match_term in result_subject or 
+                                        match_term in file_name):
+                                        matches = True
+                                        break
+                                
+                                if matches:
+                                    filtered_results.append(result)
+                            
+                            self.debug_info.append(f"Manual filtering found {len(filtered_results)} matching results")
+                            if filtered_results:
+                                results = filtered_results
+                    
+                    if not results:
+                        self.debug_info.append(f"No results with filters, trying no filters")
+                        results = self.search_collection(
+                            query, collection_id, student_program=None, student_year=None, 
+                            top_k=chunks_for_this_collection
+                        )
+                        self.debug_info.append(f"4-year plan search with no filters: {len(results)} results")
                 else:
                     results = self.search_collection(
                         query, collection_id, student_program=None, student_year=student_year, 
                         top_k=chunks_for_this_collection
                     )
+                    self.debug_info.append(f"4-year plan search (no program): {len(results)} results")
                 all_results.extend(results)
                 
             elif collection_name == 'general_knowledge':
@@ -390,90 +462,146 @@ class UnifiedRAG:
         
         return all_results
     
-    def answer_question(self, query: str, student_program: str = None, 
-                       student_year: str = None, top_k: int = 10, 
-                       enable_thinking: bool = True, show_thinking: bool = False,
-                       use_streaming: bool = True, test_mode: bool = False,
-                       enable_reranking: bool = None, routing_method: str = 'hybrid') -> tuple:
+    def answer_question(self, query: str, conversation_history: List[Dict] = None,
+                       student_program: str = None, student_year: str = None, 
+                       top_k: int = 10, enable_thinking: bool = True, 
+                       show_thinking: bool = False, use_streaming: bool = True, 
+                       test_mode: bool = False, enable_reranking: bool = None, 
+                       routing_method: str = None, return_debug_info: bool = False) -> tuple:
         
-        if self.query_router:
-            collection_names = self.query_router.route_query(
-                query, student_program, student_year, method=routing_method
-            )
-            collections_to_search = []
-            for name in collection_names:
-                if name in self.collections:
-                    collections_to_search.append(self.collections[name])
-        else:
-            collections_to_search = []
-
-            if student_program and student_year:
-                collections_to_search.append(self.collections['major_catalogs'])
+        try:
+            self.debug_info = []
+            if routing_method is None:
+                routing_method = self.config.get('query_router', {}).get('routing_method', 'hybrid')
+            
+            if self.query_router:
+                collection_names = self.query_router.route_query(
+                    query, conversation_history, student_program, student_year, method=routing_method
+                )
+                self.debug_info.append(f"Query router found collections: {collection_names}")
+                
+                if '4_year_plans' in collection_names and 'major_catalogs' not in collection_names:
+                    collection_names.append('major_catalogs')
+                    self.debug_info.append(f"Added major_catalogs since 4-year plans were requested")
+                
+                collections_to_search = []
+                for name in collection_names:
+                    if name in self.collections:
+                        collections_to_search.append(self.collections[name])
+                    else:
+                        self.debug_info.append(f"Collection '{name}' not found in available collections: {list(self.collections.keys())}")
+                self.debug_info.append(f"Collections to search: {len(collections_to_search)} collections")
             else:
-                collections_to_search = [
-                    self.collections['general_knowledge'],
-                    self.collections['major_catalogs']
+                collections_to_search = []
+
+                if student_program and student_year:
+                    collections_to_search.append(self.collections['major_catalogs'])
+                else:
+                    collections_to_search = [
+                        self.collections['general_knowledge'],
+                        self.collections['major_catalogs']
+                    ]
+
+                if student_program:
+                    collections_to_search.append(self.collections['4_year_plans'])
+
+                specific_plan_keywords = [
+                    'sequence', 'schedule', 'plan', 'course sequence', 'timeline',
+                    'roadmap', 'pathway', 'progression', 'recommended order',
+                    'create a plan', 'chemistry track', 'track',
+                    '4 year plan', 'freshman year', 'sophomore year', 'junior year', 'senior year',
+                    'first year', 'second year', 'when should i take'
                 ]
+                if any(keyword in query.lower() for keyword in specific_plan_keywords):
+                    if self.collections['4_year_plans'] not in collections_to_search:
+                        collections_to_search.append(self.collections['4_year_plans'])
 
-            if student_program:
-                collections_to_search.append(self.collections['4_year_plans'])
+                minor_keywords = ['minor']
+                if any(keyword in query.lower() for keyword in minor_keywords):
+                    collections_to_search.append(self.collections['minor_catalogs'])
 
-            minor_keywords = ['minor']
-            if any(keyword in query.lower() for keyword in minor_keywords):
-                collections_to_search.append(self.collections['minor_catalogs'])
+            collections_to_search = list(dict.fromkeys(collections_to_search))
 
-        collections_to_search = list(dict.fromkeys(collections_to_search))
+            retrieved_chunks = self.search_multiple_collections(
+                query, collections_to_search, student_program, student_year, 
+                top_k_per_collection=top_k
+            )
+            self.debug_info.append(f"Initial retrieval found {len(retrieved_chunks)} chunks")
 
-        retrieved_chunks = self.search_multiple_collections(
-            query, collections_to_search, student_program, student_year, 
-            top_k_per_collection=top_k
-        )
-
-        total_budget = self.config['retrieval']['total_retrieval_budget']
-        max_chunks = max(total_budget, top_k)
-        retrieved_chunks = retrieved_chunks[:max_chunks]
-        
-        should_rerank = enable_reranking if enable_reranking is not None else not self.rerank_disabled
-        
-        if should_rerank and not self.rerank_disabled and retrieved_chunks:
-            reranker = self._get_reranker()
-            if reranker:
+            total_budget = self.config['retrieval']['total_retrieval_budget']
+            initial_top_k = self.config.get('retrieval', {}).get('initial_top_k', 20)
+            max_chunks = max(total_budget, initial_top_k)
+            retrieved_chunks = retrieved_chunks[:max_chunks]
+            self.debug_info.append(f"After budget limit: {len(retrieved_chunks)} chunks")
+            
+            should_rerank = enable_reranking if enable_reranking is not None else not self.rerank_disabled
+            
+            if should_rerank and not self.rerank_disabled and retrieved_chunks:
+                reranker = self._get_reranker()
+                if reranker:
+                    try:
+                        final_top_k = self.config.get('retrieval', {}).get('final_top_k', 15)
+                        retrieved_chunks = reranker.rerank(query, retrieved_chunks, top_k=final_top_k)
+                        self.debug_info.append(f"After reranking: {len(retrieved_chunks)} chunks")
+                    except Exception as e:
+                        self.debug_info.append(f"Reranking failed: {e}")
+            
+            self.debug_info.append(f"Final retrieved chunks: {len(retrieved_chunks)}")
+            if not retrieved_chunks:
+                error_msg = ("I don't have enough information to answer your question. "
+                           "Please contact academic advising for assistance.")
+                if return_debug_info:
+                    return error_msg, [], self.debug_info
+                else:
+                    return error_msg, []
+            
+            if test_mode:
+                if return_debug_info:
+                    return "Test mode: retrieval successful", retrieved_chunks, self.debug_info
+                else:
+                    return "Test mode: retrieval successful", retrieved_chunks
+            
+            context_parts = []
+            for chunk in retrieved_chunks:
                 try:
-                    rerank_top_k = self.config.get('reranker', {}).get('top_k_rerank', 12)
-                    retrieved_chunks = reranker.rerank(query, retrieved_chunks, top_k=rerank_top_k)
+                    text = chunk.get('text', chunk.get('chunk_text', ''))
+                    metadata = chunk.get('metadata', {})
+                    
+                    source_info = ""
+                    if isinstance(metadata, dict) and metadata.get('file_name'):
+                        source_info = f"[Source: {metadata['file_name']}]"
+                    
+                    context_parts.append(f"{source_info} {text}")
                 except Exception as e:
-                    print(f"Reranking failed: {e}")
-        
-        if not retrieved_chunks:
-            return ("I don't have enough information to answer your question. "
-                   "Please contact academic advising for assistance."), []
-        
-        if test_mode:
-            return "Test mode: retrieval successful", retrieved_chunks
-        
-        context_parts = []
-        for chunk in retrieved_chunks:
-            text = chunk.get('text', chunk.get('chunk_text', ''))
-            metadata = chunk['metadata']
+                    self.debug_info.append(f"Error processing chunk: {e}")
+                    self.debug_info.append(f"Chunk type: {type(chunk)}")
+                    self.debug_info.append(f"Chunk content: {chunk}")
+                    continue
             
-            source_info = ""
-            if metadata.get('file_name'):
-                source_info = f"[Source: {metadata['file_name']}]"
+            context = "\n\n".join(context_parts)
             
-            context_parts.append(f"{source_info} {text}")
-        
-        context = "\n\n".join(context_parts)
-        
-        prompt = f"""Context from Chapman University's academic catalogs:
+            prompt = f"""Context from Chapman University's academic catalogs:
 
-        {context}
+            {context}
 
-        Student Question: {query}"""
-        
-        answer = self._get_llm_response(prompt, enable_thinking=enable_thinking, 
-                                       show_thinking=show_thinking, use_streaming=use_streaming)
-        
-        return answer, retrieved_chunks
+            Student Question: {query}"""
+            
+            answer = self._get_llm_response(prompt, enable_thinking=enable_thinking, 
+                                           show_thinking=show_thinking, use_streaming=use_streaming)
+            
+            if return_debug_info:
+                return answer, retrieved_chunks, self.debug_info
+            else:
+                return answer, retrieved_chunks
+            
+        except Exception as e:
+            self.debug_info.append(f"Error in answer_question: {e}")
+            import traceback
+            self.debug_info.append(f"Traceback: {traceback.format_exc()}")
+            if return_debug_info:
+                return f"I'm sorry, I encountered an error while processing your question: {str(e)}", [], self.debug_info
+            else:
+                return f"I'm sorry, I encountered an error while processing your question: {str(e)}", []
     
     def get_collection_stats(self, collection_name: str) -> Dict:
         try:

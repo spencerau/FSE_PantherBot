@@ -1,0 +1,13 @@
+# Exclude problematic data directories from Docker context
+postgres_data/
+qdrant_data/
+__pycache__/
+.git/
+.gitignore
+README.md
+*.md
+.DS_Store
+*.log
+.env
+.env.local
+node_modules/
