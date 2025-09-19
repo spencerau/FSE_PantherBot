@@ -166,7 +166,9 @@ cython_debug/
 old
 ollama_data
 qdrant_data
+postgres_data
 .vscode/
 *.bak
 .github
 .reports
+.idea

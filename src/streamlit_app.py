@@ -6,6 +6,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 
 from retrieval.unified_rag import UnifiedRAG
+from utils.config_loader import load_config
 
 
 def main():
@@ -48,7 +49,7 @@ def main():
         student_year = st.selectbox(
             "Catalog year (year you entered):",
             years,
-            index=0,  # Default to 2022
+            index=3,  # Default to 2025
             key="student_year"
         )
         
@@ -61,7 +62,7 @@ def main():
                 if 'error' not in gen_stats:
                     st.info(f"General knowledge: {gen_stats['points_count']} documents")
             
-            if st.button("🔄 Clear Cache & Reload", help="Force reload the AI system"):
+            if st.button("Clear Cache & Reload", help="Force reload the AI system"):
                 if 'rag_system' in st.session_state:
                     del st.session_state.rag_system
                 st.rerun()
@@ -75,12 +76,15 @@ def main():
             key="enable_thinking"
         )
         
-        show_thinking = False
+        show_thinking = True
         if enable_thinking:
+            config = load_config()
+            default_show_thinking = 'deepseek' in config.get('llm', {}).get('model', '').lower()
+            
             show_thinking = st.checkbox(
                 "Show Thinking Process",
-                value=False,
-                help="Display the AI's internal reasoning process. Useful for debugging but may clutter responses.",
+                value=default_show_thinking,
+                help="Display the AI's internal reasoning process. Useful for debugging and understanding the AI's thought process.",
                 key="show_thinking"
             )
         
@@ -94,14 +98,14 @@ def main():
         
         enable_reranking = st.checkbox(
             "Enable Reranking",
-            value=False,
+            value=True,
             help="Use AI reranking for better results (slower, ~30s first use).",
             key="enable_reranking"
         )
         
         debug_mode = st.checkbox(
             "Debug Mode",
-            value=False,
+            value=True,
             help="Show detailed retrieval and reranking information.",
             key="debug_mode"
         )
@@ -137,15 +141,22 @@ def main():
                     }
                     program_code = program_codes.get(student_program, "cs")
                     
-                    answer, retrieved_chunks = rag.answer_question(
-                        prompt, 
-                        student_program=student_program, 
+                    last_n_messages = rag.config.get('query_router', {}).get('last_n_messages', 4)
+                    conversation_history = st.session_state.messages[:-1]
+                    if len(conversation_history) > last_n_messages:
+                        conversation_history = conversation_history[-last_n_messages:]
+                    
+                    answer, retrieved_chunks, debug_info = rag.answer_question(
+                        prompt,
+                        conversation_history=conversation_history,
+                        student_program=program_code,
                         student_year=student_year,
-                        top_k=15,
+                        top_k=rag.config.get('retrieval', {}).get('final_top_k', 15),  # Use config value
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
                         use_streaming=st.session_state.get('use_streaming', True),
-                        enable_reranking=st.session_state.get('enable_reranking', False)
+                        enable_reranking=st.session_state.get('enable_reranking', rag.config.get('retrieval', {}).get('enable_reranking', True)),  # Default from config
+                        return_debug_info=True
                     )
                     
                     if st.session_state.get('use_streaming', True) and hasattr(answer, '__iter__') and not isinstance(answer, str):
@@ -202,6 +213,11 @@ def main():
                                 st.write(f"**Original Query:** {prompt}")
                                 st.write(f"**Student Program:** {student_program}")
                                 st.write(f"**Catalog Year:** {student_year}")
+                                
+                                if debug_info:
+                                    st.subheader("RAG Pipeline Debug Output")
+                                    for debug_msg in debug_info:
+                                        st.code(debug_msg, language="text")
                                 
                                 st.subheader("Retrieval Details")
                                 st.write(f"**Total Chunks Retrieved:** {len(retrieved_chunks)}")

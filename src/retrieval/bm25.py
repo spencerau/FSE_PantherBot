@@ -1,5 +1,6 @@
 import os
 import math
+import re
 from typing import List, Dict, Any, Optional
 from collections import defaultdict, Counter
 import pickle
@@ -18,7 +19,32 @@ class BM25:
         self.doc_metadata = []
     
     def _tokenize(self, text: str) -> List[str]:
-        return text.lower().split()
+        """Enhanced tokenizer that preserves course codes as single tokens"""
+        # Pattern for course codes: Letters followed by optional space and numbers
+        course_code_pattern = r'\b([A-Z]{2,6}\s*\d{2,4}[A-Z]?)\b'
+        
+        course_codes = re.findall(course_code_pattern, text.upper())
+        normalized_codes = []
+        
+        for code in course_codes:
+            normalized = re.sub(r'\s+', '', code).lower()
+            normalized_codes.append(normalized)
+        
+        modified_text = text
+        for i, code in enumerate(course_codes):
+            normalized = normalized_codes[i]
+            modified_text = re.sub(
+                re.escape(code), 
+                normalized, 
+                modified_text, 
+                flags=re.IGNORECASE
+            )
+        
+        modified_text = re.sub(r'[^\w\s]', ' ', modified_text.lower())
+        
+        tokens = modified_text.split()
+        
+        return tokens
     
     def fit(self, corpus: List[str], metadata: List[Dict[str, Any]] = None):
         self.corpus = corpus
@@ -45,12 +71,16 @@ class BM25:
         self.doc_len = [len(self._tokenize(doc)) for doc in corpus]
         self.avgdl = sum(self.doc_len) / nd if nd > 0 else 0
     
-    def search(self, query: str, top_k: int = 10) -> List[Dict[str, Any]]:
+    def search(self, query: str, top_k: int = 10, course_code_boost: float = 2.0) -> List[Dict[str, Any]]:
         if not self.corpus:
             return []
         
         query_tokens = self._tokenize(query)
         scores = []
+        
+        course_code_pattern = r'^[a-z]{2,6}\d{2,4}[a-z]?$'
+        course_code_tokens = [token for token in query_tokens 
+                            if re.match(course_code_pattern, token)]
         
         for i, doc_freqs in enumerate(self.doc_freqs):
             score = 0
@@ -63,7 +93,12 @@ class BM25:
                     
                     numerator = freq * (self.k1 + 1)
                     denominator = freq + self.k1 * (1 - self.b + self.b * doc_len / self.avgdl)
-                    score += idf * numerator / denominator
+                    base_score = idf * numerator / denominator
+                    
+                    if word in course_code_tokens:
+                        base_score *= course_code_boost
+                    
+                    score += base_score
             
             scores.append({
                 'text': self.corpus[i],

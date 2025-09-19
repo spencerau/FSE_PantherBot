@@ -1,16 +1,18 @@
-"""
-Query routing system to determine which collections to search based on query semantics.
-"""
-
 import re
 from typing import List, Dict, Optional
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import sys
+import os
+sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+from utils.config_loader import load_config
 
 
 class QueryRouter:
     def __init__(self, ollama_api=None):
+        self.config = load_config()
+        
         try:
             self.semantic_model = SentenceTransformer('all-MiniLM-L6-v2')
             self.semantic_enabled = True
@@ -24,50 +26,71 @@ class QueryRouter:
             'major_catalogs': {
                 'keywords': [
                     'major', 'degree', 'graduation', 'requirements', 'prerequisite', 
-                    'curriculum', 'program', 'cs', 'computer science', 'engineering',
-                    'courses needed', 'what courses', 'graduate'
+                    'curriculum', 'program', 'cpsc', 'computer science', 'engineering',
+                    'courses needed', 'what courses', 'graduate', 'upper division',
+                    'lower division', 'electives', 'core courses', 'capstone', 'eeng',
+                    'electrical engineering', 'computational sciences', 'ceng', 'game',
+                    'game development', 'math', 'mathematics'
                 ],
                 'patterns': [
-                    r'\b(cs|ce|se|ee|ds)\b',
+                    r'\b(cpsc|eeng|ceng|game|math)\b',
+                    r'\bcs\b(?=.*computational)',
                     r'computer\s+science',
                     r'software\s+engineering', 
                     r'electrical\s+engineering',
-                    r'graduation\s+requirements'
+                    r'computational\s+sciences?',
+                    r'game\s+development',
+                    r'graduation\s+requirements',
+                    r'upper\s+division',
+                    r'core\s+courses'
                 ]
             },
             '4_year_plans': {
                 'keywords': [
-                    'freshman', 'sophomore', 'junior', 'senior', 'year', 'semester',
+                    'freshman', 'sophomore', 'junior', 'senior', 'semester',
                     'sequence', 'schedule', 'plan', 'first year', 'second year',
-                    'when should', 'what order', 'course sequence'
+                    'when should', 'what order', 'course sequence', 'timeline',
+                    'roadmap', 'pathway', 'progression', 'recommended order',
+                    'create a plan', 'chemistry track', 'track'
                 ],
                 'patterns': [
                     r'\b(freshman|sophomore|junior|senior)\s+year',
                     r'\b\d+\s*year',
                     r'first\s+year',
-                    r'course\s+sequence'
+                    r'course\s+sequence',
+                    r'when\s+(should|to)\s+take',
+                    r'recommended\s+(order|sequence)',
+                    r'create\s+a?\s*(4\s*year\s*)?plan',
+                    r'\b4\s*year\s*plan\b',
+                    r'chemistry\s+track',
+                    r'what\s+(order|sequence)',
+                    r'academic\s+(plan|roadmap|pathway)'
                 ]
             },
             'minor_catalogs': {
                 'keywords': [
                     'minor', 'analytics', 'data science minor', 'business minor',
-                    'minors available'
+                    'minors available', 'double major', 'concentration'
                 ],
                 'patterns': [
                     r'\bminor\b',
-                    r'analytics\s+minor'
+                    r'analytics\s+minor',
+                    r'double\s+major'
                 ]
             },
             'general_knowledge': {
                 'keywords': [
                     'registration', 'enroll', 'deadline', 'policy', 'gpa', 'grade',
                     'transfer', 'credit', 'academic', 'advisor', 'permission',
-                    'waitlist', 'drop', 'add'
+                    'waitlist', 'drop', 'add', 'calendar', 'dates', 'withdraw',
+                    'repeat', 'retake', 'hold', 'probation', 'forms', 'petition'
                 ],
                 'patterns': [
                     r'registration\s+process',
                     r'academic\s+policy',
-                    r'transfer\s+credit'
+                    r'transfer\s+credit',
+                    r'permission\s+number',
+                    r'academic\s+calendar'
                 ]
             }
         }
@@ -108,32 +131,73 @@ class QueryRouter:
             embeddings = self.semantic_model.encode(examples)
             self.collection_embeddings[collection] = np.mean(embeddings, axis=0)
     
-    def route_query(self, query: str, student_program: str = None, 
-                   student_year: str = None, method: str = 'hybrid') -> List[str]:
-        """
-        Route query to appropriate collections.
+    def route_query(self, query: str, conversation_history: List[Dict] = None,
+                   student_program: str = None, student_year: str = None, 
+                   method: str = 'hybrid') -> List[str]:
+        enhanced_query = self._enhance_query_with_context(query, conversation_history)
         
-        Args:
-            query: User query
-            student_program: Student's program (cs, ce, se, etc.)
-            student_year: Student's academic year
-            method: 'keyword', 'semantic', 'llm', or 'hybrid'
-        
-        Returns:
-            List of collection names to search
-        """
         if method == 'keyword':
-            return self._keyword_routing(query, student_program, student_year)
+            return self._keyword_routing(enhanced_query, student_program, student_year)
         elif method == 'semantic' and self.semantic_enabled:
-            return self._semantic_routing(query, student_program, student_year)
+            return self._semantic_routing(enhanced_query, student_program, student_year)
         elif method == 'llm' and self.ollama_api:
-            return self._llm_routing(query, student_program, student_year)
+            return self._llm_routing(enhanced_query, student_program, student_year)
         else:
-            return self._hybrid_routing(query, student_program, student_year)
+            return self._hybrid_routing(enhanced_query, student_program, student_year)
+    
+    def _enhance_query_with_context(self, query: str, conversation_history: List[Dict] = None) -> str:
+        if not conversation_history or len(conversation_history) < 2:
+            return query
+        
+        last_n_messages = self.config.get('query_router', {}).get('last_n_messages', 4)
+        
+        ambiguous_words = ['them', 'those', 'it', 'that', 'these', 'they']
+        query_lower = query.lower()
+        
+        has_ambiguous = any(word in query_lower for word in ambiguous_words)
+        is_short = len(query.split()) <= 4
+        
+        if has_ambiguous or is_short:
+            recent_messages = conversation_history[-last_n_messages:] if len(conversation_history) >= last_n_messages else conversation_history
+            
+            context_text = ""
+            for msg in recent_messages:
+                if msg.get('role') == 'user':
+                    context_text += f" {msg.get('content', '')}"
+            
+            if context_text.strip():
+                academic_terms = self._extract_academic_terms(context_text)
+                if academic_terms:
+                    enhanced = f"{query} (related to: {', '.join(academic_terms)})"
+                    return enhanced
+        
+        return query
+    
+    def _extract_academic_terms(self, text: str) -> List[str]:
+        text_lower = text.lower()
+        terms = []
+        
+        course_patterns = [
+            r'\b(cpsc|eeng|ceng|game|math)\s*\d+',
+            r'\bcs\s*\d+(?=.*computational)',
+            r'\b(computer science|software engineering|electrical engineering)',
+            r'\b(computational sciences?|game development)',
+            r'\b(calculus|physics|chemistry|mathematics)',
+            r'\b(major|degree|program|graduation|requirements)',
+            r'\b(prerequisite|corequisite)',
+            r'\b(freshman|sophomore|junior|senior)',
+            r'\b(courses?|classes?)',
+        ]
+        
+        for pattern in course_patterns:
+            matches = re.findall(pattern, text_lower)
+            terms.extend(matches)
+        
+        unique_terms = list(set(terms))[:3]
+        return unique_terms
     
     def _keyword_routing(self, query: str, student_program: str = None, 
                         student_year: str = None) -> List[str]:
-        """Current rule-based approach with improvements."""
         query_lower = query.lower()
         collections = []
         scores = {}
@@ -159,7 +223,11 @@ class QueryRouter:
             collections, query_lower, student_program, student_year
         )
         
-        return collections[:2]
+        if not collections or (len(query.split()) <= 3 and len(collections) < 2):
+            collections.extend(['major_catalogs', '4_year_plans', 'general_knowledge'])
+            collections = list(dict.fromkeys(collections))
+        
+        return collections[:3]
     
     def _semantic_routing(self, query: str, student_program: str = None,
                          student_year: str = None, threshold: float = 0.35) -> List[str]:
@@ -188,7 +256,6 @@ class QueryRouter:
     
     def _llm_routing(self, query: str, student_program: str = None,
                     student_year: str = None) -> List[str]:
-        """LLM-based intelligent routing."""
         prompt = f"""You are a university academic routing system. Given a student query, determine which knowledge collections to search.
 
             Available collections:
@@ -214,8 +281,9 @@ class QueryRouter:
             Collections:"""
 
         try:
+            model_name = self.config.get('llm', {}).get('model', 'llama3.2:1b')
             response = self.ollama_api.chat(
-                model='llama3.2:1b',
+                model=model_name,
                 messages=[{'role': 'user', 'content': prompt}],
                 stream=False,
                 options={'temperature': 0.1, 'num_predict': 30}
@@ -235,7 +303,6 @@ class QueryRouter:
     
     def _hybrid_routing(self, query: str, student_program: str = None,
                        student_year: str = None) -> List[str]:
-        """Hybrid approach: semantic first, LLM for complex cases."""
         
         if self.semantic_enabled:
             semantic_collections = self._semantic_routing(query, student_program, student_year, threshold=0.4)
@@ -256,7 +323,15 @@ class QueryRouter:
         
         if (student_program and student_year and 
             '4_year_plans' not in collections and
-            any(word in query_lower for word in ['year', 'semester', 'sequence', 'plan', 'schedule'])):
+            any(word in query_lower for word in ['sequence', 'plan', 'schedule', 'roadmap', 'timeline'])):
+            collections.append('4_year_plans')
+        
+        if ('4_year_plans' not in collections and
+            any(phrase in query_lower for phrase in ['4 year plan', 'four year plan', 'course sequence', 
+                                                   'freshman year', 'sophomore year', 'junior year', 'senior year',
+                                                   'first year', 'second year', 'when should i take',
+                                                   'recommended order', 'course timeline', 'roadmap',
+                                                   'create a plan', 'academic plan'])):
             collections.append('4_year_plans')
         
         if not collections:

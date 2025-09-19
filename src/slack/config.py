@@ -17,8 +17,6 @@ class SlackConfig:
     test_channel: Optional[str] = None
     test_user: Optional[str] = None
     debug_mode: bool = False
-    student_major: Optional[str] = None
-    student_catalog_year: Optional[str] = None
 
 def load_slack_config() -> SlackConfig:
     
@@ -41,18 +39,13 @@ def load_slack_config() -> SlackConfig:
     test_user = os.getenv("SLACK_TEST_USER")
     debug_mode = os.getenv("SLACK_DEBUG", "false").lower() == "true"
     
-    student_major = os.getenv("STUDENT_MAJOR")
-    student_catalog_year = os.getenv("STUDENT_CATALOG_YEAR")
-    
     return SlackConfig(
         bot_token=bot_token,
         app_token=app_token,
         signing_secret=signing_secret,
         test_channel=test_channel,
         test_user=test_user,
-        debug_mode=debug_mode,
-        student_major=student_major,
-        student_catalog_year=student_catalog_year
+        debug_mode=debug_mode
     )
 
 def validate_environment() -> bool:

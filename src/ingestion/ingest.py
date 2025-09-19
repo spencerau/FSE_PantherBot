@@ -40,15 +40,28 @@ class UnifiedIngestion:
                 self.client.get_collection(collection_name)
                 print(f"Collection '{collection_name}' already exists")
             except Exception:
+                test_embedding = self._get_embedding("test")
+                if test_embedding is None or len(test_embedding) == 0:
+                    # Fallback: determine vector size based on embedding model
+                    if 'bge-m3' in self.embedding_model:
+                        vector_size = 1024
+                    elif 'nomic-embed' in self.embedding_model:
+                        vector_size = 768
+                    else:
+                        vector_size = 768
+                    print(f"Could not get test embedding, using fallback vector size {vector_size} for model {self.embedding_model}")
+                else:
+                    vector_size = len(test_embedding)
+                
                 self.client.create_collection(
                     collection_name=collection_name,
                     vectors_config=VectorParams(
-                        size=768,
+                        size=vector_size,
                         distance=Distance.COSINE
                     )
                 )
-                print(f"Created collection '{collection_name}'")
-    
+                print(f"Created collection '{collection_name}' with vector size {vector_size}")
+
     def _get_embedding(self, text: str, task_type: str = 'document') -> List[float]:
         try:
             processed_text = preprocess_for_embedding([text], task_type, self.config.get('embedding', {}))[0]
@@ -56,10 +69,10 @@ class UnifiedIngestion:
                 model=self.embedding_model,
                 prompt=processed_text
             )
-            return embedding
+            return embedding if embedding is not None else []
         except Exception as e:
             print(f"Error getting embedding: {e}")
-            return None
+            return []
     
     def _get_embeddings_batch(self, texts: List[str], task_type: str = 'document') -> List[List[float]]:
         try:

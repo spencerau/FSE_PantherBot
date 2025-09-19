@@ -54,7 +54,7 @@
           "prerequisite": "MATH 110 or MATH 115",
           "corequisite": "PHYS 101L or previous credit for PHYS 101L",
           "credit_hours": 3,
-          "description": "Students learn how to apply the core principles of calculus-based physics to everyday situations, including connections to chemistry, computation, and engineering. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include symmetry, particles and fields, measurement error, reference frames, kinematics, conservation (of energy, momentum, angular momentum), interactions, transfer (as power, force, torque), and small oscillations. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students learn how to apply the core principles of calculus-based physics to everyday situations, including connections to chemistry, computation, and engineering. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include symmetry, particles and fields, measurement error, reference frames, kinematics, conservation (of energy, momentum, angular momentum), interactions, transfer (as power, force, torque), and small oscillations. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "PHYS 101L",
@@ -62,7 +62,7 @@
           "prerequisite": "MATH 110 or MATH 115",
           "corequisite": "PHYS 101 or previous credit for PHYS 101",
           "credit_hours": 1,
-          "description": "Students solidify understanding of the physical concepts explored in PHYS 101 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 101 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students solidify understanding of the physical concepts explored in PHYS 101 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 101 to provide a complementary perspective on the same material. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "PHYS 102",
@@ -70,7 +70,7 @@
           "prerequisite": "PHYS 101, MATH 111 or MATH 115",
           "corequisite": "PHYS 102L or previous credit for PHYS 102L",
           "credit_hours": 3,
-          "description": "Students explore the principles of electricity and magnetism and learn to understand the roles they play in our everyday experiences. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include the study of electromagnetic fields and motions of charged objects using vector calculus, DC and AC circuit design, magnetic induction and wireless power, and basic properties of light and electromagnetic radiation. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+          "description": "Students explore the principles of electricity and magnetism and learn to understand the roles they play in our everyday experiences. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include the study of electromagnetic fields and motions of charged objects using vector calculus, DC and AC circuit design, magnetic induction and wireless power, and basic properties of light and electromagnetic radiation. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "PHYS 102L",
@@ -78,14 +78,14 @@
           "prerequisite": "PHYS 101",
           "corequisite": "PHYS 102 or previous credit for PHYS 102",
           "credit_hours": 1,
-          "description": "Students solidify understanding of the physical concepts explored in PHYS 102 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 102 to provide a complementary perspective on the same material. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+          "description": "Students solidify understanding of the physical concepts explored in PHYS 102 by designing experiments that test hypotheses, analyzing data with experimental uncertainty, and drawing valid conclusions from results. This course introduces concepts as needed in parallel with PHYS 102 to provide a complementary perspective on the same material. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "PHYS 201",
           "name": "General Physics III",
           "prerequisite": "PHYS 102",
           "credit_hours": 3,
-          "description": "Students continue exploring the principles of physics and their applications to microscopic and macroscopic phenomena. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include waves, sound, thermodynamics, fluids, relativity, and quantum theory. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students continue exploring the principles of physics and their applications to microscopic and macroscopic phenomena. Students develop broadly applicable critical thinking, approximation, and problem-solving skills. Topics include waves, sound, thermodynamics, fluids, relativity, and quantum theory. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "EENG 200",
@@ -93,7 +93,7 @@
           "prerequisite": "MATH 110 or MATH 115",
           "corequisite": "EENG 200L",
           "credit_hours": 3,
-          "description": "Students begin their study of electronics and circuits by studying electricity (current, energy, voltage, power), electronic components (resistors, capacitors, diodes, etc), and fundamental laws for circuits. Students will gain hands on experience building circuits with solderless breadboards in a separate laboratory component. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students begin their study of electronics and circuits by studying electricity (current, energy, voltage, power), electronic components (resistors, capacitors, diodes, etc), and fundamental laws for circuits. Students will gain hands on experience building circuits with solderless breadboards in a separate laboratory component. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "EENG 200L",
@@ -101,20 +101,20 @@
           "prerequisite": "MATH 110 or MATH 115",
           "corequisite": "EENG 200",
           "credit_hours": 1,
-          "description": "Lab component of EENG 200. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Lab component of EENG 200. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "MATH 215",
           "name": "Introduction to Linear Algebra and Differential Equations",
           "prerequisite": "MATH 111 or MATH 116",
           "credit_hours": 3,
-          "description": "Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. (Offered fall semester.)"
+          "description": "Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 230",
           "name": "Computer Science II",
           "credit_hours": 3,
-          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. (Offered every semester.)"
+          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "CENG 231",
@@ -122,7 +122,7 @@
           "prerequisite": "CPSC 230",
           "corequisite": "CENG 231L",
           "credit_hours": 3,
-          "description": "This course introduces students to concepts and techniques in systems programming with the programming languages C and C++ in a *nix environment. Students will gain insight into hardware-software interfaces through hands-on projects involving system calls, concurrency, network programming, memory mapping, and low-level mechanisms for inter-process communication. A laboratory component will allow students to implement conceptual ideas in code for enterprise, real-time, and embedded hardware targets. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "This course introduces students to concepts and techniques in systems programming with the programming languages C and C++ in a *nix environment. Students will gain insight into hardware-software interfaces through hands-on projects involving system calls, concurrency, network programming, memory mapping, and low-level mechanisms for inter-process communication. A laboratory component will allow students to implement conceptual ideas in code for enterprise, real-time, and embedded hardware targets. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "CENG 231L",
@@ -130,14 +130,14 @@
           "prerequisite": "CPSC 230",
           "corequisite": "CENG 231",
           "credit_hours": 1,
-          "description": "Laboratory component of CENG 231. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Laboratory component of CENG 231. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "MATH 250",
           "name": "Discrete Mathematics I",
           "prerequisite": "MATH 101 or equivalent",
           "credit_hours": 3,
-          "description": "This course provides the student with an introduction to the fundamental mathematics of discrete phenomena and computation. This is a key course in the CPSC curriculum as it provides the theoretical background needed for many upper-division courses including Data Structures (combinatorics, formal languages), Logic Design (Boolean algebras, number representation) and Integrated Circuit Design (automata theory, finite state minimization, graph layout). Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "This course provides the student with an introduction to the fundamental mathematics of discrete phenomena and computation. This is a key course in the CPSC curriculum as it provides the theoretical background needed for many upper-division courses including Data Structures (combinatorics, formal languages), Logic Design (Boolean algebras, number representation) and Integrated Circuit Design (automata theory, finite state minimization, graph layout). Letter grade. (Offered every semester.)"
         }
       ],
       "math_sequences": [
@@ -213,7 +213,7 @@
           "prerequisite": "EENG 200",
           "corequisite": "EENG 300L",
           "credit_hours": 3,
-          "description": "Students continue their study of circuits, moving into digital and mixed signal circuit design. Topics include transistors, diodes, AC and DC analysis, analyzing circuit response, and integrated circuits. Students will gain hands on experience in the lab by prototyping circuits, simulating complex designs, and designing and analyzing simple PCB circuits. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+          "description": "Students continue their study of circuits, moving into digital and mixed signal circuit design. Topics include transistors, diodes, AC and DC analysis, analyzing circuit response, and integrated circuits. Students will gain hands on experience in the lab by prototyping circuits, simulating complex designs, and designing and analyzing simple PCB circuits. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "EENG 300L",
@@ -221,7 +221,7 @@
           "prerequisite": "EENG 200L",
           "corequisite": "EENG 300",
           "credit_hours": 1,
-          "description": "Lab component of EENG 300. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+          "description": "Lab component of EENG 300. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 330",
@@ -229,7 +229,7 @@
           "prerequisite": "CPSC 231 or CENG 231",
           "corequisite": "CPSC 330L",
           "credit_hours": 3,
-          "description": "Students learn the fundamental principles and practice of digital logic. The course covers binary numbers and arithmetic. Students study Boolean algebra as a method of reasoning about sequential circuits including truth tables and Karnaugh maps, logic minimization, gates and flip-flops, sequential logic and combinatorial logic. The course requires one hour of supervised work in a laboratory and three hours of lecture per week. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students learn the fundamental principles and practice of digital logic. The course covers binary numbers and arithmetic. Students study Boolean algebra as a method of reasoning about sequential circuits including truth tables and Karnaugh maps, logic minimization, gates and flip-flops, sequential logic and combinatorial logic. The course requires one hour of supervised work in a laboratory and three hours of lecture per week. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "CPSC 330L",
@@ -237,7 +237,7 @@
           "prerequisite": "CPSC 231 or CENG 231",
           "corequisite": "CPSC 330",
           "credit_hours": 1,
-          "description": "Laboratory component of CPSC 330. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Laboratory component of CPSC 330. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "CPSC 350",
@@ -251,7 +251,7 @@
           "name": "Computer Architecture I",
           "prerequisite": "CPSC 330",
           "credit_hours": 3,
-          "description": "Students learn the organization and structure of the major hardware components of computers to understand the mechanics of information transfer and control within a digital computer system and the fundamentals of logic design. (Offered fall semester.)"
+          "description": "Students learn the organization and structure of the major hardware components of computers to understand the mechanics of information transfer and control within a digital computer system and the fundamentals of logic design. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 366",
@@ -259,7 +259,7 @@
           "prerequisite": "CPSC 330",
           "corequisite": "CPSC 366L",
           "credit_hours": 3,
-          "description": "This course introduces combinational and sequential logic circuits, including decoders, multiplexers, flip-flops, arithmetic circuits, and implementations of finite state machines using hardware design languages and FPGA boards. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "This course introduces combinational and sequential logic circuits, including decoders, multiplexers, flip-flops, arithmetic circuits, and implementations of finite state machines using hardware design languages and FPGA boards. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 366L",
@@ -267,21 +267,21 @@
           "prerequisite": "CPSC 330",
           "corequisite": "CPSC 366",
           "credit_hours": 1,
-          "description": "Laboratory component of CPSC 366. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Laboratory component of CPSC 366. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 380",
           "name": "Operating Systems",
           "prerequisite": "CPSC 350",
           "credit_hours": 3,
-          "description": "The course emphasizes the major principles of operating system design and the interrelationship between the operating system and the hardware. (Offered every year.)"
+          "description": "The course emphasizes the major principles of operating system design and the interrelationship between the operating system and the hardware. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CPSC 465",
           "name": "Integrated Circuit Design I",
           "prerequisite": "CPSC 366",
           "credit_hours": 3,
-          "description": "This course introduces students to the analysis and design of digital integrated circuits including combinational (static and dynamic) and sequential logic integrated circuits using CMOS technology. Students learn transistor structure, circuit schematic, and physical layout design, layout design rule check, layout vs. schematic check, circuit extraction, and simulation using CAD tools. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "This course introduces students to the analysis and design of digital integrated circuits including combinational (static and dynamic) and sequential logic integrated circuits using CMOS technology. Students learn transistor structure, circuit schematic, and physical layout design, layout design rule check, layout vs. schematic check, circuit extraction, and simulation using CAD tools. Letter grade. (Offered as needed.)"
         }
       ]
     },
@@ -294,90 +294,90 @@
           "course_number": "ENGR 300",
           "name": "3D Printing and Design",
           "credit_hours": 3,
-          "description": "Students are exposed to the complete lifecycle of the 3D printing process. Students will begin by assembling their own fused deposition modeling (FDM) printer, learning the design and function of each hardware component and how they combine to produce a finished print. Students will learn the characteristics of all major filament types, nozzle sizes and types, how to slice 3D models and adjust slicer settings to produce quality gcode, how to resolve common print errors, and how to post-process prints (including wood and metal finishing). Students will also learn to design their own 3D models for printing, culminating in a final, independent project of their own creation. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Students are exposed to the complete lifecycle of the 3D printing process. Students will begin by assembling their own fused deposition modeling (FDM) printer, learning the design and function of each hardware component and how they combine to produce a finished print. Students will learn the characteristics of all major filament types, nozzle sizes and types, how to slice 3D models and adjust slicer settings to produce quality gcode, how to resolve common print errors, and how to post-process prints (including wood and metal finishing). Students will also learn to design their own 3D models for printing, culminating in a final, independent project of their own creation. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 349",
           "name": "Human Factors",
           "prerequisite": "CENG 231 or CPSC 231",
           "credit_hours": 3,
-          "description": "Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade with Pass/No Pass option. (Offered every year.)"
+          "description": "Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CENG 350",
           "name": "Embedded Systems",
           "prerequisite": "CENG 231",
           "credit_hours": 3,
-          "description": "An in-depth study of the high-level abstract modeling concepts and the lower-level fundamental programming aspects of real-time embedded systems development. The primary focus is in the design, development and validation of microprocessor-based real-time embedded systems. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "An in-depth study of the high-level abstract modeling concepts and the lower-level fundamental programming aspects of real-time embedded systems development. The primary focus is in the design, development and validation of microprocessor-based real-time embedded systems. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 352",
           "name": "Computer Architecture II",
           "prerequisite": "CPSC 351",
           "credit_hours": 3,
-          "description": "Topics include the design and analysis of instruction set processors, memory management, multi-processors, and networks. (Offered as a reading and conference only.)"
+          "description": "Topics include the design and analysis of instruction set processors, memory management, multi-processors, and networks. Letter grade. (Offered as a reading and conference only.)"
         },
         {
           "course_number": "CENG 353",
           "name": "Wireless Communication",
           "prerequisite": "CPSC 353",
           "credit_hours": 3,
-          "description": "This course provides an introduction to various current and next generation wireless networking technologies, and undertakes a detailed exploration of fundamental architectural and design principles used at all layers. Related protocols and their performance are studied using formal analytical tools and realistic simulations. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "This course provides an introduction to various current and next generation wireless networking technologies, and undertakes a detailed exploration of fundamental architectural and design principles used at all layers. Related protocols and their performance are studied using formal analytical tools and realistic simulations. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 353",
           "name": "Data Communications and Computer Networks",
           "prerequisite": "CENG 231 or CPSC 231",
           "credit_hours": 3,
-          "description": "Students explore the principles and techniques of data communications and give special emphasis to networks and distributed systems. The I.S.O. Reference Model for open systems interconnection will be investigated and the function and operation of each protocol layer analyzed in detail. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "Students explore the principles and techniques of data communications and give special emphasis to networks and distributed systems. The I.S.O. Reference Model for open systems interconnection will be investigated and the function and operation of each protocol layer analyzed in detail. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "ISP 363",
           "name": "Cybersecurity I",
           "prerequisite": "CPSC 353",
           "credit_hours": 3,
-          "description": "Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. Letter grade with Pass/No Pass option. (Offered every year.)"
+          "description": "Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CENG 370",
           "name": "Topics in Computer Engineering",
           "credit_hours": 3,
-          "description": "Advanced topics in computer engineering. Letter grade with Pass/No Pass option. May be repeated for credit. (Offered as needed.)"
+          "description": "Advanced topics in computer engineering. May be repeated for credit. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CENG 380",
           "name": "Real-Time Operating Systems",
           "prerequisite": "CENG 350, CPSC 380",
           "credit_hours": 3,
-          "description": "The theory and practice of developing real-time and embedded systems. The course provides an integrated approach to developing low-power systems with hardware, software, sensors, actuators, controllers and networking. Students will learn to develop a programmable embedded platform from scratch, interface a variety of sensors and actuators for interactive systems, build a gaming system, program an emulator to play retro games, control an autonomous robot and write an RTOS kernel from scratch. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "The theory and practice of developing real-time and embedded systems. The course provides an integrated approach to developing low-power systems with hardware, software, sensors, actuators, controllers and networking. Students will learn to develop a programmable embedded platform from scratch, interface a variety of sensors and actuators for interactive systems, build a gaming system, program an emulator to play retro games, control an autonomous robot and write an RTOS kernel from scratch. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CENG 381",
           "name": "Modeling and Simulation",
           "prerequisite": "CENG 231",
           "credit_hours": 3,
-          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CENG 382",
           "name": "Digital Signal Processing",
           "prerequisite": "CENG 381, MATH 116 or MATH 210",
           "credit_hours": 3,
-          "description": "This course covers the techniques and tools of modern digital signal processing. Techniques for processing signals are examined including discrete-time linear systems, finite impulse response digital filters, infinite impulse response digital filters, fast Fourier transforms, response of LTI systems to statistical signals, digital filter design, and applications. Students will gain insight into evaluating DSP systems and justifying choices among alternative designs. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "This course covers the techniques and tools of modern digital signal processing. Techniques for processing signals are examined including discrete-time linear systems, finite impulse response digital filters, infinite impulse response digital filters, fast Fourier transforms, response of LTI systems to statistical signals, digital filter design, and applications. Students will gain insight into evaluating DSP systems and justifying choices among alternative designs. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CENG 390",
           "name": "Robotics",
           "prerequisite": "CENG 231 or CPSC 231, EENG 200",
           "credit_hours": 3,
-          "description": "Students discover the fundamentals of kinematics, dynamics, and control of robot manipulators, robotic vision, and sensing. In addition, elementary principles on proximity, tactile, and force sensing, vision sensors, camera calibration, stereo construction, and motion detection are presented. Students gain hands-on experience through a series of assignments in which they build and test their own robot. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Students discover the fundamentals of kinematics, dynamics, and control of robot manipulators, robotic vision, and sensing. In addition, elementary principles on proximity, tactile, and force sensing, vision sensors, camera calibration, stereo construction, and motion detection are presented. Students gain hands-on experience through a series of assignments in which they build and test their own robot. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 453",
           "name": "Network Implementation and Security",
           "prerequisite": "CPSC 353",
           "credit_hours": 3,
-          "description": "Students explore the principles and techniques for implementing TCP/IP based networks using Microsoft Windows and Linux servers and clients, including the skills to configure, customize, optimize, troubleshoot, and integrate networks. (Offered as needed.)"
+          "description": "Students explore the principles and techniques for implementing TCP/IP based networks using Microsoft Windows and Linux servers and clients, including the skills to configure, customize, optimize, troubleshoot, and integrate networks. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 466",
@@ -385,7 +385,7 @@
           "prerequisite": "CPSC 330, CPSC 465",
           "recommended_prerequisite": "PHYS 102",
           "credit_hours": 3,
-          "description": "The course integrates theoretical and functional ideas from Digital Logic II with the physical electronics covered in Integrated Circuit Design I toward the design of real-world integrated circuits. The course also introduces the student to VLSI CAD tools for physical design. (Offered as a reading and conference only.)"
+          "description": "The course integrates theoretical and functional ideas from Digital Logic II with the physical electronics covered in Integrated Circuit Design I toward the design of real-world integrated circuits. The course also introduces the student to VLSI CAD tools for physical design. Letter grade. (Offered as a reading and conference only.)"
         }
       ]
     }

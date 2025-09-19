@@ -1,0 +1,20 @@
+# Development Configuration Override
+# Copy this to config.local.yaml and modify for local development
+
+# LLM Configuration - Local Development
+llm:
+  model: "gemma3:4b"  # Smaller model for local testing
+  timeout: 300
+
+# Embedding Configuration - Local Development  
+embedding:
+  model: "nomic-embed-text"  # Local embedding model
+
+# Cluster Configuration - Disabled for local
+cluster:
+  enabled: false
+  
+# Qdrant Configuration - Local
+qdrant:
+  host: "localhost"
+  port: 6333

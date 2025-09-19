@@ -69,41 +69,41 @@
           "name": "Introduction to Statistics",
           "prerequisite": "MATH 100 or equivalent",
           "credit_hours": 3,
-          "description": "This course provides a progressive, detailed, and practical introduction to essential topics in classical statistics. The main concepts covered in this class include the following: design of experiments and sampling, descriptive statistics methods, correlation and regression analysis, probability and probability distribution, sampling distributions, and inferential statistics methods. This course is intended for students in a wide variety of areas of study so a variety of examples from different fields are used to illustrate the concepts. The course is taught in an interactive setting where students will learn how to use statistical software while learning introductory statistics concepts. Some sections of this course may be offered as hybrid courses or online only. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "This course provides a progressive, detailed, and practical introduction to essential topics in classical statistics. The main concepts covered in this class include the following: design of experiments and sampling, descriptive statistics methods, correlation and regression analysis, probability and probability distribution, sampling distributions, and inferential statistics methods. This course is intended for students in a wide variety of areas of study so a variety of examples from different fields are used to illustrate the concepts. The course is taught in an interactive setting where students will learn how to use statistical software while learning introductory statistics concepts. Some sections of this course may be offered as hybrid courses or online only. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "MATH 215",
           "name": "Introduction to Linear Algebra and Differential Equations",
           "prerequisite": "MATH 111 or MATH 116",
           "credit_hours": 3,
-          "description": "Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. (Offered fall semester.)"
+          "description": "Introduction to the solutions of ordinary differential equations and their connection to linear algebra. Topics include matrix algebra, systems of linear equations, vector spaces, inner product spaces, linear transformations, eigenvalues and eigenvectors, differential equations, systems of linear differential equations, and the Laplace transform. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 230",
           "name": "Computer Science I",
           "prerequisite": "MATH 100",
           "credit_hours": 3,
-          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. (Offered every semester.)"
+          "description": "Students are introduced to problem-solving methods and algorithm development through an interactive and easy-to-learn programming language, Python. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "CPSC 231",
           "name": "Computer Science II",
           "prerequisite": "CPSC 230, or equivalent",
           "credit_hours": 3,
-          "description": "This course is a comprehensive study of object-oriented computing with a mainstream programming language, Java. The course introduces the principal features of the language with a focus on object-oriented development, code reuse, and large program structure. The course also covers advance topics such as concurrency and graphical user interfaces. (Offered every semester.)"
+          "description": "This course is a comprehensive study of object-oriented computing with a mainstream programming language, Java. The course introduces the principal features of the language with a focus on object-oriented development, code reuse, and large program structure. The course also covers advance topics such as concurrency and graphical user interfaces. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "MATH 250",
           "name": "Discrete Mathematics I",
           "prerequisite": "MATH 101 or equivalent",
           "credit_hours": 3,
-          "description": "This course provides the student with an introduction to the fundamental mathematics of discrete phenomena and computation. This is a key course in the CPSC curriculum as it provides the theoretical background needed for many upper-division courses including Data Structures (combinatorics, formal languages), Logic Design (Boolean algebras, number representation) and Integrated Circuit Design (automata theory, finite state minimization, graph layout). Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "This course provides the student with an introduction to the fundamental mathematics of discrete phenomena and computation. This is a key course in the CPSC curriculum as it provides the theoretical background needed for many upper-division courses including Data Structures (combinatorics, formal languages), Logic Design (Boolean algebras, number representation) and Integrated Circuit Design (automata theory, finite state minimization, graph layout). Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "CPSC 285",
           "name": "Social and Ethical Issues in Computing",
           "credit_hours": 3,
-          "description": "This course considers a range of ethical and social issues related to the effects of computers on how we live, focusing on broad social issues as well as individual responsibilities. Privacy and intellectual property (e.g. P2P downloading), software licenses, software reliability, and risks. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "This course considers a range of ethical and social issues related to the effects of computers on how we live, focusing on broad social issues as well as individual responsibilities. Privacy and intellectual property (e.g. P2P downloading), software licenses, software reliability, and risks. Letter grade. (Offered every semester.)"
         }
       ]
     },
@@ -118,7 +118,7 @@
           "prerequisite": "CPSC 231",
           "corequisite": "SE 310",
           "credit_hours": 3,
-          "description": "Students are introduced to the tools and techniques used to elicit, capture, and test software requirements from the perspective of delivering a working software system. In addition to covering standard terminology for software requirements specifications, this course gives an in-depth treatment of formal testing techniques used to ensure software quality and requirement satisfaction. (Offered fall semester.)"
+          "description": "Students are introduced to the tools and techniques used to elicit, capture, and test software requirements from the perspective of delivering a working software system. In addition to covering standard terminology for software requirements specifications, this course gives an in-depth treatment of formal testing techniques used to ensure software quality and requirement satisfaction. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "SE 310",
@@ -126,21 +126,21 @@
           "prerequisite": "CPSC 231",
           "corequisite": "SE 300",
           "credit_hours": 3,
-          "description": "Students gain hands-on experience designing software from a formal set of functional and non-functional software requirements. (Offered fall semester.)"
+          "description": "Students gain hands-on experience designing software from a formal set of functional and non-functional software requirements. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "SE 320",
           "name": "The Software Development Lifecycle",
           "prerequisite": "CPSC 350, SE 300, SE 310",
           "credit_hours": 3,
-          "description": "Students apply their theoretical knowledge of the software development lifecycle to a year-long project spanning all facets of the requirements, design, implementation, test, and maintenance processes. (Offered spring semester.)"
+          "description": "Students apply their theoretical knowledge of the software development lifecycle to a year-long project spanning all facets of the requirements, design, implementation, test, and maintenance processes. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "CPSC 349",
           "name": "Human Factors",
           "prerequisite": "CPSC 230 or GAME 230",
           "credit_hours": 3,
-          "description": "Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade with Pass/No Pass option. (Offered every year.)"
+          "description": "Students study the foundations of human factors, with emphasis on user interface design and user experience. Topics include engineering psychology, design constraints, memory models, visual and auditory processing, and human-centered design. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CPSC 350",
@@ -154,35 +154,35 @@
           "name": "Programming Languages",
           "prerequisite": "MATH 250, CPSC 350",
           "credit_hours": 3,
-          "description": "Students develop an understanding of the organization and design of programming languages through writing interpreters for three different toy languages illustrating a range of programming concepts from pure functional languages to imperative languages with memory management. Moreover, the course will open windows into topics of programming languages research such as parsing, operational and denotational semantics, term rewriting, Hoare logic, verification, and theorem proving. Letter grade with Pass/No Pass option. (Offered fall semester.)"
+          "description": "Students develop an understanding of the organization and design of programming languages through writing interpreters for three different toy languages illustrating a range of programming concepts from pure functional languages to imperative languages with memory management. Moreover, the course will open windows into topics of programming languages research such as parsing, operational and denotational semantics, term rewriting, Hoare logic, verification, and theorem proving. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 355",
           "name": "Human Computer Interaction",
           "prerequisite": "CENG 231 or CPSC 231 or CPSC 236, CPSC 349",
           "credit_hours": 3,
-          "description": "Students study the foundations of human-interaction, with emphasis on user-centered design methodologies. Topics such as usability, human factors, user studies, and multi-model interfaces will be explored, and the theory put into practice through programming projects that develop graphical user interfaces and applications for the Android or iPhone/iPad. (Offered every year.)"
+          "description": "Students study the foundations of human-interaction, with emphasis on user-centered design methodologies. Topics such as usability, human factors, user studies, and multi-model interfaces will be explored, and the theory put into practice through programming projects that develop graphical user interfaces and applications for the Android or iPhone/iPad. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CPSC 380",
           "name": "Operating Systems",
           "prerequisite": "CPSC 350",
           "credit_hours": 3,
-          "description": "The course emphasizes the major principles of operating system design and the interrelationship between the operating system and the hardware. (Offered every year.)"
+          "description": "The course emphasizes the major principles of operating system design and the interrelationship between the operating system and the hardware. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "ENGR 385",
           "name": "Effective Technical Communication",
           "prerequisite": "CPSC 231 or CENG 231",
           "credit_hours": 3,
-          "description": " Students learn key aspects of communication in technical fields, in written and verbal formats. The course will emphasize practical, real-world examples and opportunities to practice and apply what is learned. The course covers understanding audience and purpose, applying a process of writing, collaboration, and visual and verbal presentation with an emphasis on communicating technical ideas to broad audiences. Letter grade with Pass/No Pass option. (Offered spring semester.)"
+          "description": "Students learn key aspects of communication in technical fields, in written and verbal formats. The course will emphasize practical, real-world examples and opportunities to practice and apply what is learned. The course covers understanding audience and purpose, applying a process of writing, collaboration, and visual and verbal presentation with an emphasis on communicating technical ideas to broad audiences. Letter grade. (Offered spring semester.)"
         },
         {
           "course_number": "CPSC 408",
           "name": "Database Management",
           "prerequisite": "CPSC 350",
           "credit_hours": 3,
-          "description": "Students learn data management concepts and the representation and structure of data in the context of applications and system software. The emphasis is on design of databases and developing applications in a client-server environment using SQL as the query language. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "Students learn data management concepts and the representation and structure of data in the context of applications and system software. The emphasis is on design of databases and developing applications in a client-server environment using SQL as the query language. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "SE 498",
@@ -215,98 +215,98 @@
           "name": "Android Application Development",
           "prerequisite": "CPSC 231",
           "credit_hours": 3,
-          "description": "An introduction to app development using the Android operating system and development kit. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as smart phones and tablets. (Offered every year.)"
+          "description": "An introduction to app development using the Android operating system and development kit. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as smart phones and tablets. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CPSC 357",
           "name": "iOS Application Development",
           "prerequisite": "CPSC 231",
           "credit_hours": 3,
-          "description": "An introduction to app development using the iOS operating system and Swift. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as ipads, iphones, and watches. (Offered every year.)"
+          "description": "An introduction to app development using the iOS operating system and Swift. Students will learn the fundamentals of mobile embedded programming and apply their skills to implement non-trivial projects on target hardware such as ipads, iphones, and watches. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "CPSC 358",
           "name": "Assistive Technology",
           "recommended_prerequisite": "CPSC 230",
           "credit_hours": 3,
-          "description": "An introduction to assistive technologies (AT). In particular, students will study social, cultural, and economic factors of disability as they pertain to AT. This will be accomplished by studying existing practices and challenges, designing new user experiences, and integrating new technologies into the AT space. (Offered fall semester.)"
+          "description": "An introduction to assistive technologies (AT). In particular, students will study social, cultural, and economic factors of disability as they pertain to AT. This will be accomplished by studying existing practices and challenges, designing new user experiences, and integrating new technologies into the AT space. Letter grade. (Offered fall semester.)"
         },
         {
           "course_number": "CPSC 359",
           "name": "Computer-Supported Cooperative Work",
           "prerequisite": "CPSC 355",
           "credit_hours": 3,
-          "description": "Computer-supported cooperative work explores the technical, organizational, and social issues involved in designing, developing, deploying, and evaluating computational and communication tools to support groups, organizations, communities, and networks. This course will provide an initial survey of CSCW research and practices in the past 25 years and give students hands-on experience through a group design project aimed at orienting students to design for cooperative activities. (Offered every year.)"
+          "description": "Computer-supported cooperative work explores the technical, organizational, and social issues involved in designing, developing, deploying, and evaluating computational and communication tools to support groups, organizations, communities, and networks. This course will provide an initial survey of CSCW research and practices in the past 25 years and give students hands-on experience through a group design project aimed at orienting students to design for cooperative activities. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "ISP 363",
           "name": "Cybersecurity 1",
           "prerequisite": "CPSC 353",
           "credit_hours": 3,
-          "description": "Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. Letter grade with Pass/No Pass option. (Offered every year.)"
+          "description": "Students are exposed to the world of cybersecurity. Emphasis is placed on understanding, recognizing, and patching security exploits. Students will use standard industry tools and techniques to gain hands-on experience in this rapidly-growing field. Note that students majoring in computer science, computer engineering, software engineering, or data analytics may not use ISP 363 as an elective in the major if they are also minoring in Information Security and Policy. Letter grade. (Offered every year.)"
         },
         {
           "course_number": "SE 370",
           "name": "Topics in Software Engineering",
           "prerequisite": "determined by topic being offered",
           "credit_hours": 3,
-          "description": "Advanced topics in the theory and practice of the software development lifecycle. Topics may include open-source software development, automated software engineering, empirical software engineering, and case studies of specific code ecosystems. May be repeated for credit. (Offered as needed.)"
+          "description": "Advanced topics in the theory and practice of the software development lifecycle. Topics may include open-source software development, automated software engineering, empirical software engineering, and case studies of specific code ecosystems. May be repeated for credit. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CENG 381",
           "name": "Modeling and Simulation",
           "prerequisite": "CENG 231",
           "credit_hours": 3,
-          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Fundamentals and techniques for designing and using simulation, modeling, and optimization algorithms with applications in system performance modeling, business infrastructure modeling, and distributed and parallel computing. An introduction to advanced complex systems models. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 390",
           "name": "Artificial Intelligence",
           "prerequisite": "CPSC 350",
           "credit_hours": 3,
-          "description": "Students study the tools, techniques, and applications of artificial intelligence. Students will be introduced to the programming techniques utilized in artificial intelligence applications. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Students study the tools, techniques, and applications of artificial intelligence. Students will be introduced to the programming techniques utilized in artificial intelligence applications. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 392",
           "name": "Introduction to Data Science",
           "prerequisite": "CPSC 230, MATH 203 or MATH 303 or MGSC 209",
           "credit_hours": 3,
-          "description": "This course provides a survey of algorithms, tools, and techniques for computing with Big Data. Students will be exposed to fundamental concepts in data mining, machine learning, and information retrieval systems, with special emphasis on statistical techniques for data visualization and analysis. Recent advances in high performance computing, such as map-reduce, will be presented in the context of Big Data. Students will apply data mining algorithms to data sets from biology, chemistry, social media, and industry. Letter grade with Pass/No Pass option. (Offered every semester.)"
+          "description": "This course provides a survey of algorithms, tools, and techniques for computing with Big Data. Students will be exposed to fundamental concepts in data mining, machine learning, and information retrieval systems, with special emphasis on statistical techniques for data visualization and analysis. Recent advances in high performance computing, such as map-reduce, will be presented in the context of Big Data. Students will apply data mining algorithms to data sets from biology, chemistry, social media, and industry. Letter grade. (Offered every semester.)"
         },
         {
           "course_number": "CPSC 393",
           "name": "Machine Learning",
           "prerequisite": "CPSC 392",
           "credit_hours": 3,
-          "description": "This course provides a survey of algorithmic techniques for machine learning, including statistical techniques for pattern recognition. Topics include neural networks, deep learning, support vector machines, and kernel methods. (Offered as needed.)"
+          "description": "This course provides a survey of algorithmic techniques for machine learning, including statistical techniques for pattern recognition. Topics include neural networks, deep learning, support vector machines, and kernel methods. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 406",
           "name": "Algorithm Analysis",
           "prerequisite": "MATH 250, CPSC 350",
           "credit_hours": 3,
-          "description": "Students study ideas and techniques useful for designing and analyzing data structures and algorithms. In particular, the analytic tools needed for analyzing upper bounds for algorithms and lower bounds for problems will be covered. Problem areas include sorting, graph-based problems, dynamic programming, combinatorial algorithms, computational geometry, encryption, parallel and distributed models, and NP-completeness. Letter grade with Pass/No Pass option. (Offered as needed.)"
+          "description": "Students study ideas and techniques useful for designing and analyzing data structures and algorithms. In particular, the analytic tools needed for analyzing upper bounds for algorithms and lower bounds for problems will be covered. Problem areas include sorting, graph-based problems, dynamic programming, combinatorial algorithms, computational geometry, encryption, parallel and distributed models, and NP-completeness. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "CPSC 458",
           "name": "Web Engineering",
           "prerequisite": "CPSC 350",
           "credit_hours": 3,
-          "description": "Students explore the principles and techniques for developing and managing web applications using HTML5, CSS and JavaScript, as well as other web development frameworks such as Ruby on Rails. Students will acquire skills to develop, install, configure, customize, optimize, and troubleshoot web applications. (Offered Spring Semester.)"
+          "description": "Students explore the principles and techniques for developing and managing web applications using HTML5, CSS and JavaScript, as well as other web development frameworks such as Ruby on Rails. Students will acquire skills to develop, install, configure, customize, optimize, and troubleshoot web applications. Letter grade. (Offered Spring Semester.)"
         },
         {
           "course_number": "SE 410",
           "name": "Software Process and Management",
           "prerequisite": "SE 310",
           "credit_hours": 3,
-          "description": "Students are exposed to key concepts in software project management such as technical performance metrics, cost estimation, schedule tracking, and tailoring formal software processes to fit individual project requirements. (Offered as needed.)"
+          "description": "Students are exposed to key concepts in software project management such as technical performance metrics, cost estimation, schedule tracking, and tailoring formal software processes to fit individual project requirements. Letter grade. (Offered as needed.)"
         },
         {
           "course_number": "SE 420",
           "name": "Formal Methods in Software Engineering",
           "prerequisite": "SE 410",
           "credit_hours": 3,
-          "description": "A survey in formal methods in software engineering, including topics such as verification techniques, software mining, and specification languages. (Offered as needed.)"
+          "description": "A survey in formal methods in software engineering, including topics such as verification techniques, software mining, and specification languages. Letter grade. (Offered as needed.)"
         }
       ]
     },
@@ -320,7 +320,7 @@
           "name": "Engineering Portfolio Design",
           "prerequisite": "Senior standing only",
           "credit_hours": 1,
-          "description": "Students develop and publish a professional portfolio highlighting skills developed, projects completed, and competencies gained over the course of their students. Students will learn to build a personal brand in preparation for entering the engineering workforce. Pass/No Pass. (Offered every year.)"
+          "description": "Students develop and publish a professional portfolio highlighting skills developed, projects completed, and competencies gained over the course of their students. Students will learn to build a personal brand in preparation for entering the engineering workforce. Letter grade. (Offered every year.)"
         }
       ]
     }
