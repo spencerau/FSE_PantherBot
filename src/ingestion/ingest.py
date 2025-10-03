@@ -16,6 +16,7 @@ from utils.ollama_api import get_ollama_api
 from utils.text_preprocessing import preprocess_for_embedding
 from ingestion.content_extract import extract_content
 from ingestion.chunking import AdvancedChunker
+from ingestion.edit_metadata import extract_metadata_from_path
 
 
 class UnifiedIngestion:
@@ -286,123 +287,18 @@ class UnifiedIngestion:
         return section_name
     
     def _extract_metadata_from_path(self, file_path: str) -> Dict:
-        path = Path(file_path)
-        metadata = {
-            'file_name': path.name,
-            'file_path': str(path),
-            'file_extension': path.suffix,
-            'ingested_at': datetime.now().isoformat()
+        return extract_metadata_from_path(file_path)
+    
+    def _get_collection_name_from_document_type(self, document_type: str) -> str:
+        """Map DocumentType to Qdrant collection name"""
+        document_type_to_collection = {
+            'Major': 'major_catalogs',
+            'Minor': 'minor_catalogs', 
+            '4_Year_Plan': '4_year_plans',
+            'General': 'general_knowledge'
         }
-        
-        path_parts = path.parts
-        year_from_path = None
-        for part in path_parts:
-            if part.isdigit() and len(part) == 4 and part.startswith('20'):
-                year_from_path = part
-                break
-        
-        if path.suffix.lower() == '.json':
-            json_match = re.search(r'(\d{4})_(.+)\.json', path.name)
-            if json_match:
-                metadata['year'] = json_match.group(1)
-                subject_part = json_match.group(2)
-                
-                program_mappings = {
-                    'CompSci': ('cs', 'Computer Science'),
-                    'Computer Science': ('cs', 'Computer Science'),
-                    'CompEng': ('ce', 'Computer Engineering'),
-                    'Computer Engineering': ('ce', 'Computer Engineering'),
-                    'SoftEng': ('se', 'Software Engineering'),
-                    'Software Engineering': ('se', 'Software Engineering'),
-                    'ElecEng': ('ee', 'Electrical Engineering'),
-                    'Electrical Engineering': ('ee', 'Electrical Engineering'),
-                    'DataSci': ('ds', 'Data Science'),
-                    'Analytics': ('ds', 'Data Science'),
-                    'Data Science': ('ds', 'Data Science')
-                }
-                
-                program_code, program_full = None, None
-                for pattern, (code, full_name) in program_mappings.items():
-                    if pattern.lower() in subject_part.lower():
-                        program_code = code
-                        program_full = full_name
-                        break
-                
-                if program_code and program_full:
-                    metadata['program'] = program_code
-                    metadata['program_full'] = program_full
-                    metadata['subject'] = program_full
-                else:
-                    metadata['subject'] = subject_part.replace('_', ' ')
-                    
-            elif year_from_path:
-                metadata['year'] = year_from_path
-        else:
-            match = re.search(r'(\d{4})_(.+)\.pdf', path.name)
-            plan_match = re.search(r'^([a-z]{2})_(\d{4})_', path.name)
-            
-            if plan_match:
-                program_code = plan_match.group(1)
-                metadata['year'] = plan_match.group(2) or year_from_path
-                metadata['program'] = program_code
-                
-                code_to_full_name = {
-                    'cs': 'Computer Science',
-                    'ce': 'Computer Engineering', 
-                    'se': 'Software Engineering',
-                    'ee': 'Electrical Engineering',
-                    'ds': 'Data Science'
-                }
-                
-                metadata['program_full'] = code_to_full_name.get(program_code, program_code)
-                metadata['subject'] = metadata['program_full']
-            elif match:
-                metadata['year'] = match.group(1) or year_from_path
-                subject_part = match.group(2)
-                metadata['subject'] = subject_part.replace('_', ' ')
-                
-                program_mappings = {
-                    'Computer Science': 'cs',
-                    'Computer Engineering': 'ce',
-                    'Software Engineering': 'se',
-                    'Electrical Engineering': 'ee',
-                    'Data Science': 'ds'
-                }
-                
-                for full_name, code in program_mappings.items():
-                    if full_name in metadata['subject']:
-                        metadata['program'] = code
-                        metadata['program_full'] = full_name
-                        break
-            elif year_from_path:
-                metadata['year'] = year_from_path
-        
-        if 'major_catalog_json' in str(path).lower():
-            metadata['collection_type'] = 'major_catalogs'
-            metadata['document_type'] = 'major'
-            metadata['doc_type'] = 'major_catalog'
-        # elif 'minor_catalog_json' in str(path).lower() or ('minor_catalogs' in str(path).lower() and path.suffix.lower() != '.pdf'):
-        #     metadata['collection_type'] = 'minor_catalogs'
-        #     metadata['document_type'] = 'minor'
-        #     metadata['doc_type'] = 'minor_catalog'
-        elif 'course_catalogs' in str(path) or 'course_listings' in str(path):
-            metadata['collection_type'] = 'course_listings'
-            metadata['document_type'] = 'course'
-            metadata['doc_type'] = 'course_catalog'
-        elif 'general_knowledge' in str(path).lower():
-            metadata['collection_type'] = 'general_knowledge'
-            metadata['document_type'] = 'general'
-            metadata['doc_type'] = 'general_knowledge'
-        elif '4_year_plans' in str(path).lower():
-            metadata['collection_type'] = '4_year_plans'
-            metadata['document_type'] = '4_year_plan'
-            metadata['doc_type'] = '4_year_plan'
-        else:
-            metadata['collection_type'] = 'general_knowledge'
-            metadata['document_type'] = 'general'
-            metadata['doc_type'] = 'general_knowledge'
-        
-        return metadata
+        collection_key = document_type_to_collection.get(document_type, 'general_knowledge')
+        return self.config['qdrant']['collections'][collection_key]
     
     def ingest_json_file(self, file_path: str) -> bool:
         """Ingest a JSON file containing structured catalog data."""
@@ -420,7 +316,7 @@ class UnifiedIngestion:
                 print(f"  Warning: No content extracted from {file_path}")
                 return False
             
-            collection_name = self.config['qdrant']['collections'][file_metadata['collection_type']]
+            collection_name = self._get_collection_name_from_document_type(file_metadata['DocumentType'])
             
             points = []
             for item in content_items:
@@ -485,7 +381,7 @@ class UnifiedIngestion:
             file_metadata = self._extract_metadata_from_path(file_path)
             combined_metadata = {**tika_metadata, **file_metadata}
             
-            collection_name = self.config['qdrant']['collections'][combined_metadata['collection_type']]
+            collection_name = self._get_collection_name_from_document_type(file_metadata['DocumentType'])
             
             chunk_data = self._chunk_text_with_metadata(text, combined_metadata)
             
@@ -539,6 +435,8 @@ class UnifiedIngestion:
         for file_path in directory.rglob('*'):
             if file_path.is_file() and file_path.suffix.lower() in file_extensions:
                 if 'readme' in file_path.name.lower():
+                    continue
+                if file_path.name.startswith('._'):
                     continue
                     
                 stats['total_files'] += 1
@@ -606,9 +504,9 @@ def main():
         data_dirs.append("data/major_catalog_json")
         print("Added major_catalog_json directory")
     
-    # if os.path.exists("data/minor_catalog_json"):
-    #     data_dirs.append("data/minor_catalog_json")
-    #     print("Added minor_catalog_json directory")
+    if os.path.exists(config['data']['minor_catalog_path']):
+        data_dirs.append(config['data']['minor_catalog_path'])
+        print("Added minor_catalog directory")
     
     if os.path.exists(config['data']['general_knowledge_path']):
         data_dirs.append(config['data']['general_knowledge_path'])

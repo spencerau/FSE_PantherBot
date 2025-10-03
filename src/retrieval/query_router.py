@@ -133,17 +133,17 @@ class QueryRouter:
     
     def route_query(self, query: str, conversation_history: List[Dict] = None,
                    student_program: str = None, student_year: str = None, 
-                   method: str = 'hybrid') -> List[str]:
+                   student_minor: str = None, method: str = 'hybrid') -> List[str]:
         enhanced_query = self._enhance_query_with_context(query, conversation_history)
         
         if method == 'keyword':
-            return self._keyword_routing(enhanced_query, student_program, student_year)
+            return self._keyword_routing(enhanced_query, student_program, student_year, student_minor)
         elif method == 'semantic' and self.semantic_enabled:
-            return self._semantic_routing(enhanced_query, student_program, student_year)
+            return self._semantic_routing(enhanced_query, student_program, student_year, student_minor)
         elif method == 'llm' and self.ollama_api:
-            return self._llm_routing(enhanced_query, student_program, student_year)
+            return self._llm_routing(enhanced_query, student_program, student_year, student_minor)
         else:
-            return self._hybrid_routing(enhanced_query, student_program, student_year)
+            return self._hybrid_routing(enhanced_query, student_program, student_year, student_minor)
     
     def _enhance_query_with_context(self, query: str, conversation_history: List[Dict] = None) -> str:
         if not conversation_history or len(conversation_history) < 2:
@@ -197,7 +197,7 @@ class QueryRouter:
         return unique_terms
     
     def _keyword_routing(self, query: str, student_program: str = None, 
-                        student_year: str = None) -> List[str]:
+                        student_year: str = None, student_minor: str = None) -> List[str]:
         query_lower = query.lower()
         collections = []
         scores = {}
@@ -220,7 +220,7 @@ class QueryRouter:
         collections = [col for col, score in sorted_collections if score >= 2]
         
         collections = self._add_contextual_collections(
-            collections, query_lower, student_program, student_year
+            collections, query_lower, student_program, student_year, student_minor
         )
         
         if not collections or (len(query.split()) <= 3 and len(collections) < 2):
@@ -230,9 +230,9 @@ class QueryRouter:
         return collections[:3]
     
     def _semantic_routing(self, query: str, student_program: str = None,
-                         student_year: str = None, threshold: float = 0.35) -> List[str]:
+                         student_year: str = None, student_minor: str = None, threshold: float = 0.35) -> List[str]:
         if not self.semantic_enabled:
-            return self._keyword_routing(query, student_program, student_year)
+            return self._keyword_routing(query, student_program, student_year, student_minor)
         
         query_embedding = self.semantic_model.encode([query])
         scores = {}
@@ -249,13 +249,13 @@ class QueryRouter:
         collections = sorted(collections, key=lambda x: scores[x], reverse=True)
         
         collections = self._add_contextual_collections(
-            collections, query.lower(), student_program, student_year
+            collections, query.lower(), student_program, student_year, student_minor
         )
         
         return collections[:3]
     
     def _llm_routing(self, query: str, student_program: str = None,
-                    student_year: str = None) -> List[str]:
+                    student_year: str = None, student_minor: str = None) -> List[str]:
         prompt = f"""You are a university academic routing system. Given a student query, determine which knowledge collections to search.
 
             Available collections:
@@ -302,18 +302,19 @@ class QueryRouter:
             return self._keyword_routing(query, student_program, student_year)
     
     def _hybrid_routing(self, query: str, student_program: str = None,
-                       student_year: str = None) -> List[str]:
+                       student_year: str = None, student_minor: str = None) -> List[str]:
         
         if self.semantic_enabled:
-            semantic_collections = self._semantic_routing(query, student_program, student_year, threshold=0.4)
+            semantic_collections = self._semantic_routing(query, student_program, student_year, student_minor, threshold=0.4)
             
             if len(semantic_collections) >= 1:
                 return semantic_collections
         
-        return self._keyword_routing(query, student_program, student_year)
+        return self._keyword_routing(query, student_program, student_year, student_minor)
     
     def _add_contextual_collections(self, collections: List[str], query_lower: str,
-                                   student_program: str = None, student_year: str = None) -> List[str]:
+                                   student_program: str = None, student_year: str = None, 
+                                   student_minor: str = None) -> List[str]:
         
         if (student_program and 'major_catalogs' not in collections and
             any(word in query_lower for word in ['major', 'degree', 'graduation', 'requirements', 
@@ -333,6 +334,11 @@ class QueryRouter:
                                                    'recommended order', 'course timeline', 'roadmap',
                                                    'create a plan', 'academic plan'])):
             collections.append('4_year_plans')
+        
+        if (student_minor and 'minor_catalogs' not in collections and
+            any(word in query_lower for word in ['minor', 'themed inquiry', 'analytics', 'game development', 
+                                               'information security', 'additional requirements'])):
+            collections.append('minor_catalogs')
         
         if not collections:
             collections.append('general_knowledge')

@@ -303,8 +303,9 @@
   ],
   "total_credits": 75,
   "metadata": {
-    "year": "2024",
-    "subject": "Data Science",
-    "program_type": "Major"
+    "Year": "2024",
+    "DocumentType": "Major",
+    "Subject": "Data Science",
+    "SubjectCode": "ds"
   }
 }

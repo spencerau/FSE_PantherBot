@@ -478,8 +478,9 @@
   ],
   "total_credits": "77-78",
   "metadata": {
-    "year": "2022",
-    "subject": "Computer Science",
-    "program_type": "Major"
+    "Year": "2022",
+    "DocumentType": "Major",
+    "Subject": "Computer Science",
+    "SubjectCode": "cs"
   }
 }

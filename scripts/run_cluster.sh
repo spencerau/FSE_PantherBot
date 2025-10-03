@@ -48,9 +48,10 @@ echo "Ollama is accessible"
 
 BUILD=false
 CLEAN_COLLECTIONS=false
+CLEAN_MEMORY=false
 FULL_SERVICES=false
 
-while getopts ":bcf" opt; do
+while getopts ":bcmf" opt; do
   case ${opt} in
     b )
       BUILD=true
@@ -58,13 +59,17 @@ while getopts ":bcf" opt; do
     c )
       CLEAN_COLLECTIONS=true
       ;;
+    m )
+      CLEAN_MEMORY=true
+      ;;
     f )
       FULL_SERVICES=true
       ;;
     \? )
-      echo "Usage: $0 [-b] [-c] [-f]"
+      echo "Usage: $0 [-b] [-c] [-m] [-f]"
       echo "  -b  Rebuild containers"
       echo "  -c  Clean Qdrant collections and run ingestion"
+      echo "  -m  Clean Postgres memory database"
       echo "  -f  Start full services (Slack bot, memory compressor)"
       exit 1
       ;;
@@ -81,18 +86,16 @@ docker stop spencerau-qdrant spencerau-postgres spencerau-tika spencerau-streaml
 docker rm spencerau-qdrant spencerau-postgres spencerau-tika spencerau-streamlit spencerau-slack-bot spencerau-memory-compressor 2>/dev/null || true
 
 if [ "$CLEAN_COLLECTIONS" = true ]; then
-  echo "Cleaning data directories..."
-  
-  # Clean Qdrant data
+  echo "Cleaning Qdrant data..."
   if [ -d "qdrant_data" ]; then
-    echo "Cleaning Qdrant data..."
     docker run --rm -v "$(pwd)/qdrant_data:/data" alpine:latest sh -c "rm -rf /data/*"
     echo "Qdrant data cleaned"
   fi
-  
-  # Clean Postgres data
+fi
+
+if [ "$CLEAN_MEMORY" = true ]; then
+  echo "Cleaning Postgres data..."
   if [ -d "postgres_data" ]; then
-    echo "Cleaning Postgres data..."
     docker run --rm -v "$(pwd)/postgres_data:/data" alpine:latest sh -c "rm -rf /data/*"
     echo "Postgres data cleaned"
   fi
@@ -149,24 +152,22 @@ sleep 10
 
 # Wait for Postgres to be ready
 echo "Waiting for Postgres to be ready..."
-for i in {1..30}; do
+for i in {1..10}; do
   if PGPASSWORD=${POSTGRES_PASSWORD} psql -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB} -c "SELECT 1;" >/dev/null 2>&1; then
     echo "Postgres is ready"
     break
   fi
-  echo "Waiting for Postgres... ($i/30)"
-  sleep 2
+  sleep 1
 done
 
 # Wait for Qdrant to be ready
 echo "Waiting for Qdrant to be ready..."
-for i in {1..30}; do
+for i in {1..10}; do
   if curl -s http://localhost:6333/health >/dev/null 2>&1; then
     echo "Qdrant is ready"
     break
   fi
-  echo "Waiting for Qdrant... ($i/30)"
-  sleep 2
+  sleep 1
 done
 
 # Check if Qdrant is accessible

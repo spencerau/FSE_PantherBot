@@ -172,3 +172,4 @@ postgres_data
 .github
 .reports
 .idea
+data/minor_catalog_raw/

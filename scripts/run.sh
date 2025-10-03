@@ -3,8 +3,9 @@
 BUILD=false
 RUN_TESTS=false
 CLEAN_COLLECTIONS=false
+CLEAN_MEMORY=false
 
-while getopts ":btc" opt; do
+while getopts ":btcm" opt; do
   case ${opt} in
     b )
       BUILD=true
@@ -15,11 +16,15 @@ while getopts ":btc" opt; do
     c )
       CLEAN_COLLECTIONS=true
       ;;
+    m )
+      CLEAN_MEMORY=true
+      ;;
     \? )
-      echo "Usage: $0 [-b] [-t] [-c]"
+      echo "Usage: $0 [-b] [-t] [-c] [-m]"
       echo "  -b  Rebuild containers"
       echo "  -t  Run tests after starting services"
       echo "  -c  Clean Qdrant collections and run ingestion"
+      echo "  -m  Clean Postgres memory database"
       echo ""
       echo "Examples:"
       echo "  ./run.sh           # Start services only (no rebuild, no ingestion)"
@@ -43,6 +48,13 @@ if [ "$CLEAN_COLLECTIONS" = true ]; then
   echo "Removing qdrant_data directory..."
   sudo rm -rf qdrant_data
   echo "Collection cleanup completed."
+fi
+
+if [ "$CLEAN_MEMORY" = true ]; then
+  echo "Cleaning Postgres memory database..."
+  echo "Removing postgres_data directory..."
+  sudo rm -rf postgres_data
+  echo "Memory database cleanup completed."
 fi
 
 echo "Starting containers..."

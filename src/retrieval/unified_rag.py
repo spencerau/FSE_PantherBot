@@ -142,44 +142,52 @@ class UnifiedRAG:
             yield "I apologize, but I'm experiencing technical difficulties. Please try again later."
     
     def _build_filter(self, student_program: str = None, student_year: str = None, 
-                     document_type: str = None) -> Optional[Filter]:
+                     document_type: str = None, student_minor: str = None, collection_name: str = None) -> Optional[Filter]:
         conditions = []
         
-        if student_program:
-            program_mappings = {
-                'Computer Science': 'cs',
-                'Computer Engineering': 'ce', 
-                'Software Engineering': 'se',
-                'Electrical Engineering': 'ee',
-                'Data Science': 'ds',
-                'cs': 'cs',
-                'ce': 'ce',
-                'se': 'se', 
-                'ee': 'ee',
-                'ds': 'ds',
-                'CompSci': 'cs',
-                'CompEng': 'ce',
-                'SoftEng': 'se',
-                'ElecEng': 'ee',
-                'DataSci': 'ds'
+        subject_code_to_filter = None
+        
+        if collection_name == 'minor_catalogs' and student_minor:
+            minor_code_mappings = {
+                "analytics": "anal", "anal": "anal",
+                "cs": "cs", "computer science": "cs",
+                "ce": "ce", "computer engineering": "ce",
+                "ee": "ee", "electrical engineering": "ee",
+                "gamedev": "gamedev", "game development": "gamedev",
+                "isp": "isp", "information security policy": "isp"
             }
-            
-            program_code = program_mappings.get(student_program, student_program.lower())
-            
-            program_conditions = [
-                FieldCondition(key="program", match=MatchValue(value=program_code)),
-                FieldCondition(key="program", match=MatchValue(value=student_program)),
-            ]
-            
+            subject_code_to_filter = minor_code_mappings.get(student_minor.lower(), student_minor.lower())
+            if hasattr(self, 'debug_info'):
+                self.debug_info.append(f"Minor mapping ({collection_name}): {student_minor} -> {subject_code_to_filter}")
+                
+        elif student_program and collection_name in ['major_catalogs', '4_year_plans']:
+            program_mappings = {
+                'Computer Science': 'cs', 'CompSci': 'cs', 'cs': 'cs',
+                'Computer Engineering': 'ce', 'CompEng': 'ce', 'ce': 'ce',
+                'Electrical Engineering': 'ee', 'ElecEng': 'ee', 'ee': 'ee',
+                'Software Engineering': 'se', 'SoftEng': 'se', 'se': 'se',
+                'Data Science': 'ds', 'DataSci': 'ds', 'ds': 'ds',
+                'Analytics': 'anal', 'anal': 'anal',
+                'Game Development': 'gamedev', 'GameDev': 'gamedev', 'gamedev': 'gamedev',
+                'Information Security Policy': 'isp', 'ISP': 'isp', 'isp': 'isp'
+            }
+            subject_code_to_filter = program_mappings.get(student_program, student_program.lower())
+            if hasattr(self, 'debug_info'):
+                self.debug_info.append(f"Program mapping ({collection_name}): {student_program} -> {subject_code_to_filter}")
+        
+        if subject_code_to_filter:
             conditions.append(
-                Filter(should=program_conditions)
+                FieldCondition(key="SubjectCode", match=MatchValue(value=subject_code_to_filter))
             )
         
         if student_year:
+            if hasattr(self, 'debug_info'):
+                self.debug_info.append(f"Year filter: {student_year} (type: {type(student_year)})")
+            
             conditions.append(
                 FieldCondition(
-                    key="year",
-                    match=MatchValue(value=student_year)
+                    key="Year",
+                    match=MatchValue(value=str(student_year))
                 )
             )
         
@@ -198,24 +206,27 @@ class UnifiedRAG:
     
     def search_collection(self, query: str, collection_name: str, 
                          student_program: str = None, student_year: str = None,
-                         top_k: int = 5) -> List[Dict]:
+                         student_minor: str = None, top_k: int = 5) -> List[Dict]:
         try:
             if self.bm25_retriever and not self.hybrid_disabled:
-                return self._hybrid_search(query, collection_name, student_program, student_year, top_k)
+                return self._hybrid_search(query, collection_name, student_program, student_year, student_minor, top_k)
             else:
-                return self._dense_search(query, collection_name, student_program, student_year, top_k)
+                return self._dense_search(query, collection_name, student_program, student_year, student_minor, top_k)
         except Exception as e:
             print(f"Error searching collection {collection_name}: {e}")
             return []
     
     def _dense_search(self, query: str, collection_name: str, 
                      student_program: str = None, student_year: str = None,
-                     top_k: int = 5) -> List[Dict]:
+                     student_minor: str = None, top_k: int = 5) -> List[Dict]:
         query_embedding = self._get_embedding(query)
         if query_embedding is None:
             return []
         
-        filter_condition = self._build_filter(student_program, student_year)
+        filter_condition = self._build_filter(student_program, student_year, None, student_minor, collection_name)
+        
+        if hasattr(self, 'debug_info'):
+            self.debug_info.append(f"Dense search filter: program={student_program}, year={student_year}, collection={collection_name}, filter={filter_condition}")
         
         search_results = self.client.query_points(
             collection_name=collection_name,
@@ -240,11 +251,11 @@ class UnifiedRAG:
     
     def _hybrid_search(self, query: str, collection_name: str,
                       student_program: str = None, student_year: str = None,
-                      top_k: int = 5) -> List[Dict]:
+                      student_minor: str = None, top_k: int = 5) -> List[Dict]:
         k_dense = self.config.get('retrieval', {}).get('k_dense', 40)
         k_sparse = self.config.get('retrieval', {}).get('k_sparse', 40)
         
-        dense_results = self._dense_search(query, collection_name, student_program, student_year, k_dense)
+        dense_results = self._dense_search(query, collection_name, student_program, student_year, student_minor, k_dense)
         
         sparse_results = []
         if self.bm25_retriever:
@@ -285,7 +296,7 @@ class UnifiedRAG:
     
     def search_multiple_collections(self, query: str, collection_names: List[str],
                                   student_program: str = None, student_year: str = None,
-                                  top_k_per_collection: int = 8) -> List[Dict]:
+                                  student_minor: str = None, top_k_per_collection: int = 8) -> List[Dict]:
         all_results = []
         
         chunk_allocation = self._calculate_dynamic_chunk_allocation(collection_names, query)
@@ -295,17 +306,47 @@ class UnifiedRAG:
             chunks_for_this_collection = chunk_allocation.get(collection_name, self.config['retrieval']['min_chunks_per_collection'])
             
             if collection_name == 'major_catalogs':
+                if hasattr(self, 'debug_info'):
+                    self.debug_info.append(f"Major catalog search: program={student_program}, year={student_year}")
+                
                 results = self.search_collection(
-                    query, collection_id, student_program, student_year, 
+                    query, collection_id, student_program, student_year, student_minor,
                     top_k=chunks_for_this_collection
                 )
+                
+                if hasattr(self, 'debug_info'):
+                    self.debug_info.append(f"Major catalog search results: {len(results)} chunks")
+                    if results:
+                        major_programs = set()
+                        for r in results[:5]:
+                            meta = r.get('metadata', {})
+                            subject_code = meta.get('SubjectCode')
+                            if subject_code:
+                                major_programs.add(subject_code)
+                        self.debug_info.append(f"Major catalog program codes found: {list(major_programs)}")
+                
                 all_results.extend(results)
             
             elif collection_name == 'minor_catalogs':
+                if hasattr(self, 'debug_info'):
+                    self.debug_info.append(f"Minor catalog search: program={student_program}, year={student_year}")
+                
                 results = self.search_collection(
-                    query, collection_id, student_program, student_year, 
+                    query, collection_id, student_program, student_year, student_minor,
                     top_k=chunks_for_this_collection
                 )
+                
+                if hasattr(self, 'debug_info'):
+                    self.debug_info.append(f"Minor catalog search results: {len(results)} chunks")
+                    if results:
+                        minor_programs = set()
+                        for r in results[:5]:
+                            meta = r.get('metadata', {})
+                            subject_code = meta.get('SubjectCode')
+                            if subject_code:
+                                minor_programs.add(subject_code)
+                        self.debug_info.append(f"Minor catalog program codes found: {list(minor_programs)}")
+                
                 all_results.extend(results)
                 
             elif collection_name == '4_year_plans':
@@ -313,11 +354,11 @@ class UnifiedRAG:
                     best_year = self._find_best_4_year_plan_year(student_year, student_program)
                     self.debug_info.append(f"4-year plan search: program={student_program}, year={student_year}, best_year={best_year}")
                     
-                    test_filter = self._build_filter(student_program, best_year)
+                    test_filter = self._build_filter(student_program, best_year, None, None, '4_year_plans')
                     self.debug_info.append(f"Filter being applied: {test_filter}")
                     
                     results = self.search_collection(
-                        query, collection_id, student_program, best_year, 
+                        query, collection_id, student_program, best_year, student_minor,
                         top_k=chunks_for_this_collection
                     )
                     self.debug_info.append(f"4-year plan search with filters: {len(results)} results")
@@ -325,7 +366,7 @@ class UnifiedRAG:
                     if not results and best_year:
                         self.debug_info.append(f"No results with program filter, trying year-only filter")
                         results = self.search_collection(
-                            query, collection_id, student_program=None, student_year=best_year, 
+                            query, collection_id, student_program=None, student_year=best_year, student_minor=None,
                             top_k=chunks_for_this_collection
                         )
                         self.debug_info.append(f"4-year plan search with year-only: {len(results)} results")
@@ -335,39 +376,40 @@ class UnifiedRAG:
                             self.debug_info.append(f"Sample metadata from year-only results: {sample_metadata}")
                             
                             program_values = set()
+                            file_names = []
                             for r in results[:5]:
                                 meta = r.get('metadata', {})
-                                if 'program' in meta:
-                                    program_values.add(meta['program'])
+                                subject_code = meta.get('SubjectCode')
+                                if subject_code:
+                                    program_values.add(subject_code)
+                                if 'file_name' in meta:
+                                    file_names.append(meta['file_name'])
+                                    
+                            self.debug_info.append(f"Files found: {file_names}")
                             self.debug_info.append(f"Program values found in metadata: {list(program_values)}")
+                            
+                            cs_documents = [r for r in results if r.get('metadata', {}).get('SubjectCode') == 'cs']
+                            self.debug_info.append(f"CS documents found: {len(cs_documents)}")
+                            if cs_documents:
+                                cs_file = cs_documents[0].get('metadata', {}).get('file_name', 'unknown')
+                                self.debug_info.append(f"CS file: {cs_file}")
                         
                         if results and student_program:
+                            search_terms = {
+                                'cs': ['cs', 'computer science', 'compsci'], 
+                                'ce': ['ce', 'computer engineering', 'compeng'],
+                                'ee': ['ee', 'electrical engineering', 'eleceng'],
+                                'se': ['se', 'software engineering', 'softeng'],
+                                'ds': ['ds', 'data science', 'datasci']
+                            }.get(student_program.lower(), [student_program.lower()])
+                            
                             filtered_results = []
                             for result in results:
-                                metadata = result.get('metadata', {})
-                                result_program = metadata.get('program', '').lower()
-                                result_subject = metadata.get('subject', '').lower()
-                                file_name = metadata.get('file_name', '').lower()
+                                meta = result.get('metadata', {})
+                                subject_code = meta.get('SubjectCode', '')
+                                text_fields = f"{subject_code} {meta.get('Subject', meta.get('subject', ''))} {meta.get('file_name', '')}".lower()
                                 
-                                program_mappings = {
-                                    'cs': ['cs', 'computer science', 'compsci', 'cpsc'],
-                                    'se': ['se', 'software engineering', 'softeng'],
-                                    'ce': ['ce', 'computer engineering', 'compeng'],
-                                    'ee': ['ee', 'electrical engineering', 'eleceng'],
-                                    'ds': ['ds', 'data science', 'datasci', 'analytics']
-                                }
-                                
-                                possible_matches = program_mappings.get(student_program.lower(), [student_program.lower()])
-                                
-                                matches = False
-                                for match_term in possible_matches:
-                                    if (match_term in result_program or 
-                                        match_term in result_subject or 
-                                        match_term in file_name):
-                                        matches = True
-                                        break
-                                
-                                if matches:
+                                if any(term in text_fields for term in search_terms):
                                     filtered_results.append(result)
                             
                             self.debug_info.append(f"Manual filtering found {len(filtered_results)} matching results")
@@ -377,13 +419,13 @@ class UnifiedRAG:
                     if not results:
                         self.debug_info.append(f"No results with filters, trying no filters")
                         results = self.search_collection(
-                            query, collection_id, student_program=None, student_year=None, 
+                            query, collection_id, student_program=None, student_year=None, student_minor=None,
                             top_k=chunks_for_this_collection
                         )
                         self.debug_info.append(f"4-year plan search with no filters: {len(results)} results")
                 else:
                     results = self.search_collection(
-                        query, collection_id, student_program=None, student_year=student_year, 
+                        query, collection_id, student_program=None, student_year=student_year, student_minor=None,
                         top_k=chunks_for_this_collection
                     )
                     self.debug_info.append(f"4-year plan search (no program): {len(results)} results")
@@ -391,7 +433,7 @@ class UnifiedRAG:
                 
             elif collection_name == 'general_knowledge':
                 results = self.search_collection(
-                    query, collection_id, student_program=None, student_year=None, 
+                    query, collection_id, student_program=None, student_year=None, student_minor=None,
                     top_k=chunks_for_this_collection
                 )
                 all_results.extend(results)
@@ -401,8 +443,9 @@ class UnifiedRAG:
     def _calculate_dynamic_chunk_allocation(self, collection_names: List[str], query: str) -> Dict[str, int]:
         total_budget = self.config['retrieval']['total_retrieval_budget']
         min_chunks = self.config['retrieval']['min_chunks_per_collection'] 
-        max_chunks = self.config['retrieval']['max_chunks_per_collection']
+        default_max_chunks = self.config['retrieval']['max_chunks_per_collection']
         weights = self.config['retrieval']['collection_weights']
+        collection_max_chunks = self.config['retrieval'].get('collection_max_chunks', {})
         
         allocation = {}
         total_weight = sum(weights.get(col, 0.25) for col in collection_names)
@@ -412,6 +455,7 @@ class UnifiedRAG:
         for collection in collection_names:
             weight = weights.get(collection, 0.25)
             base_chunks = int((weight / total_weight) * total_budget)
+            max_chunks = collection_max_chunks.get(collection, default_max_chunks)
             
             chunks = max(min_chunks, min(max_chunks, base_chunks))
             allocation[collection] = chunks
@@ -425,6 +469,7 @@ class UnifiedRAG:
                     break
                     
                 current_allocation = allocation.get(collection, 0)
+                max_chunks = collection_max_chunks.get(collection, default_max_chunks)
                 if current_allocation < max_chunks:
                     additional = min(remaining_budget, max_chunks - current_allocation)
                     allocation[collection] += additional
@@ -464,7 +509,7 @@ class UnifiedRAG:
     
     def answer_question(self, query: str, conversation_history: List[Dict] = None,
                        student_program: str = None, student_year: str = None, 
-                       top_k: int = 10, enable_thinking: bool = True, 
+                       student_minor: str = None, top_k: int = 10, enable_thinking: bool = True, 
                        show_thinking: bool = False, use_streaming: bool = True, 
                        test_mode: bool = False, enable_reranking: bool = None, 
                        routing_method: str = None, return_debug_info: bool = False) -> tuple:
@@ -476,13 +521,17 @@ class UnifiedRAG:
             
             if self.query_router:
                 collection_names = self.query_router.route_query(
-                    query, conversation_history, student_program, student_year, method=routing_method
+                    query, conversation_history, student_program, student_year, student_minor, method=routing_method
                 )
                 self.debug_info.append(f"Query router found collections: {collection_names}")
                 
                 if '4_year_plans' in collection_names and 'major_catalogs' not in collection_names:
                     collection_names.append('major_catalogs')
                     self.debug_info.append(f"Added major_catalogs since 4-year plans were requested")
+                
+                if student_minor and 'minor_catalogs' not in collection_names:
+                    collection_names.append('minor_catalogs')
+                    self.debug_info.append(f"Added minor_catalogs for student minor: {student_minor}")
                 
                 collections_to_search = []
                 for name in collection_names:
@@ -505,6 +554,9 @@ class UnifiedRAG:
                 if student_program:
                     collections_to_search.append(self.collections['4_year_plans'])
 
+                if student_minor:
+                    collections_to_search.append(self.collections['minor_catalogs'])
+
                 specific_plan_keywords = [
                     'sequence', 'schedule', 'plan', 'course sequence', 'timeline',
                     'roadmap', 'pathway', 'progression', 'recommended order',
@@ -523,7 +575,7 @@ class UnifiedRAG:
             collections_to_search = list(dict.fromkeys(collections_to_search))
 
             retrieved_chunks = self.search_multiple_collections(
-                query, collections_to_search, student_program, student_year, 
+                query, collections_to_search, student_program, student_year, student_minor,
                 top_k_per_collection=top_k
             )
             self.debug_info.append(f"Initial retrieval found {len(retrieved_chunks)} chunks")
@@ -565,6 +617,7 @@ class UnifiedRAG:
             for chunk in retrieved_chunks:
                 try:
                     text = chunk.get('text', chunk.get('chunk_text', ''))
+                    text = text.replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
                     metadata = chunk.get('metadata', {})
                     
                     source_info = ""

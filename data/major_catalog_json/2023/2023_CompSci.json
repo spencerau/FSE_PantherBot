@@ -495,8 +495,9 @@
   ],
   "total_credits": "77-78",
   "metadata": {
-    "year": "2023",
-    "subject": "Computer Science",
-    "program_type": "Major"
+    "Year": "2023",
+    "DocumentType": "Major",
+    "Subject": "Computer Science",
+    "SubjectCode": "cs"
   }
 }

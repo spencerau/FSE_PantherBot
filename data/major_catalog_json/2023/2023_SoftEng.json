@@ -312,8 +312,9 @@
   ],
   "total_credits": "77-78",
   "metadata": {
-    "year": "2023",
-    "subject": "Software Engineering",
-    "program_type": "Major"
+    "Year": "2023",
+    "DocumentType": "Major",
+    "Subject": "Software Engineering",
+    "SubjectCode": "se"
   }
 }

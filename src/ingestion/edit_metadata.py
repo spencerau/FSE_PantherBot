@@ -1,170 +1,144 @@
 from pypdf import PdfReader, PdfWriter
 import re
 import os
-import pandas as pd
 import json
+from pathlib import Path
+from datetime import datetime
 
-def extract_year_and_subject(filename):
-    year_match = re.search(r"(\d{4})", filename)
-    year = year_match.group(1) if year_match else None
-    subject_match = re.search(r"_([A-Za-z]+)\.pdf$", filename)
-    subject = subject_match.group(1) if subject_match else None
-    return year, subject
+SUBJECT_MAPPINGS = {
+    'CompSci': ('Computer Science', 'cs'),
+    'CompEng': ('Computer Engineering', 'ce'),
+    'SoftEng': ('Software Engineering', 'se'), 
+    'ElecEng': ('Electrical Engineering', 'ee'),
+    'DataSci': ('Data Science', 'ds'),
+    'Analytics': ('Analytics', 'anal'),
+    'ISP': ('Information Security Policy', 'isp'),
+    'GameDev': ('Game Development', 'gamedev')
+}
 
-def edit_course_catalog(filename, year, programType, subject, out_pdf=None):
-    reader = PdfReader(filename)
+def extract_metadata_from_path(file_path: str) -> dict:
+    path = Path(file_path)
+    
+    year = None
+    for part in path.parts:
+        if part.isdigit() and len(part) == 4 and part.startswith('20'):
+            year = part
+            break
+    
+    path_str = str(path).lower()
+    if 'minor_catalog' in path_str:
+        program_type, collection_type, doc_type = 'Minor', 'minor_catalogs', 'minor_catalog'
+    elif 'major_catalog' in path_str:
+        program_type, collection_type, doc_type = 'Major', 'major_catalogs', 'major_catalog'
+    elif '4_year_plan' in path_str:
+        program_type, collection_type, doc_type = '4_Year_Plan', '4_year_plans', '4_year_plan'
+    else:
+        program_type, collection_type, doc_type = 'General', 'general_knowledge', 'general_knowledge'
+    
+    subject, subject_code = None, None
+    if path.suffix.lower() in ['.pdf', '.json']:
+        match = re.search(r'(\d{4})_(.+)\.(pdf|json)', path.name)
+        if match:
+            year = match.group(1) or year
+            subject_part = match.group(2)
+            
+            for pattern, (full_name, code) in SUBJECT_MAPPINGS.items():
+                if pattern in subject_part:
+                    subject, subject_code = full_name, code
+                    break
+            else:
+                subject = subject_part.replace('_', ' ')
+                subject_code = subject_part.lower()
+    
+    metadata = {
+        'Year': year,
+        'DocumentType': program_type,
+        'Subject': subject,
+        'SubjectCode': subject_code
+    }
+    
+    return metadata
+
+def add_pdf_metadata(pdf_path: str, metadata: dict) -> None:
+    reader = PdfReader(pdf_path)
     writer = PdfWriter()
+    
     for page in reader.pages:
         writer.add_page(page)
-    writer.add_metadata({
-        "/Year": f"{year}",
-        "/ProgramType": f"{programType}",
-        "/Subject": f"{subject}"
-    })
-    if out_pdf:
-        with open(out_pdf, "wb") as f:
-            writer.write(f)
-    else:
-        output_filename = f"{year}_{subject}.pdf"
-        programType = programType.lower()
-        os.makedirs(f"data/{programType}_catalogs", exist_ok=True)
-        output_path = os.path.join(f"data/{programType}_catalogs", output_filename)
-        with open(output_path, "wb") as f:
-            writer.write(f)
-
-def grab_course_catalog_metadata(filename):
-    year, subject = extract_year_and_subject(filename)
-    subject_mapping = {"CompSci": "Computer Science", "CompEng": "Computer Engineering", "Analytics": "Analytics"}
-    full_subject = subject_mapping.get(subject, subject)
-    program_type = "Minor" if "minor" in filename.lower() else "Major"
     
-    return {
-        "Year": year,
-        "ProgramType": program_type,
-        "Subject": full_subject
+    pdf_metadata = {
+        "/Year": str(metadata.get('Year', '')),
+        "/DocumentType": str(metadata.get('DocumentType', '')),
+        "/Subject": str(metadata.get('Subject', '')),
+        "/SubjectCode": str(metadata.get('SubjectCode', ''))
     }
-
-def extract_metadata_from_json_filename(filename):
-    year_match = re.search(r"(\d{4})", filename)
-    year = year_match.group(1) if year_match else None
+    writer.add_metadata(pdf_metadata)
     
-    subject_match = re.search(r"_([A-Za-z]+)\.json$", filename)
-    subject = subject_match.group(1) if subject_match else None
-    
-    return year, subject
+    with open(pdf_path, "wb") as f:
+        writer.write(f)
 
-def add_metadata_to_json(json_path):
+def add_json_metadata(json_path: str, metadata: dict) -> bool:
     try:
         with open(json_path, 'r', encoding='utf-8') as f:
             data = json.load(f)
         
-        filename = os.path.basename(json_path)
-        year, subject = extract_metadata_from_json_filename(filename)
-        
-        subject_mapping = {
-            "CompSci": "Computer Science", 
-            "CompEng": "Computer Engineering", 
-            "DataSci": "Data Science",
-            "SoftEng": "Software Engineering",
-            "ElecEng": "Electrical Engineering"
-        }
-        full_subject = subject_mapping.get(subject, subject)
-        
         data["metadata"] = {
-            "year": year,
-            "subject": full_subject,
-            "program_type": "Major",
+            "Year": metadata.get('Year'),
+            "DocumentType": metadata.get('DocumentType'),
+            "Subject": metadata.get('Subject'),
+            "SubjectCode": metadata.get('SubjectCode')
         }
         
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-            
+        
         return True
     except Exception as e:
         print(f"Error processing {json_path}: {e}")
         return False
 
-def main():
-    plan_base_dir = "data/4_year_plans/"
-    subject_map = {
-        "cs": "Computer Science",
-        "ce": "Computer Engineering",
-        "se": "Software Engineering",
-        "ee": "Electrical Engineering",
-        "ds": "Data Science"
-    }
+def process_files_in_directory(base_dir: str, file_extension: str) -> None:
+    if not os.path.exists(base_dir):
+        return
     
-    if os.path.exists(plan_base_dir):
-        for year_dir in os.listdir(plan_base_dir):
-            year_path = os.path.join(plan_base_dir, year_dir)
-            if os.path.isdir(year_path) and year_dir.isdigit():
-                print(f"Processing 4-year plans for year: {year_dir}")
-                os.makedirs(year_path, exist_ok=True)
+    for year_dir in os.listdir(base_dir):
+        year_path = os.path.join(base_dir, year_dir)
+        if not (os.path.isdir(year_path) and year_dir.isdigit()):
+            continue
+            
+        print(f"Processing {file_extension} files in {base_dir} for year: {year_dir}")
+        
+        for filename in os.listdir(year_path):
+            if not filename.endswith(file_extension):
+                continue
+            if filename.startswith("backup_"):
+                continue
                 
-                for filename in os.listdir(year_path):
-                    if filename.endswith(".pdf"):
-                        subject = None
-                        for key, value in subject_map.items():
-                            if key in filename:
-                                subject = value
-                                break
-                        if not subject:
-                            subject = "Unknown"
-                        
-                        input_path = os.path.join(year_path, filename)
-                        reader = PdfReader(input_path)
-                        writer = PdfWriter()
-                        for page in reader.pages:
-                            writer.add_page(page)
-                        writer.add_metadata({
-                            "/Subject": f"{subject}",
-                            "/Year": f"{year_dir}"
-                        })
-                        
-                        output_path = input_path
-                        with open(output_path, "wb") as f:
-                            writer.write(f)
-                        print(f"Processed 4-year plan: {filename} -> {output_path}")
+            full_path = os.path.join(year_path, filename)
+            metadata = extract_metadata_from_path(full_path)
+            
+            try:
+                if file_extension == ".pdf":
+                    add_pdf_metadata(full_path, metadata)
+                elif file_extension == ".json":
+                    add_json_metadata(full_path, metadata)
+                
+                print(f"Processed {filename}")
+                print(f"  Year: {metadata.get('Year', 'None')}")
+                print(f"  DocumentType: {metadata.get('DocumentType', 'None')}")
+                print(f"  Subject: {metadata.get('Subject', 'None')}")
+                print(f"  SubjectCode: {metadata.get('SubjectCode', 'None')}")
+            except Exception as e:
+                print(f"Error processing {filename}: {e}")
 
-    # major course catalog metadata - process JSON files
-    major_json_base_dir = "data/major_catalog_json/"
-    if os.path.exists(major_json_base_dir):
-        for year_dir in os.listdir(major_json_base_dir):
-            year_path = os.path.join(major_json_base_dir, year_dir)
-            if os.path.isdir(year_path) and year_dir.isdigit():
-                print(f"Processing JSON major catalogs for year: {year_dir}")
-                
-                for filename in os.listdir(year_path):
-                    if filename.endswith(".json"):
-                        full_path = os.path.join(year_path, filename)
-                        success = add_metadata_to_json(full_path)
-                        if success:
-                            print(f"Added metadata to {filename}")
-                        else:
-                            print(f"Failed to process {filename}")
-
-    # minor course catalog metadata
-    # minor_base_dir = "data/raw_minor_catalogs/"
-    # if os.path.exists(minor_base_dir):
-    #     for year_dir in os.listdir(minor_base_dir):
-    #         year_path = os.path.join(minor_base_dir, year_dir)
-    #         if os.path.isdir(year_path) and year_dir.isdigit():
-    #             print(f"Processing minor catalogs for year: {year_dir}")
-                
-    #             for filename in os.listdir(year_path):
-    #                 if filename.endswith(".pdf"):
-    #                     full_path = os.path.join(year_path, filename)
-    #                     metadata = grab_course_catalog_metadata(full_path)
-                        
-    #                     output_year_dir = os.path.join("data/minor_catalogs", year_dir)
-    #                     os.makedirs(output_year_dir, exist_ok=True)
-                        
-    #                     edit_course_catalog(full_path,
-    #                                         metadata["Year"],
-    #                                         metadata["ProgramType"],
-    #                                         metadata["Subject"],
-    #                                         out_pdf=os.path.join(output_year_dir, filename))
-    #                     print(f"Processed {filename} with metadata: {metadata}")
+def main():
+    print("Adding metadata to catalog files...")
+    
+    process_files_in_directory("data/4_year_plans/", ".pdf")
+    process_files_in_directory("data/major_catalog_json/", ".json") 
+    process_files_in_directory("data/minor_catalog/", ".pdf")
+    
+    print("Metadata processing complete!")
 
 if __name__ == "__main__":
     main()

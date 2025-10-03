@@ -17,9 +17,9 @@ qdrant:
 
 data:
   major_catalog_json_path: "data/major_catalog_json"
+  minor_catalog_path: "data/minor_catalog"
   general_knowledge_path: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
-  # minor_catalog_json_path: "data/minor_catalog_json"
 
 # Embedding Configuration
 embedding:
@@ -82,6 +82,14 @@ llm:
     - Focus on the student's specific program and catalog year when provided
     - Trust the context provided - it comes from official university documents
     
+    FORMATTING FOR CHAT INTERFACES:
+    - Use numbered lists and bullet points instead of tables when possible
+    - Keep formatting simple and readable for text-based chat
+    - Use clear step-by-step instructions when explaining processes
+    - Avoid complex markdown formatting like tables with pipes (|)
+    - When listing items in categories, use section numbers for main categories and restart numbering within each section
+    - For course lists, group related courses under descriptive headings with bullet points rather than continuous numbering
+    
     Format your responses clearly and be thorough when you have good context to work with.
 
     For study abroad, as long as courses come over as upper division, they can count for our upper division courses.
@@ -111,6 +119,13 @@ retrieval:
   # Minimum chunks per collection when active
   min_chunks_per_collection: 5
   max_chunks_per_collection: 20
+  
+  # Per-collection max limits
+  collection_max_chunks:
+    major_catalogs: 9
+    minor_catalogs: 4
+    4_year_plans: 2
+    general_knowledge: 15
   
   # Total retrieval budget (will be distributed dynamically)
   total_retrieval_budget: 40
