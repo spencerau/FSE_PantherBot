@@ -155,15 +155,15 @@ class DatabaseManager:
             logger.error(f"Error getting user name: {e}")
             return None
 
-    async def add_raw_message(self, slack_user_id: str, message_text: str, response_text: str = None):
+    async def add_raw_message(self, slack_user_id: str, message_text: str, response_text: str = None, citations: list = None):
         if not self._validate_slack_user_id(slack_user_id):
             logger.warning(f"Invalid slack_user_id format: {slack_user_id}")
             return
             
         async with self.connection_pool.acquire() as conn:
             await conn.execute(
-                'INSERT INTO raw_messages (slack_user_id, message_text, response_text) VALUES ($1, $2, $3)',
-                slack_user_id, message_text, response_text
+                'INSERT INTO raw_messages (slack_user_id, message_text, response_text, citations) VALUES ($1, $2, $3, $4)',
+                slack_user_id, message_text, response_text, citations
             )
 
     async def get_unprocessed_messages(self, slack_user_id: str) -> List[Dict]:
@@ -173,7 +173,7 @@ class DatabaseManager:
             
         async with self.connection_pool.acquire() as conn:
             rows = await conn.fetch(
-                'SELECT id, slack_user_id, message_text, response_text, timestamp, processed FROM raw_messages WHERE slack_user_id = $1 AND processed = FALSE ORDER BY timestamp',
+                'SELECT id, slack_user_id, message_text, response_text, citations, timestamp, processed FROM raw_messages WHERE slack_user_id = $1 AND processed = FALSE ORDER BY timestamp',
                 slack_user_id
             )
             return [dict(row) for row in rows]
@@ -212,6 +212,18 @@ class DatabaseManager:
                     slack_user_id, summary, message_count
                 )
 
+    async def get_last_message_citations(self, slack_user_id: str) -> Optional[Dict]:
+        if not self._validate_slack_user_id(slack_user_id):
+            logger.warning(f"Invalid slack_user_id format: {slack_user_id}")
+            return None
+            
+        async with self.connection_pool.acquire() as conn:
+            row = await conn.fetchrow(
+                'SELECT message_text, response_text, citations, timestamp FROM raw_messages WHERE slack_user_id = $1 ORDER BY timestamp DESC LIMIT 1',
+                slack_user_id
+            )
+            return dict(row) if row else None
+
     async def mark_messages_processed(self, message_ids: List[int]):
         async with self.connection_pool.acquire() as conn:
             await conn.execute(
@@ -228,16 +240,11 @@ class DatabaseManager:
             async with self.connection_pool.acquire() as conn:
                 async with conn.transaction():
                     await conn.execute(
-                        'DELETE FROM raw_messages WHERE slack_user_id = $1',
-                        slack_user_id
-                    )
-                    
-                    await conn.execute(
                         'DELETE FROM conversation_memory WHERE slack_user_id = $1',
                         slack_user_id
                     )
                     
-            logger.info(f"Cleared message history for user {slack_user_id[:3]}***")
+            logger.info(f"Cleared conversation history for user {slack_user_id[:3]}*** (kept raw messages for auditing)")
             return True
         except Exception as e:
             logger.error(f"Error clearing message history: {e}")
@@ -328,9 +335,15 @@ class DatabaseManager:
                     slack_user_id VARCHAR(20) REFERENCES students(slack_user_id) ON DELETE CASCADE,
                     message_text TEXT,
                     response_text TEXT,
+                    citations JSONB,
                     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     processed BOOLEAN DEFAULT FALSE
                 )
+            ''')
+            
+            await conn.execute('''
+                ALTER TABLE raw_messages 
+                ADD COLUMN IF NOT EXISTS citations JSONB
             ''')
             
             await conn.execute('''

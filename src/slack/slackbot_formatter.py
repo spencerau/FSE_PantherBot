@@ -156,20 +156,4 @@ class SlackFormatter:
     def format_response(self, response: str, sources: list) -> str:
         slack_formatted_response = self.convert_markdown_to_slack(response)
         formatted = f"*PantherBot Academic Assistant*\n\n{slack_formatted_response}"
-        
-        if sources:
-            formatted += "\n\nSources:\n"
-            for i, source in enumerate(sources[:3], 1):
-                try:
-                    if isinstance(source, dict):
-                        metadata = source.get('metadata', {})
-                        program = metadata.get('program_full', 'N/A') 
-                        year = metadata.get('year', 'N/A')
-                        section = metadata.get('section_name', 'N/A')
-                        formatted += f"{i}. {program} ({year}) - {section}\n"
-                    else:
-                        formatted += f"{i}. Academic Resource\n"
-                except Exception:
-                    formatted += f"{i}. Academic Resource\n"
-        
         return formatted

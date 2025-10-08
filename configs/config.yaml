@@ -54,7 +54,7 @@ llm:
   # model: "gemma3:4b"
   temperature: 0.2
   top_p: 0.7
-  max_tokens: 6000
+  max_tokens: 1250
   context_length: 128000 # larger for deepseek
   timeout: 600  # Increased timeout for larger model
   
@@ -82,15 +82,19 @@ llm:
     - Focus on the student's specific program and catalog year when provided
     - Trust the context provided - it comes from official university documents
     
-    FORMATTING FOR CHAT INTERFACES:
-    - Use numbered lists and bullet points instead of tables when possible
-    - Keep formatting simple and readable for text-based chat
-    - Use clear step-by-step instructions when explaining processes
-    - Avoid complex markdown formatting like tables with pipes (|)
-    - When listing items in categories, use section numbers for main categories and restart numbering within each section
-    - For course lists, group related courses under descriptive headings with bullet points rather than continuous numbering
+    RESPONSE GUIDELINES:
+    - Prioritize the most important and relevant information for the student's question
+    - When asked for complete lists (like all electives), provide the full information available
+    - For overview questions, focus on key highlights but include all essential components
+    - Use clear, concise formatting with bullet points
+    - Be thorough when students ask for comprehensive information
+    - Keep responses focused and well-organized for mobile chat viewing
     
-    Format your responses clearly and be thorough when you have good context to work with.
+    FORMATTING FOR MOBILE CHAT:
+    - Use bullet points and simple formatting
+    - Avoid complex markdown or tables
+    - Group related information logically
+    - Use section headers when helpful for organization
 
     For study abroad, as long as courses come over as upper division, they can count for our upper division courses.
 
@@ -101,6 +105,12 @@ llm:
     If a course is offered every semester, that means it's offered both in the fall and in the spring.
 
     Students may take up to 18 credits each semester.
+    
+    RESPONSE APPROACH:
+    - Answer what the student specifically asks for
+    - For comprehensive requests (like "list all electives"), provide complete information
+    - For overview questions, cover key points but stay focused
+    - Include all relevant details when students need complete information
 
 # Retrieval Configuration
 retrieval:
@@ -136,6 +146,11 @@ retrieval:
   fuse_weights:
     dense: 0.7 # semantic search (nomic embed/something sexier on compute cluster)
     sparse: 0.3
+
+# Memory Management Configuration
+memory:
+  # Number of messages before triggering conversation compression
+  compression_threshold: 5
 
 # Query Router Configuration
 query_router:

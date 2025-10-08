@@ -56,7 +56,8 @@ class PantherSlackBot:
             self.student_manager, 
             self.formatter, 
             self.profile_handler,
-            self.memory_interface
+            self.memory_interface,
+            self.client
         )
         
         self._setup_handlers()
@@ -147,6 +148,12 @@ class PantherSlackBot:
             await ack()
             user_id = command['user_id']
             await self.message_handler.handle_reset_profile_command(user_id, say)
+
+        @self.app.command("/cite_last_message")
+        async def handle_cite_last_message_slash_command(ack, command, say):
+            await ack()
+            user_id = command['user_id']
+            await self.message_handler.handle_cite_last_message_command(user_id, say)
     
     async def start(self):
         try:

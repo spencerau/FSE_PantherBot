@@ -12,9 +12,11 @@ from memory.database import DatabaseManager
 logger = logging.getLogger(__name__)
 
 class MemoryCompressionService:
-    def __init__(self, compression_threshold: int = 10):
-        self.compression_threshold = compression_threshold
-        self.memory_manager = ConversationMemoryManager(compression_threshold)
+    def __init__(self, compression_threshold: int = None):
+        from utils.config_loader import load_config
+        config = load_config()
+        self.compression_threshold = compression_threshold or config.get('memory', {}).get('compression_threshold', 5)
+        self.memory_manager = ConversationMemoryManager(self.compression_threshold)
         self.db_manager = DatabaseManager()
 
     async def initialize(self):

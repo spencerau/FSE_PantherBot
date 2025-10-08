@@ -141,6 +141,15 @@ retrieval:
 - `k_dense/k_sparse`: Results from each search method
 - `fuse_weights`: Hybrid search combination weights
 
+## Memory Management
+
+```yaml
+memory:
+  compression_threshold: 5
+```
+
+- `compression_threshold`: Number of messages before triggering conversation compression. When a user has this many unprocessed raw messages, the system automatically compresses older conversations into summaries to manage memory and improve retrieval performance.
+
 ## Query Router
 
 ```yaml

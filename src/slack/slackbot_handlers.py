@@ -13,12 +13,13 @@ sys.path.insert(0, str(src_dir))
 
 class MessageHandler:
     
-    def __init__(self, rag_provider: Callable[[], Any], student_manager, formatter, profile_handler, memory_interface=None):
+    def __init__(self, rag_provider: Callable[[], Any], student_manager, formatter, profile_handler, memory_interface=None, slack_client=None):
         self._rag_provider = rag_provider
         self.student_manager = student_manager
         self.formatter = formatter
         self.profile_handler = profile_handler
         self.memory_interface = memory_interface
+        self.slack_client = slack_client
         self.logger = logging.getLogger(__name__)
     
     async def handle_user_message(self, text: str, user_id: str, say):
@@ -89,7 +90,7 @@ class MessageHandler:
             
             if self.memory_interface:
                 try:
-                    await self.memory_interface.add_conversation_turn(user_id, query, answer)
+                    await self.memory_interface.add_conversation_turn(user_id, query, answer, sources)
                 except Exception as e:
                     self.logger.error(f"Error saving conversation: {e}")
             
@@ -146,21 +147,136 @@ class MessageHandler:
             self.logger.error(f"Error getting user context: {e}")
             return {}
 
-    async def handle_clear_history_command(self, user_id: str, say):
+    async def handle_clear_history_command(self, user_id, say):
         try:
             success, message = await self.student_manager.clear_user_history(user_id)
-            await say(message)
+            
+            if success and self.slack_client:
+                try:
+                    await self._clear_slack_conversation_history(user_id)
+                    await say(f"{message}\n\n_Note: I've also deleted the last 100 messages from our conversation to help clean up the chat._")
+                except Exception as slack_error:
+                    self.logger.warning(f"Could not clear Slack history for {user_id}: {slack_error}")
+                    await say(f"{message}\n\n_Note: Database history cleared successfully, but I couldn't delete the Slack chat messages._")
+            else:
+                await say(message)
+                
         except Exception as e:
             self.logger.error(f"Error handling clear history command: {e}")
             await say("Sorry, I encountered an error while clearing your history. Please try again.")
 
-    async def handle_reset_profile_command(self, user_id: str, say):
+    async def handle_reset_profile_command(self, user_id, say):
         try:
             success, message = await self.student_manager.reset_user_profile(user_id)
             await say(message)
         except Exception as e:
             self.logger.error(f"Error handling reset profile command: {e}")
             await say("Sorry, I encountered an error while resetting your profile. Please try again.")
+
+    async def handle_cite_last_message_command(self, user_id, say):
+        try:
+            if not self.memory_interface:
+                await say("Citation service is not available.")
+                return
+                
+            last_message = await self.memory_interface.get_last_message_citations(user_id)
+            
+            if not last_message:
+                await say("No recent messages found to cite.")
+                return
+                
+            citations = last_message.get('citations')
+            if not citations:
+                await say("No sources were used for your last question.")
+                return
+                
+            formatted_citations = self._format_citations(citations)
+            await say(f"*Sources for your last question:*\n\n{formatted_citations}")
+            
+        except Exception as e:
+            self.logger.error(f"Error handling cite last message command: {e}")
+            await say("Sorry, I encountered an error while retrieving citations. Please try again.")
+
+    def _format_citations(self, citations):
+        if not citations:
+            return "No sources available."
+            
+        formatted = ""
+        for i, source in enumerate(citations, 1):
+            try:
+                if isinstance(source, dict):
+                    metadata = source.get('metadata', {})
+                    
+                    collection = metadata.get('collection', 'Unknown Collection')
+                    program = metadata.get('program_full', metadata.get('program', 'N/A'))
+                    year = metadata.get('year', 'N/A')
+                    section = metadata.get('section_name', metadata.get('title', 'N/A'))
+                    
+                    if 'pdf' in str(source).lower() or collection == 'general_knowledge':
+                        doc_name = metadata.get('source', metadata.get('title', 'Academic Document'))
+                        formatted += f"{i}. *{doc_name}* (General Knowledge)\n"
+                    else:
+                        formatted += f"{i}. *{program}* ({year}) - {section}\n"
+                        
+                    if collection:
+                        formatted += f"   Collection: {collection.replace('_', ' ').title()}\n"
+                        
+                else:
+                    formatted += f"{i}. Academic Resource\n"
+                    
+            except Exception:
+                formatted += f"{i}. Academic Resource\n"
+                
+        return formatted
+
+    async def _clear_slack_conversation_history(self, user_id: str):
+        if not self.slack_client:
+            return
+            
+        try:
+            response = await self.slack_client.conversations_open(users=user_id)
+            if not response['ok']:
+                self.logger.warning(f"Could not open DM channel with user {user_id}")
+                return
+                
+            channel_id = response['channel']['id']
+            
+            history_response = await self.slack_client.conversations_history(
+                channel=channel_id,
+                limit=50
+            )
+            
+            if not history_response['ok']:
+                self.logger.warning(f"Could not retrieve conversation history for {user_id}")
+                return
+                
+            deleted_count = 0
+            for message in history_response['messages']:
+                if message.get('type') == 'message':
+                    try:
+                        delete_response = await self.slack_client.chat_delete(
+                            channel=channel_id,
+                            ts=message['ts']
+                        )
+                        if delete_response['ok']:
+                            deleted_count += 1
+                    except Exception as delete_error:
+                        self.logger.warning(f"Could not delete message {message['ts']}: {delete_error}")
+                        continue
+                        
+            self.logger.info(f"Deleted {deleted_count} messages (last 50) from conversation with user {user_id}")
+            
+        except Exception as e:
+            self.logger.error(f"Error clearing Slack conversation history: {e}")
+            raise
+
+    async def _get_bot_user_id(self):
+        try:
+            auth_response = await self.slack_client.auth_test()
+            return auth_response['user_id']
+        except Exception as e:
+            self.logger.error(f"Error getting bot user ID: {e}")
+            return None
     
     def clean_mention_text(self, text: str, bot_user_id: str) -> str:
         if bot_user_id:

@@ -14,7 +14,7 @@ from memory.database import DatabaseManager
 logger = logging.getLogger(__name__)
 
 class ConversationMemoryManager:
-    def __init__(self, compression_threshold: int = 10):
+    def __init__(self, compression_threshold: int = None):
         self.config = load_config()
         
         env_path = Path(__file__).parent / '.env'
@@ -22,7 +22,7 @@ class ConversationMemoryManager:
             load_dotenv(env_path)
             
         self.db_manager = DatabaseManager()
-        self.compression_threshold = compression_threshold
+        self.compression_threshold = compression_threshold or self.config.get('memory', {}).get('compression_threshold', 5)
         self.ollama_api = OllamaAPI()
 
     async def initialize(self):

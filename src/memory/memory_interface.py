@@ -18,11 +18,11 @@ class MemoryInterface:
     async def initialize(self):
         await self.db_manager.initialize()
 
-    async def add_conversation_turn(self, user_id: str, user_message: str, bot_response: str):
+    async def add_conversation_turn(self, user_id: str, user_message: str, bot_response: str, citations: list = None):
         if not self.db_manager._validate_slack_user_id(user_id):
             logger.warning(f"Attempted to add conversation for invalid user ID: {user_id}")
             return
-        await self.db_manager.add_raw_message(user_id, user_message, bot_response)
+        await self.db_manager.add_raw_message(user_id, user_message, bot_response, citations)
 
     async def get_recent_context(self, user_id: str, max_messages: int = 3) -> str:
         if not self.db_manager._validate_slack_user_id(user_id):
@@ -62,6 +62,12 @@ class MemoryInterface:
         except Exception as e:
             logger.error(f"Error getting conversation context: {e}")
             return ""
+
+    async def get_last_message_citations(self, user_id: str) -> Optional[Dict]:
+        if not self.db_manager._validate_slack_user_id(user_id):
+            logger.warning(f"Attempted to get citations for invalid user ID: {user_id}")
+            return None
+        return await self.db_manager.get_last_message_citations(user_id)
 
     async def close(self):
         await self.db_manager.close()
