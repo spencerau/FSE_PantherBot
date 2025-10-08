@@ -12,7 +12,14 @@ from utils.text_preprocessing import preprocess_for_embedding
 from retrieval.bm25 import BM25Retriever
 from retrieval.fusion import HybridRetriever
 from retrieval.reranker import BGEReranker
-from retrieval.query_router import QueryRouter
+try:
+    # QueryRouter pulls in sentence-transformers/transformers; guard the import so the
+    # rest of the pipeline can run even if those optional dependencies are unavailable.
+    from retrieval.query_router import QueryRouter
+    QUERY_ROUTER_IMPORT_ERROR = None
+except ImportError as import_error:
+    QueryRouter = None  # type: ignore
+    QUERY_ROUTER_IMPORT_ERROR = import_error
 
 
 class UnifiedRAG:
@@ -31,10 +38,18 @@ class UnifiedRAG:
         self.hybrid_disabled = os.getenv('HYBRID_DISABLED', 'false').lower() == 'true'
         self.rerank_disabled = os.getenv('RERANK_DISABLED', 'false').lower() == 'true'
         
-        try:
-            self.query_router = QueryRouter(self.ollama_api)
-        except Exception as e:
-            print(f"Warning: Query router initialization failed: {e}")
+        if QueryRouter is not None:
+            try:
+                self.query_router = QueryRouter(self.ollama_api)
+            except Exception as e:
+                print(f"Warning: Query router initialization failed: {e}")
+                self.query_router = None
+        else:
+            if QUERY_ROUTER_IMPORT_ERROR is not None:
+                print(
+                    "Warning: Query router disabled due to import error: "
+                    f"{QUERY_ROUTER_IMPORT_ERROR}"
+                )
             self.query_router = None
         
         self.bm25_retriever = None

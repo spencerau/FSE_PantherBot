@@ -49,7 +49,7 @@
     },
     {
       "title": "Chapman Academic Advising Appointment Booking",
-      "url": "https://outlook.office365.com/owa/calendar/FSEAcademicAdvising@chapman.edu/bookings/?skipRedirect=1",
+      "url": "https://outlook.office.com/book/FSoEAcademicAdvising@chapman.edu/?ismsaljsauthenabled",
       "category": "Academics",
       "description": "Book an appointment with an academic advisor through Microsoft Bookings."
     },

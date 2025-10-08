@@ -1,6 +1,6 @@
 import os
 import logging
-import asyncio
+import textwrap
 from typing import Dict, Any, Optional
 from slack_bolt.async_app import AsyncApp
 from slack_bolt.adapter.socket_mode.async_handler import AsyncSocketModeHandler
@@ -9,14 +9,17 @@ from slack_sdk.errors import SlackApiError
 
 import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).parent))
-from config import load_slack_config
+from slackbot_config import load_slack_config
 
 sys.path.append(str(Path(__file__).parent.parent))
-from retrieval.unified_rag import UnifiedRAG
 from utils.config_loader import load_config
-from memory.student_profile import StudentProfileManager
-from memory.memory_interface import MemoryInterface
+
+sys.path.append(str(Path(__file__).parent))
+from slackbot_formatter import SlackFormatter
+from slackbot_profile import ProfileHandler
+from slackbot_handlers import MessageHandler
 
 
 class PantherSlackBot:
@@ -38,19 +41,40 @@ class PantherSlackBot:
         self.client = AsyncWebClient(token=self.slack_bot_token)
         
         self.config = load_config()
-        self.rag_system = UnifiedRAG()
+        self._rag_system = None
+        
+        from memory.student_profile import StudentProfileManager
+        from memory.memory_interface import MemoryInterface
+        
         self.student_manager = StudentProfileManager()
         self.memory_interface = MemoryInterface()
+        
+        self.formatter = SlackFormatter()
+        self.profile_handler = ProfileHandler(self.student_manager, self.client)
+        self.message_handler = MessageHandler(
+            self._get_rag_system,
+            self.student_manager, 
+            self.formatter, 
+            self.profile_handler,
+            self.memory_interface
+        )
         
         self._setup_handlers()
         
         self.handler = AsyncSocketModeHandler(self.app, self.slack_app_token)
-        
         self.bot_user_id = None
         self.bot_info = None
-        
+        self._resources_ready = False
+
         logging.basicConfig(level=logging.INFO)
         self.logger = logging.getLogger(__name__)
+
+    def _get_rag_system(self):
+        """Lazily construct the RAG pipeline so heavy dependencies are only imported when needed."""
+        if self._rag_system is None:
+            from retrieval.unified_rag import UnifiedRAG
+            self._rag_system = UnifiedRAG()
+        return self._rag_system
     
     def _setup_handlers(self):
         
@@ -60,24 +84,24 @@ class PantherSlackBot:
         
         @self.app.message("help")
         async def handle_help(message, say):
-            help_text = """
-        PantherBot Help
+            help_text = textwrap.dedent("""
+                PantherBot Help
 
-        I can help you with:
-        - Course requirements for your major
-        - Academic policies and procedures  
-        - Registration information
-        - 4-year plan guidance
-        - General academic questions
+                I can help you with:
+                - Course requirements for your major
+                - Academic policies and procedures  
+                - Registration information
+                - 4-year plan guidance
+                - General academic questions
 
-        Example questions:
-        - "What are the upper division requirements for Computer Science?"
-        - "How do I register for classes?"
-        - "What courses should I take my freshman year?"
-        - "How do I book an appointment with an academic advisor?"
+                Example questions:
+                - "What are the upper division requirements for Computer Science?"
+                - "How do I register for classes?"
+                - "What courses should I take my freshman year?"
+                - "How do I book an appointment with an academic advisor?"
 
-        Just ask me any academic question and I'll do my best to help!
-            """
+                Just ask me any academic question and I'll do my best to help!
+            """).strip()
             await say(help_text)
         
         @self.app.event("app_mention")
@@ -85,10 +109,10 @@ class PantherSlackBot:
             user_id = event['user']
             text = event['text']
             
-            clean_text = self._clean_mention_text(text)
+            clean_text = self.message_handler.clean_mention_text(text, self.bot_user_id)
             
             if clean_text.strip():
-                await self._process_academic_query(clean_text, user_id, say)
+                await self.message_handler.process_academic_query(clean_text, user_id, say)
             else:
                 await say(f"Hi <@{user_id}>! What academic question can I help you with?")
         
@@ -110,465 +134,70 @@ class PantherSlackBot:
                 logging.info(f"Skipping hello/help message: {text}")
                 return
             
-            await self._handle_user_message(text, user_id, say)
-    
-    def _clean_mention_text(self, text: str) -> str:
-        if self.bot_user_id:
-            mention = f"<@{self.bot_user_id}>"
-            text = text.replace(mention, "").strip()
-        return text
-    
-    async def _handle_user_message(self, text: str, user_id: str, say):
-        try:
-            is_new = await self.student_manager.is_new_student(user_id)
-            has_incomplete = await self.student_manager.has_incomplete_profile(user_id)
-            
-            if is_new or has_incomplete:
-                major = self.student_manager.parse_major_input(text)
-                catalog_year = self.student_manager.parse_catalog_year_input(text)
-                
-                if major or catalog_year:
-                    await self._handle_profile_setup(text, user_id, say)
-                elif is_new:
-                    await self._initiate_profile_setup(user_id, say)
-                else:
-                    # Has incomplete profile but didn't provide recognizable input
-                    existing_student = await self.student_manager.get_student_profile(user_id)
-                    if existing_student.get('major') and not existing_student.get('catalog_year'):
-                        await say("""I need your catalog year to complete your profile.
+            await self.message_handler.handle_user_message(text, user_id, say)
 
-Your catalog year is the year you first entered the university.
+        @self.app.command("/clear_history")
+        async def handle_clear_history_slash_command(ack, command, say):
+            await ack()
+            user_id = command['user_id']
+            await self.message_handler.handle_clear_history_command(user_id, say)
 
-Valid Catalog Years: 2022, 2023, 2024, 2025
-
-Example: 2024""")
-                    else:
-                        await self._initiate_profile_setup(user_id, say)
-                return
-            
-            if text.lower().startswith('update') or 'major:' in text.lower() or 'catalog year:' in text.lower():
-                major = self.student_manager.parse_major_input(text)
-                catalog_year = self.student_manager.parse_catalog_year_input(text)
-                if major or catalog_year:
-                    await self._handle_profile_update(text, user_id, say)
-                    return
-            
-            await self._process_academic_query(text, user_id, say)
-            
-        except Exception as e:
-            self.logger.error(f"Error handling user message: {e}")
-            await say("Sorry, I encountered an error. Please try again.")
-
-    async def _initiate_profile_setup(self, user_id: str, say):
-        await say("Hello! This is the first time I'm chatting with you. I'm PantherBot, your academic advisor assistant.")
-        
-        await asyncio.sleep(1)
-        
-        await say("""
-        To provide you with personalized academic guidance, I need to set up your student profile.
-        First, please tell me your major by providing me with your major:
-        Valid Majors:
-        • Computer Science
-        • Computer Engineering 
-        • Data Science
-        • Software Engineering
-        • Electrical Engineering
-        Example: Computer Science
-        """)
-
-    async def _handle_profile_setup(self, text: str, user_id: str, say):
-        major = self.student_manager.parse_major_input(text)
-        catalog_year = self.student_manager.parse_catalog_year_input(text)
-        
-        existing_student = await self.student_manager.get_student_profile(user_id)
-        
-        if existing_student and not existing_student.get('catalog_year') and catalog_year:
-            success, message = await self.student_manager.complete_profile_with_catalog_year(user_id, text)
-            if success:
-                final_profile = await self.student_manager.get_student_profile(user_id)
-                await say(f"Perfect! Your profile is now complete:\n• Major: *{final_profile['major']}*\n• Catalog Year: *{final_profile['catalog_year']}*\n\nYou can now ask me about course requirements, academic policies, and more!")
-            else:
-                await say(f"{message}")
-            return
-        
-        if major and catalog_year:
-            success, message = await self.student_manager.create_student_profile_from_text(user_id, text)
-            if success:
-                await say(f"Perfect! Your profile has been created:\n• Major: *{major}*\n• Catalog Year: *{catalog_year}*\n\nYou can now ask me about course requirements, academic policies, and more!")
-            else:
-                await say(f"{message}")
-            return
-            
-        elif major and not catalog_year:
-            success, message = await self.student_manager.create_student_profile_from_text(user_id, text)
-            if success:
-                await say(message)
-                await asyncio.sleep(1)
-                await say("""
-                Now, please tell me your catalog year by providing me with your catalog year:
-
-                Your catalog year is the year you first entered the university.
-
-                Valid Catalog Years: 2022, 2023, 2024, 2025
-
-                Example: 2024
-            """)
-            else:
-                await say(f"{message}")
-            return
-            
-        elif catalog_year and not major:
-            await say("""
-            Please provide your major first before setting your catalog year.
-
-            Valid Majors:
-            • Computer Science
-            • Computer Engineering 
-            • Data Science
-            • Software Engineering
-            • Electrical Engineering
-
-            Example: Computer Science
-                """)
-            return
-        else:
-            await say("""
-            I didn't recognize that format. Please provide your major like this:
-
-            Computer Science
-
-            Valid Majors:
-            • Computer Science
-            • Computer Engineering 
-            • Data Science
-            • Software Engineering
-            • Electrical Engineering
-                """)
-            return
-
-    async def _handle_partial_profile_setup(self, text: str, user_id: str, say):
-        catalog_year = self.student_manager.parse_catalog_year_input(text)
-        
-        if catalog_year:
-            existing_student = await self.student_manager.get_student_profile(user_id)
-            if existing_student and existing_student.get('major'):
-                success, message = await self.student_manager.update_student_profile(user_id, catalog_year=catalog_year)
-                if success:
-                    await say(f"Perfect! Your profile is now complete:\n• Major: *{existing_student['major']}*\n• Catalog Year: *{catalog_year}*\n\nYou can now ask me about course requirements, academic policies, and more!")
-                else:
-                    await say(f"{message}")
-            else:
-                await say("Please provide your major first before setting your catalog year.")
-        else:
-            await say("""
-            I need your catalog year to complete your profile.
-
-            Example: 2024
-                    
-            Valid Catalog Years: 2022, 2023, 2024, 2025
-            """)
-
-    async def _handle_profile_update(self, text: str, user_id: str, say):
-        major = self.student_manager.parse_major_input(text)
-        catalog_year = self.student_manager.parse_catalog_year_input(text)
-        
-        if major or catalog_year:
-            success, message = await self.student_manager.update_student_profile(user_id, major=major, catalog_year=catalog_year)
-            if success:
-                profile = await self.student_manager.get_student_profile(user_id)
-                await say(f"Profile updated!\n• Major: *{profile['major']}*\n• Catalog Year: *{profile['catalog_year']}*")
-            else:
-                await say(f"{message}")
-        else:
-            await say("Please specify what you'd like to update. Examples:\n• Major: Computer Science\n• Catalog Year: 2024")
-
-    async def _process_academic_query(self, query: str, user_id: str, say):
-        try:
-            user_info = await self._get_user_context(user_id)
-            
-            if not user_info.get('program') or not user_info.get('year'):
-                await say("I need your student profile to provide personalized guidance. Please set up your profile first.")
-                return
-            
-            conversation_context = await self.memory_interface.get_recent_context(user_id)
-            
-            enhanced_query = query
-            if conversation_context:
-                enhanced_query = f"{conversation_context}\n\nCurrent question: {query}"
-            
-            await say("Let me look that up for you...")
-            
-            answer, retrieved_chunks = self.rag_system.answer_question(
-                query=enhanced_query,
-                student_program=user_info.get('program'),
-                student_year=user_info.get('year'),
-                top_k=self.config.get('retrieval', {}).get('final_top_k', 15),
-                enable_reranking=self.config.get('retrieval', {}).get('enable_reranking', True),
-                use_streaming=False
-            )
-            
-            formatted_response = self._format_response(answer, retrieved_chunks)
-            await say(formatted_response)
-            final_answer = answer
-            
-            await self.memory_interface.add_conversation_turn(user_id, query, final_answer)
-            
-            self.logger.info(f"Processed query for user {user_id}: {query[:50]}...")
-            
-        except Exception as e:
-            self.logger.error(f"Error processing query: {e}")
-            await say("Sorry, I encountered an error processing your question. Please try again or contact academic advising directly.")
-
-    def _validate_user_access(self, user_id: str) -> bool:
-        if not user_id or not isinstance(user_id, str):
-            return False
-        if not user_id.startswith('U') or len(user_id) < 9:
-            return False
-        return user_id.isalnum()
-
-    async def _get_user_context(self, user_id: str) -> Dict[str, Any]:
-        if not self._validate_user_access(user_id):
-            self.logger.warning(f"Invalid user access attempt: {user_id}")
-            return {'program': None, 'year': None}
-            
-        try:
-            student = await self.student_manager.get_student_profile(user_id)
-            if student:
-                return {
-                    'program': student['major'],
-                    'year': str(student['catalog_year']) if student['catalog_year'] else None
-                }
-        except Exception as e:
-            self.logger.error(f"Error getting user context: {e}")
-        
-        return {
-            'program': None,
-            'year': None
-        }
-    
-    def _convert_markdown_to_slack(self, text: str) -> str:
-        import re
-        
-        text = self._convert_tables_to_slack(text)
-        text = self._improve_numbered_lists(text)
-        text = re.sub(r'\*\*(.*?)\*\*', r'*\1*', text)
-        text = re.sub(r'^(\s*)[*\-]\s+', r'\1• ', text, flags=re.MULTILINE)
-        text = re.sub(r'^(\s*)(\d+)\.\s+', r'\1\2. ', text, flags=re.MULTILINE)
-        text = re.sub(r'(?<!\*)\*([^*\n]+?)\*(?!\*)', r'_\1_', text)
-        text = re.sub(r'^#+\s*(.*?)$', r'*\1*', text, flags=re.MULTILINE)
-        text = re.sub(r'\n{3,}', '\n\n', text)
-        text = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<\2|\1>', text)
-        text = re.sub(r'SLACKBOLD_(.*?)_SLACKBOLD', r'*\1*', text)
-        
-        return text
-    
-    def _convert_tables_to_slack(self, text: str) -> str:
-        import re
-        
-        table_pattern = r'^(\|.*?\|)$'
-        lines = text.split('\n')
-        result_lines = []
-        
-        i = 0
-        while i < len(lines):
-            line = lines[i].strip()
-            
-            if re.match(table_pattern, line):
-                table_lines = []
-                while i < len(lines) and re.match(table_pattern, lines[i].strip()):
-                    table_lines.append(lines[i].strip())
-                    i += 1
-                
-                if len(table_lines) >= 2:
-                    converted_table = self._format_table_as_numbered_list(table_lines)
-                    result_lines.extend(converted_table)
-                else:
-                    result_lines.extend(table_lines)
-                
-                i -= 1
-            else:
-                result_lines.append(lines[i])
-            
-            i += 1
-        
-        return '\n'.join(result_lines)
-    
-    def _format_table_as_numbered_list(self, table_lines: list) -> list:
-        if len(table_lines) < 3:
-            return table_lines
-        
-        header_row = table_lines[0]
-        headers = [col.strip() for col in header_row.split('|')[1:-1]]
-        data_rows = table_lines[2:]
-        result = []
-        
-        for idx, row in enumerate(data_rows, 1):
-            cols = [col.strip() for col in row.split('|')[1:-1]]
-            
-            for header, value in zip(headers, cols):
-                if value.strip():
-                    clean_value = value.replace('<br>', '\n   ').replace('• ', '').strip()
-                    result.append(f"   • SLACKBOLD_{header}_SLACKBOLD: {clean_value}")
-            
-            result.append("")
-        
-        return result
-    
-    def _improve_numbered_lists(self, text: str) -> str:
-        import re
-        
-        lines = text.split('\n')
-        result_lines = []
-        
-        i = 0
-        while i < len(lines):
-            line = lines[i]
-            
-            if re.match(r'^\d+\.\s+', line.strip()):
-                section_lines = []
-                current_section_start = i
-                
-                while i < len(lines):
-                    current_line = lines[i].strip()
-                    
-                    if re.match(r'^\d+\.\s+', current_line):
-                        section_lines.append(lines[i])
-                    elif current_line == '---' or current_line == '' or i == len(lines) - 1:
-                        if current_line != '---' and current_line != '' and i == len(lines) - 1:
-                            section_lines.append(lines[i])
-                        break
-                    else:
-                        section_lines.append(lines[i])
-                    
-                    i += 1
-                
-                if len(section_lines) > 0:
-                    improved_section = self._convert_section_to_bullets(section_lines)
-                    result_lines.extend(improved_section)
-                    
-                    if i < len(lines) and lines[i].strip() == '---':
-                        result_lines.append(lines[i])
-            else:
-                result_lines.append(lines[i])
-            
-            i += 1
-        
-        return '\n'.join(result_lines)
-    
-    def _convert_section_to_bullets(self, section_lines: list) -> list:
-        import re
-        
-        result = []
-        current_group = []
-        
-        for line in section_lines:
-            stripped = line.strip()
-            
-            if re.match(r'^\d+\.\s+', stripped):
-                if current_group:
-                    result.extend(self._format_group_as_bullets(current_group))
-                    current_group = []
-                
-                content = re.sub(r'^\d+\.\s+', '', stripped)
-                if self._looks_like_section_header(content):
-                    result.append(f"*{content}*")
-                else:
-                    current_group = [f"• {content}"]
-            else:
-                if current_group:
-                    current_group.append(line)
-                else:
-                    result.append(line)
-        
-        if current_group:
-            result.extend(self._format_group_as_bullets(current_group))
-        
-        return result
-    
-    def _looks_like_section_header(self, text: str) -> bool:
-        header_indicators = [
-            'perspectives', 'areas', 'systems', 'engineering', 'development',
-            'specialized', 'emerging', 'infrastructure', 'cross-disciplinary',
-            'requirements', 'electives', 'courses', 'track', 'category'
-        ]
-        text_lower = text.lower()
-        
-        if len(text.split()) <= 6 and any(indicator in text_lower for indicator in header_indicators):
-            return True
-        
-        if text.endswith(':') or text.endswith(' –'):
-            return True
-            
-        return False
-    
-    def _format_group_as_bullets(self, group_lines: list) -> list:
-        return group_lines + ['']
-    
-    def _format_response(self, response: str, sources: list) -> str:
-        slack_formatted_response = self._convert_markdown_to_slack(response)
-        
-        formatted = f"*PantherBot Academic Assistant*\n\n{slack_formatted_response}"
-        
-        if sources:
-            formatted += "\n\nSources:\n"
-            for i, source in enumerate(sources[:3], 1):
-                try:
-                    if isinstance(source, dict):
-                        metadata = source.get('metadata', {})
-                        program = metadata.get('program_full', 'N/A') 
-                        year = metadata.get('year', 'N/A')
-                        section = metadata.get('section_name', 'N/A')
-                        formatted += f"- {program} ({year}) - {section}\n"
-                    else:
-                        formatted += f"- Source {i}\n"
-                except Exception as e:
-                    self.logger.error(f"Error formatting source {i}: {e}")
-                    formatted += f"- Source {i}\n"
-        
-        return formatted
+        @self.app.command("/reset_profile")
+        async def handle_reset_profile_slash_command(ack, command, say):
+            await ack()
+            user_id = command['user_id']
+            await self.message_handler.handle_reset_profile_command(user_id, say)
     
     async def start(self):
         try:
-            logging.info("Initializing database managers...")
-            await self.student_manager.initialize()
-            await self.memory_interface.initialize()
+            self.logger.info("Starting PantherBot Slack integration...")
+
+            if not self._resources_ready:
+                await self.student_manager.initialize()
+                await self.memory_interface.initialize()
+                self._resources_ready = True
             
-            logging.info("Testing Slack authentication...")
             auth_response = await self.client.auth_test()
-            logging.info(f"Authentication successful! Bot: {auth_response['user']} on {auth_response['team']}")
-            
-            self.bot_user_id = auth_response['user_id']
+            self.bot_user_id = auth_response["user_id"]
             self.bot_info = auth_response
             
-            logging.info("Starting Socket Mode handler...")
+            self.logger.info(f"Bot authenticated as {auth_response['user']} (ID: {self.bot_user_id})")
+            
             await self.handler.start_async()
+            self.logger.info("PantherBot is now running and listening for messages!")
             
         except SlackApiError as e:
-            logging.error(f"Slack API Error: {e}")
+            self.logger.error(f"Slack API error during startup: {e.response['error']}")
             raise
         except Exception as e:
-            logging.error(f"Unexpected error starting bot: {e}")
+            self.logger.error(f"Error starting bot: {e}")
             raise
     
     async def stop(self):
-        if self.handler:
+        try:
+            self.logger.info("Stopping PantherBot...")
             await self.handler.close_async()
-        
-        await self.student_manager.close()
-        await self.memory_interface.close()
-        
-        self.logger.info("PantherBot stopped")
+            if self._resources_ready:
+                await self.student_manager.close()
+                await self.memory_interface.close()
+                self._resources_ready = False
+            self.logger.info("PantherBot stopped successfully")
+        except Exception as e:
+            self.logger.error(f"Error stopping bot: {e}")
 
-async def main():
-    bot = PantherSlackBot()
-    
-    try:
-        await bot.start()
-        await asyncio.Event().wait()
-    except KeyboardInterrupt:
-        print("\nShutting down PantherBot...")
-    finally:
-        await bot.stop()
 
 if __name__ == "__main__":
+    import asyncio
+    
+    async def main():
+        bot = PantherSlackBot()
+        try:
+            await bot.start()
+            while True:
+                await asyncio.sleep(1)
+        except KeyboardInterrupt:
+            print("\nShutting down...")
+        finally:
+            await bot.stop()
+    
     asyncio.run(main())
