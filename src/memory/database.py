@@ -160,10 +160,13 @@ class DatabaseManager:
             logger.warning(f"Invalid slack_user_id format: {slack_user_id}")
             return
             
+        import json
+        citations_json = json.dumps(citations) if citations else None
+            
         async with self.connection_pool.acquire() as conn:
             await conn.execute(
                 'INSERT INTO raw_messages (slack_user_id, message_text, response_text, citations) VALUES ($1, $2, $3, $4)',
-                slack_user_id, message_text, response_text, citations
+                slack_user_id, message_text, response_text, citations_json
             )
 
     async def get_unprocessed_messages(self, slack_user_id: str) -> List[Dict]:
@@ -171,12 +174,19 @@ class DatabaseManager:
             logger.warning(f"Invalid slack_user_id format: {slack_user_id}")
             return []
             
+        import json
         async with self.connection_pool.acquire() as conn:
             rows = await conn.fetch(
                 'SELECT id, slack_user_id, message_text, response_text, citations, timestamp, processed FROM raw_messages WHERE slack_user_id = $1 AND processed = FALSE ORDER BY timestamp',
                 slack_user_id
             )
-            return [dict(row) for row in rows]
+            result = []
+            for row in rows:
+                row_dict = dict(row)
+                if row_dict['citations']:
+                    row_dict['citations'] = json.loads(row_dict['citations'])
+                result.append(row_dict)
+            return result
 
     async def get_conversation_memory(self, slack_user_id: str) -> Optional[Dict]:
         if not self._validate_slack_user_id(slack_user_id):
@@ -217,12 +227,18 @@ class DatabaseManager:
             logger.warning(f"Invalid slack_user_id format: {slack_user_id}")
             return None
             
+        import json
         async with self.connection_pool.acquire() as conn:
             row = await conn.fetchrow(
                 'SELECT message_text, response_text, citations, timestamp FROM raw_messages WHERE slack_user_id = $1 ORDER BY timestamp DESC LIMIT 1',
                 slack_user_id
             )
-            return dict(row) if row else None
+            if row:
+                result = dict(row)
+                if result['citations']:
+                    result['citations'] = json.loads(result['citations'])
+                return result
+            return None
 
     async def mark_messages_processed(self, message_ids: List[int]):
         async with self.connection_pool.acquire() as conn:
