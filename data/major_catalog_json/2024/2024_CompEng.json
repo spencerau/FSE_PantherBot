@@ -386,8 +386,9 @@
   ],
   "total_credits": "79–80",
   "metadata": {
-    "year": "2024",
-    "subject": "Computer Engineering",
-    "program_type": "Major"
+    "Year": "2024",
+    "DocumentType": "Major",
+    "Subject": "Computer Engineering",
+    "SubjectCode": "ce"
   }
 }

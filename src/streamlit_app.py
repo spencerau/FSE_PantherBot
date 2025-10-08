@@ -53,6 +53,25 @@ def main():
             key="student_year"
         )
         
+        minors = [
+            "None",
+            "Analytics", 
+            "Computer Science",
+            "Computer Engineering",
+            "Electrical Engineering",
+            "Game Development",
+            "Information Security Policy"
+        ]
+        
+        student_minor = st.selectbox(
+            "Select your minor (optional):",
+            minors,
+            key="student_minor"
+        )
+        
+        if student_minor == "None":
+            student_minor = None
+        
         with st.expander("System Status"):
             collections = rag.list_collections()
             st.write(f"**Available collections:** {len(collections)}")
@@ -113,10 +132,11 @@ def main():
     st.header("Ask Your Academic Questions")
     
     if "messages" not in st.session_state:
+        minor_text = f" with a {student_minor} minor/themed inquiry" if student_minor else ""
         st.session_state.messages = [
             {
                 "role": "assistant", 
-                "content": f"Hello! I'm your AI academic advisor for {student_program} students (catalog year {student_year}). I can help you with:\n\n• Degree requirements and graduation planning\n• Course listings and availability\n• Prerequisites and course sequencing\n• Program-specific information\n• General university knowledge\n\nWhat would you like to know about your academic program?"
+                "content": f"Hello! I'm your AI academic advisor for {student_program} students{minor_text} (catalog year {student_year}). I can help you with:\n\n• Degree requirements and graduation planning\n• Course listings and availability\n• Prerequisites and course sequencing\n• Program-specific information\n• General university knowledge\n\nWhat would you like to know about your academic program?"
             }
         ]
     
@@ -141,6 +161,16 @@ def main():
                     }
                     program_code = program_codes.get(student_program, "cs")
                     
+                    minor_codes = {
+                        "Analytics": "analytics",
+                        "Computer Science": "cs",
+                        "Computer Engineering": "ce",
+                        "Electrical Engineering": "ee", 
+                        "Game Development": "gamedev", 
+                        "Information Security Policy": "isp"
+                    }
+                    minor_code = minor_codes.get(student_minor) if student_minor else None
+                    
                     last_n_messages = rag.config.get('query_router', {}).get('last_n_messages', 4)
                     conversation_history = st.session_state.messages[:-1]
                     if len(conversation_history) > last_n_messages:
@@ -151,6 +181,7 @@ def main():
                         conversation_history=conversation_history,
                         student_program=program_code,
                         student_year=student_year,
+                        student_minor=minor_code,
                         top_k=rag.config.get('retrieval', {}).get('final_top_k', 15),  # Use config value
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
@@ -159,18 +190,25 @@ def main():
                         return_debug_info=True
                     )
                     
+                    def clean_html_for_display(text):
+                        if isinstance(text, str):
+                            return text.replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
+                        return text
+                    
                     if st.session_state.get('use_streaming', True) and hasattr(answer, '__iter__') and not isinstance(answer, str):
                         response_placeholder = st.empty()
                         full_response = ""
                         
                         for chunk in answer:
-                            full_response += chunk
+                            cleaned_chunk = clean_html_for_display(chunk)
+                            full_response += cleaned_chunk
                             response_placeholder.markdown(full_response + "▌")
                         
                         response_placeholder.markdown(full_response)
                         answer = full_response
                     else:
-                        st.markdown(answer)
+                        cleaned_answer = clean_html_for_display(answer)
+                        st.markdown(cleaned_answer)
                     
                     if retrieved_chunks:
                         with st.expander("Sources Used", expanded=False):
@@ -197,7 +235,7 @@ def main():
                                     if meta_info:
                                         st.write(f"Metadata: {', '.join(meta_info)}")
                                 
-                                text_preview = chunk['text']
+                                text_preview = chunk['text'].replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
                                 st.text_area(
                                     f"Content preview:",
                                     text_preview,

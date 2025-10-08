@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, Optional, Tuple
+from typing import Dict, Optional, Tuple, List
 import logging
 import re
 from pathlib import Path
@@ -35,13 +35,13 @@ class StudentProfileManager:
             "ee": "Electrical Engineering",
             "elec eng": "Electrical Engineering"
         }
+        self.major_mappings.update({str(index + 1): major for index, major in enumerate(self.valid_majors)})
         self.valid_catalog_years = [2022, 2023, 2024, 2025]
 
     async def initialize(self):
         await self.db_manager.initialize()
 
     def parse_major_input(self, text: str) -> Optional[str]:
-        """Parse major from flexible user input"""
         if "major:" in text.lower():
             major_text = re.split(r'major:\s*', text, flags=re.IGNORECASE)[1].strip()
         else:
@@ -83,6 +83,25 @@ class StudentProfileManager:
     async def get_student_profile(self, slack_user_id: str) -> Optional[Dict]:
         return await self.db_manager.get_student(slack_user_id)
 
+    async def create_user_name_from_slack(self, slack_user_id: str, user_info: Dict) -> bool:
+        try:
+            profile = user_info.get('profile', {})
+            
+            first_name = profile.get('first_name', '').strip()
+            last_name = profile.get('last_name', '').strip()
+            
+            return await self.db_manager.create_user_name(
+                slack_user_id=slack_user_id,
+                first_name=first_name or None,
+                last_name=last_name or None
+            )
+        except Exception as e:
+            logger.error(f"Error creating user name from Slack info: {e}")
+            return False
+
+    async def get_user_name(self, slack_user_id: str) -> Optional[Dict]:
+        return await self.db_manager.get_user_name(slack_user_id)
+
     async def is_new_student(self, slack_user_id: str) -> bool:
         student = await self.get_student_profile(slack_user_id)
         return student is None
@@ -116,10 +135,8 @@ class StudentProfileManager:
         major, catalog_year = self.parse_profile_input(text)
         
         if major and catalog_year:
-            # Both provided - create complete profile
             return await self.create_student_profile(slack_user_id, major, catalog_year)
         elif major and not catalog_year:
-            # Only major provided - create partial profile
             success = await self.db_manager.create_student(slack_user_id, major=major)
             if success:
                 return True, f"Great! I've noted your major as *{major}*. Now I need your catalog year."
@@ -135,7 +152,6 @@ class StudentProfileManager:
             )
 
     async def complete_profile_with_catalog_year(self, slack_user_id: str, text: str) -> Tuple[bool, str]:
-        """Complete an existing partial profile with catalog year"""
         catalog_year = self.parse_catalog_year_input(text)
         
         if not catalog_year:
@@ -151,19 +167,19 @@ class StudentProfileManager:
         else:
             return False, "Error updating your catalog year. Please try again."
 
-    async def update_student_profile(self, slack_user_id: str, major: str = None, catalog_year: int = None) -> Tuple[bool, str]:
+    async def update_student_profile(self, slack_user_id: str, major: str = None, catalog_year: int = None, **kwargs) -> Tuple[bool, str]:
         if isinstance(major, str):
             parsed_major = self.parse_major_input(major)
             if parsed_major:
                 major = parsed_major
-        
+
         if major and major not in self.valid_majors:
             return False, f"Invalid major. Valid options: {', '.join(self.valid_majors)}"
-        
+
         if catalog_year and catalog_year not in self.valid_catalog_years:
             return False, f"Invalid catalog year. Valid options: {', '.join(map(str, self.valid_catalog_years))}"
-        
-        success = await self.db_manager.update_student(slack_user_id, major, catalog_year)
+
+        success = await self.db_manager.update_student(slack_user_id, major, catalog_year, **kwargs)
         if success:
             return True, "Profile updated successfully!"
         else:
@@ -174,6 +190,28 @@ class StudentProfileManager:
 
     def get_valid_catalog_years(self) -> list:
         return self.valid_catalog_years.copy()
+
+    async def clear_user_history(self, slack_user_id: str) -> Tuple[bool, str]:
+        try:
+            success = await self.db_manager.clear_user_message_history(slack_user_id)
+            if success:
+                return True, "Your message and conversation history has been cleared successfully!"
+            else:
+                return False, "Error clearing your history. Please try again."
+        except Exception as e:
+            logger.error(f"Error in clear_user_history: {e}")
+            return False, "An error occurred while clearing your history."
+
+    async def reset_user_profile(self, slack_user_id: str) -> Tuple[bool, str]:
+        try:
+            success = await self.db_manager.delete_user_profile(slack_user_id)
+            if success:
+                return True, "Your profile and all associated data has been deleted successfully! You can start fresh by creating a new profile."
+            else:
+                return False, "Error deleting your profile. Please try again."
+        except Exception as e:
+            logger.error(f"Error in reset_user_profile: {e}")
+            return False, "An error occurred while deleting your profile."
 
     async def close(self):
         await self.db_manager.close()

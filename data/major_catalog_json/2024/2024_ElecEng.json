@@ -404,8 +404,9 @@
   ],
   "total_credits": "79-80",
   "metadata": {
-    "year": "2024",
-    "subject": "Electrical Engineering",
-    "program_type": "Major"
+    "Year": "2024",
+    "DocumentType": "Major",
+    "Subject": "Electrical Engineering",
+    "SubjectCode": "ee"
   }
 }
