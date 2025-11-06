@@ -40,7 +40,10 @@ class UnifiedRAG:
         
         if QueryRouter is not None:
             try:
-                self.query_router = QueryRouter(self.ollama_api)
+                from utils.ollama_api import get_intermediate_ollama_api
+                intermediate_api = get_intermediate_ollama_api(timeout=30)
+                self.query_router = QueryRouter(intermediate_api)
+                print("Query router using intermediate LLM")
             except Exception as e:
                 print(f"Warning: Query router initialization failed: {e}")
                 self.query_router = None
@@ -150,11 +153,21 @@ class UnifiedRAG:
             if 'deepseek' in self.config['llm']['model'].lower():
                 stream_params['think'] = enable_thinking
             
+            chunk_count = 0
             for chunk in self.ollama_api.chat_stream(**stream_params):
-                yield chunk
+                chunk_count += 1
+                if chunk:
+                    yield chunk
+            
+            if chunk_count == 0:
+                print("Warning: No chunks received from LLM stream")
+                yield "I apologize, but I didn't receive a response. Please try again."
+                
         except Exception as e:
             print(f"Error getting streaming LLM response: {e}")
-            yield "I apologize, but I'm experiencing technical difficulties. Please try again later."
+            import traceback
+            print(f"Traceback: {traceback.format_exc()}")
+            yield f"I apologize, but I'm experiencing technical difficulties: {str(e)}"
     
     def _build_filter(self, student_program: str = None, student_year: str = None, 
                      document_type: str = None, student_minor: str = None, collection_name: str = None) -> Optional[Filter]:
@@ -535,18 +548,24 @@ class UnifiedRAG:
                 routing_method = self.config.get('query_router', {}).get('routing_method', 'hybrid')
             
             if self.query_router:
-                collection_names = self.query_router.route_query(
+                routing_result = self.query_router.route_query(
                     query, conversation_history, student_program, student_year, student_minor, method=routing_method
                 )
-                self.debug_info.append(f"Query router found collections: {collection_names}")
+                
+                if isinstance(routing_result, dict):
+                    collection_names = routing_result.get('collections', [])
+                    token_allocation = routing_result.get('token_allocation', top_k)
+                    reasoning = routing_result.get('reasoning', 'No reasoning provided')
+                    self.debug_info.append(f"LLM Router: collections={collection_names}, tokens={token_allocation}")
+                    self.debug_info.append(f"Router reasoning: {reasoning}")
+                    top_k = token_allocation
+                else:
+                    collection_names = routing_result
+                    self.debug_info.append(f"Query router found collections: {collection_names}")
                 
                 if '4_year_plans' in collection_names and 'major_catalogs' not in collection_names:
                     collection_names.append('major_catalogs')
                     self.debug_info.append(f"Added major_catalogs since 4-year plans were requested")
-                
-                if student_minor and 'minor_catalogs' not in collection_names:
-                    collection_names.append('minor_catalogs')
-                    self.debug_info.append(f"Added minor_catalogs for student minor: {student_minor}")
                 
                 collections_to_search = []
                 for name in collection_names:

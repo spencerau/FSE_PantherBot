@@ -7,7 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 sys.path.append(str(Path(__file__).parent.parent))
-from utils.ollama_api import OllamaAPI
+from utils.ollama_api import get_intermediate_ollama_api
 from utils.config_loader import load_config
 from memory.database import DatabaseManager
 
@@ -23,7 +23,8 @@ class ConversationMemoryManager:
             
         self.db_manager = DatabaseManager()
         self.compression_threshold = compression_threshold or self.config.get('memory', {}).get('compression_threshold', 5)
-        self.ollama_api = OllamaAPI()
+        self.ollama_api = get_intermediate_ollama_api(timeout=60)
+        print("Memory compression using intermediate LLM")
 
     async def initialize(self):
         await self.db_manager.initialize()

@@ -47,70 +47,63 @@ chunker:
  
 # LLM Configuration
 llm:
-  # Cluster deployment with larger model
-  #model: "deepseek-r1:70b"
+  # main response generation model
   model: "gpt-oss:120b"
-  # Local development fallback
-  # model: "gemma3:4b"
-  temperature: 0.2
-  top_p: 0.7
-  max_tokens: 1250
-  context_length: 128000 # larger for deepseek
-  timeout: 600  # Increased timeout for larger model
+  temperature: 0.0  # deterministic for consistency
+  top_p: 0.9        # slightly higher for natural conciseness
+  min_tokens: 100    # allow very short answers when appropriate
+  max_tokens: 7000  # increased for complete 4-year plans with formatting
+  context_length: 128000
+  timeout: 600
+  
+  # intermediate llm for query routing and memory compression
+  # runs on separate container/port for resource isolation
+  router_model: "gpt-oss:20b"
+  router_temperature: 0.1
+  router_max_tokens: 500
+  router_timeout: 30
+  router_host: "localhost"  # uses OLLAMA_INTERMEDIATE_HOST env var if set
+  router_port: 11435         # uses OLLAMA_INTERMEDIATE_PORT env var if set
   
   ollama_options:
     keep_alive: "30m"
     num_ctx: 128000
   
   system_prompt: >
-    You are an expert AI academic advisor for the Fowler School of Engineering at Chapman University.
+    You are a concise AI academic advisor for Chapman's Fowler School of Engineering. Answer questions directly using catalog information.
     
-    Your role is to provide accurate, helpful guidance to undergraduate students about:
-    - Degree requirements and graduation planning
-    - Course schedules and availability
-    - Prerequisites and course sequencing
-    - Academic policies and procedures
-    - Program-specific information
+    CORE PRINCIPLES:
+    - Get straight to the answer - no fluff or pleasantries
+    - Use exact course codes, credit hours, and catalog year references
+    - One answer per question - don't anticipate follow-ups
+    - Dense information, minimal words
     
-    IMPORTANT GUIDELINES:
-    - Use the information provided in the context from university catalogs as your primary source
-    - When you have relevant context, provide specific and detailed answers based on that information
-    - Be specific about course codes, credit hours, and requirements when available in the context
-    - If the context contains partial information, provide what you can and note what might be missing
-    - Only recommend contacting academic advisors if the context truly lacks the needed information
-    - Be supportive and encouraging in your responses
-    - Focus on the student's specific program and catalog year when provided
-    - Trust the context provided - it comes from official university documents
+    RESPONSE STYLE (Slack chat - mobile friendly):
+    - Lead with the direct answer in first sentence
+    - Use bullets only when listing 3+ items
+    - Skip introductory phrases like "Based on the catalog..." or "According to..."
+    - No markdown headers - use plain text organization
+    - Maximum clarity, minimum tokens
     
-    RESPONSE GUIDELINES:
-    - Prioritize the most important and relevant information for the student's question
-    - When asked for complete lists (like all electives), provide the full information available
-    - For overview questions, focus on key highlights but include all essential components
-    - Use clear, concise formatting with bullet points
-    - Be thorough when students ask for comprehensive information
-    - Keep responses focused and well-organized for mobile chat viewing
+    ACCURACY RULES:
+    - Trust provided context from official catalogs
+    - State facts without hedging unless truly uncertain
+    - If context lacks info: "This information isn't in the provided catalogs. Contact fseadvising@chapman.edu"
+    - For partial info: Give what you have, state what's missing
     
-    FORMATTING FOR MOBILE CHAT:
-    - Use bullet points and simple formatting
-    - Avoid complex markdown or tables
-    - Group related information logically
-    - Use section headers when helpful for organization
-
-    For study abroad, as long as courses come over as upper division, they can count for our upper division courses.
-
-    If the study abroad course isn't upper division, it can count for the course but the student will need to take another upper division class to fulfill the number of upper division courses.
-
-    To graduate, students must take at least 42 upper division units.
-
-    If a course is offered every semester, that means it's offered both in the fall and in the spring.
-
-    Students may take up to 18 credits each semester.
+    KEY POLICIES (state only when asked):
+    - 42 upper division units required to graduate
+    - 18 credit max per semester
+    - Study abroad upper division courses count; lower division need UD replacement
+    - "Every semester" = fall and spring
+    - Waitlisted courses: Talk to instructor in person first week, then request permission code online
     
-    RESPONSE APPROACH:
-    - Answer what the student specifically asks for
-    - For comprehensive requests (like "list all electives"), provide complete information
-    - For overview questions, cover key points but stay focused
-    - Include all relevant details when students need complete information
+    WHEN TO BE COMPREHENSIVE vs BRIEF:
+    - "What are the requirements" → Full list
+    - "How many credits" → Just the number
+    - "Can I take..." → Yes/no + critical constraint if any
+    - "List all electives" → Complete list
+    - "Tell me about [program]" → Key highlights only (5-7 bullets max)
 
 # Retrieval Configuration
 retrieval:
@@ -154,10 +147,20 @@ memory:
 
 # Query Router Configuration
 query_router:
-  # Number of previous messages to consider for context-aware routing
   last_n_messages: 5
-  # Method for query routing: 'keyword', 'semantic', 'llm', or 'hybrid'
-  routing_method: 'hybrid'
+  routing_method: 'llm'
+  use_intermediate_llm: true
+  
+  # token range for context retrieval
+  min_tokens: 200
+  max_tokens: 15000
+  
+  # Collection descriptions for LLM routing decisions
+  collection_descriptions:
+    major_catalogs: "Major program requirements, course descriptions, degree requirements, prerequisites, and graduation criteria for Computer Science, Software Engineering, Computer Engineering, Data Science, and Electrical Engineering programs across different catalog years (2022-2025)"
+    minor_catalogs: "Minor program requirements, course requirements, and completion criteria for various engineering and computer science minors"
+    4_year_plans: "Sample four-year degree plans showing semester-by-semester course sequencing, recommended schedules, and graduation timelines for different majors and catalog years"
+    general_knowledge: "Academic policies, registration procedures, GPA requirements, study abroad information, course availability patterns, and general university guidelines"
 
 # Reranker Configuration
 reranker:

@@ -207,9 +207,29 @@ class OllamaAPI:
 
 
 _ollama_api = None
+_intermediate_ollama_api = None
 
 def get_ollama_api(timeout: int = 300) -> OllamaAPI:
     global _ollama_api
     if _ollama_api is None:
         _ollama_api = OllamaAPI(timeout=timeout)
     return _ollama_api
+
+def get_intermediate_ollama_api(timeout: int = 60) -> OllamaAPI:
+    global _intermediate_ollama_api
+    if _intermediate_ollama_api is None:
+        host = os.environ.get("OLLAMA_INTERMEDIATE_HOST")
+        port = os.environ.get("OLLAMA_INTERMEDIATE_PORT")
+        
+        if host and port:
+            base_url = f"http://{host}:{port}"
+        else:
+            config = load_config()
+            llm_config = config.get('llm', {})
+            host = llm_config.get('router_host', 'localhost')
+            port = llm_config.get('router_port', 11435)
+            base_url = f"http://{host}:{port}"
+        
+        _intermediate_ollama_api = OllamaAPI(base_url=base_url, timeout=timeout)
+        print(f"Using intermediate Ollama API at {base_url}")
+    return _intermediate_ollama_api
