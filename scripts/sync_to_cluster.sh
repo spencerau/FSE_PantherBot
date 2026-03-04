@@ -2,7 +2,7 @@
 
 # Simple cluster sync script that just syncs files, then provides instructions for manual container work
 
-CLUSTER_HOST="dgx0.chapman.edu"
+CLUSTER_HOST="dgx_cluster"
 CLUSTER_USER="spau"
 REMOTE_PROJECT_DIR="/home/spau/FSE_PantherBot"
 
@@ -16,13 +16,17 @@ tar -czf /tmp/pantherbot-sync.tar.gz \
     --exclude='qdrant_data' \
     --exclude='postgres_data' \
     --exclude='.DS_Store' \
+    --exclude='.venv' \
+    --exclude='venv' \
+    --exclude='node_modules' \
+    --exclude='src_core_rag' \
     . 2>&1 | grep -v -E "(Ignoring unknown extended header keyword|SCHILY\.fflags|LIBARCHIVE\.xattr)" || true
 
 echo "Transferring files to cluster..."
-scp /tmp/pantherbot-sync.tar.gz spau@dgx0.chapman.edu:/tmp/
+scp /tmp/pantherbot-sync.tar.gz ${CLUSTER_USER}@${CLUSTER_HOST}:/tmp/
 
 echo "Syncing code to cluster (preserving data directories)..."
-ssh spau@dgx0.chapman.edu "
+ssh ${CLUSTER_USER}@${CLUSTER_HOST} "
     cd /nfshome/spau
     
     # Create backup directory for code sync
@@ -43,7 +47,7 @@ rm -f /tmp/pantherbot-sync.tar.gz
 echo "Code synced to cluster! (Data directories preserved)"
 echo ""
 echo "Next steps (run on cluster):"
-echo "1. ssh dgx0.chapman.edu"
+echo "1. ssh ${CLUSTER_HOST}"
 echo "2. screen -S pantherbot"
 echo "3. cd FSE_PantherBot"
 echo "4. ./scripts/run_cluster.sh -f         # Start services (data persists)"
@@ -60,5 +64,5 @@ echo "   docker logs -f spencerau-ollama"
 echo "   docker logs -f spencerau-intermediate-llm"
 echo ""
 echo "SSH tunnel: "
-echo "ssh -L 8501:localhost:8501 -L 6333:localhost:6333 -L 11434:localhost:11434 -L 11435:localhost:11435 spau@dgx0.chapman.edu"
+echo "ssh -L 8501:localhost:8501 -L 6333:localhost:6333 -L 11434:localhost:11434 -L 11435:localhost:11435 ${CLUSTER_USER}@${CLUSTER_HOST}"
 echo "Visit: http://localhost:8501"

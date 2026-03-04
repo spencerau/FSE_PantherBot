@@ -173,3 +173,4 @@ postgres_data
 .reports
 .idea
 data/minor_catalog_raw/
+src_core_rag/

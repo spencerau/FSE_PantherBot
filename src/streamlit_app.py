@@ -5,39 +5,43 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__)))
 
-from retrieval.unified_rag import UnifiedRAG
+from retrieval.fse_unified_rag import FSEUnifiedRAG
 from utils.config_loader import load_config
 
 
 def main():
+    config = load_config()
+    system_name = config.get('system', {}).get('name', 'RAG System')
+    bot_name = config.get('domain', {}).get('bot_name', 'Assistant')
+    
     st.set_page_config(
-        page_title="Fowler Engineering Academic Advisor",
+        page_title=system_name,
         layout="wide"
     )
     
-    st.title("Fowler Engineering Academic Advisor")
-    st.caption("AI-powered academic guidance")
+    st.title(system_name)
+    st.caption(f"AI-powered {config.get('domain', {}).get('role', 'assistant')}")
     
     if 'rag_system' not in st.session_state:
-        with st.spinner("Initializing AI advisor..."):
-            st.session_state.rag_system = UnifiedRAG()
+        with st.spinner(f"Initializing {bot_name}..."):
+            st.session_state.rag_system = FSEUnifiedRAG()
     
     if not hasattr(st.session_state.rag_system.answer_question, '__code__') or 'enable_reranking' not in st.session_state.rag_system.answer_question.__code__.co_varnames:
-        with st.spinner("Updating AI advisor..."):
-            st.session_state.rag_system = UnifiedRAG()
+        with st.spinner(f"Updating {bot_name}..."):
+            st.session_state.rag_system = FSEUnifiedRAG()
     
     rag = st.session_state.rag_system
     
     with st.sidebar:
         st.header("Your Academic Profile")
         
-        programs = [
+        programs = config.get('domain', {}).get('available_programs', [
             "Computer Science",
             "Computer Engineering", 
             "Software Engineering",
             "Electrical Engineering",
             "Data Science"
-        ]
+        ])
         
         student_program = st.selectbox(
             "Select your major:",
@@ -45,7 +49,7 @@ def main():
             key="student_program"
         )
         
-        years = ["2022", "2023", "2024", "2025"]
+        years = config.get('domain', {}).get('catalog_years', ["2022", "2023", "2024", "2025"])
         student_year = st.selectbox(
             "Catalog year (year you entered):",
             years,
@@ -153,19 +157,19 @@ def main():
             with st.spinner("Searching academic catalogs..."):
                 try:
                     program_codes = {
-                        "Computer Science": "cs",
-                        "Computer Engineering": "ce", 
-                        "Software Engineering": "se",
-                        "Electrical Engineering": "ee",
-                        "Data Science": "ds"
+                        "Computer Science": "compsci",
+                        "Computer Engineering": "compeng", 
+                        "Software Engineering": "softeng",
+                        "Electrical Engineering": "eleceng",
+                        "Data Science": "datasci"
                     }
-                    program_code = program_codes.get(student_program, "cs")
+                    program_code = program_codes.get(student_program, "compsci")
                     
                     minor_codes = {
-                        "Analytics": "analytics",
-                        "Computer Science": "cs",
-                        "Computer Engineering": "ce",
-                        "Electrical Engineering": "ee", 
+                        "Analytics": "anal",
+                        "Computer Science": "compsci",
+                        "Computer Engineering": "compeng",
+                        "Electrical Engineering": "eleceng", 
                         "Game Development": "gamedev", 
                         "Information Security Policy": "isp"
                     }
@@ -254,8 +258,12 @@ def main():
                                 
                                 if debug_info:
                                     st.subheader("RAG Pipeline Debug Output")
-                                    for debug_msg in debug_info:
-                                        st.code(debug_msg, language="text")
+                                    if isinstance(debug_info, dict):
+                                        for key, value in debug_info.items():
+                                            st.write(f"**{key}:** {value}")
+                                    else:
+                                        for debug_msg in debug_info:
+                                            st.code(debug_msg, language="text")
                                 
                                 st.subheader("Retrieval Details")
                                 st.write(f"**Total Chunks Retrieved:** {len(retrieved_chunks)}")

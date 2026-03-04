@@ -181,7 +181,16 @@ docker run -d \
 # Build app container if requested
 if [ "$BUILD" = true ]; then
   echo "Building FSE_PantherBot container..."
-  docker build -t fse_pantherbot .
+  # Use clean build directory to avoid root-owned postgres_data.bak and qdrant_data.bak
+  BUILD_DIR="/tmp/FSE_PantherBot_build_$$"
+  mkdir -p "$BUILD_DIR"
+  cp Dockerfile .dockerignore requirements.txt "$BUILD_DIR/"
+  cp -r src configs "$BUILD_DIR/"
+  cd "$BUILD_DIR"
+  docker build --no-cache -t fse_pantherbot .
+  cd - > /dev/null
+  rm -rf "$BUILD_DIR"
+  echo "Build complete and temporary directory cleaned up"
 fi
 
 # Wait for services to be ready
@@ -268,7 +277,6 @@ if [ "$CLEAN_COLLECTIONS" = true ]; then
   echo "Running ingestion..."
   docker run --rm \
     --network host \
-    -v $(pwd)/src:/app/src \
     -v $(pwd)/configs:/app/configs \
     -v $(pwd)/data:/app/data \
     -e QDRANT_HOST=localhost \
@@ -284,7 +292,6 @@ echo "Starting Streamlit app..."
 docker run -d \
   --name spencerau-streamlit \
   --network host \
-  -v $(pwd)/src:/app/src \
   -v $(pwd)/configs:/app/configs \
   -v $(pwd)/data:/app/data \
   -e QDRANT_HOST=localhost \
@@ -307,7 +314,6 @@ if [ "$FULL_SERVICES" = true ] && [ -f "src/slack/.env" ]; then
     --network host \
     --env-file src/slack/.env \
     --env-file src/memory/.env \
-    -v $(pwd)/src:/app/src \
     -v $(pwd)/configs:/app/configs \
     -v $(pwd)/data:/app/data \
     -e QDRANT_HOST=localhost \
@@ -344,7 +350,7 @@ if [ "$FULL_SERVICES" = true ] && [ -f "src/slack/.env" ]; then
 fi
 echo ""
 echo "Create SSH tunnel: "
-echo "ssh -L 8501:localhost:8501 -L 6333:localhost:6333 -L 5432:localhost:5432 -L 11434:localhost:11434 -L 11435:localhost:11435 spau@dgx0.chapman.edu"
+echo "ssh -L 8501:localhost:8501 -L 6333:localhost:6333 -L 5432:localhost:5432 -L 11434:localhost:11434 -L 11435:localhost:11435 spau@dgx_cluster"
 echo "Then visit: http://localhost:8501"
 echo ""
 echo "To check container status: docker ps | grep spencerau"

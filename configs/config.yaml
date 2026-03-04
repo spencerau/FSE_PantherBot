@@ -1,8 +1,78 @@
-# Academic Advisor RAG System Configuration
+# Core RAG System Configuration
 system:
   name: "Fowler School of Engineering Academic Advisor"
   version: "1.0.0"
   description: "Unified collection-based RAG system for academic advising"
+
+# Domain-Specific Configuration
+domain:
+  bot_name: "PantherBot"
+  role: "academic advisor"
+  institution: "Chapman University"
+  department: "Fowler School of Engineering"
+  contact_email: "fseadvising@chapman.edu"
+  
+  programs:
+    Computer Science: "compsci"
+    Computer Engineering: "compeng"
+    Electrical Engineering: "eleceng"
+    Software Engineering: "softeng"
+    Data Science: "datasci"
+  
+  available_programs:
+    - "Computer Science"
+    - "Computer Engineering"
+    - "Software Engineering"
+    - "Electrical Engineering"
+    - "Data Science"
+  
+  minors:
+    Analytics: "anal"
+    Computer Science: "compsci"
+    Computer Engineering: "compeng"
+    Electrical Engineering: "eleceng"
+    Game Development: "gamedev"
+    Information Security Policy: "isp"
+  
+  catalog_years:
+    - "2022"
+    - "2023"
+    - "2024"
+    - "2025"
+  
+  # Router context description
+  router_context: "an academic advising chatbot"
+  
+  # Prompt context identifier
+  prompt_context: "Chapman University's academic catalogs"
+  
+  # Document type to collection mapping
+  document_type_mapping:
+    "major_catalog": "major_catalogs"
+    "minor_catalog": "minor_catalogs"
+    "general_knowledge": "general_knowledge"
+    "4_year_plan": "4_year_plans"
+  
+  # Terms to boost in reranker (domain-specific)
+  boost_terms:
+    - "requirement"
+    - "prerequisite"
+    - "course"
+    - "credit"
+    - "gpa"
+    - "degree"
+    - "major"
+    - "minor"
+    - "graduation"
+    - "semester"
+  
+  # # Search term variations for filtering (used in 4-year plan searches)
+  # program_search_terms:
+  #   cs: ["cs", "computer science", "compsci"]
+  #   ce: ["ce", "computer engineering", "compeng"]
+  #   ee: ["ee", "electrical engineering", "eleceng"]
+  #   se: ["se", "software engineering", "softeng"]
+  #   ds: ["ds", "data science", "datasci"]
 
 # Qdrant Vector Database Configuration
 qdrant:
@@ -15,10 +85,16 @@ qdrant:
     general_knowledge: "general_knowledge"
     4_year_plans: "4_year_plans"
 
-data:
-  major_catalog_json_path: "data/major_catalog_json"
-  minor_catalog_path: "data/minor_catalog"
-  general_knowledge_path: "data/general_knowledge"
+# data:
+#   major_catalog_json_path: "data/major_catalog_json"
+#   minor_catalog_path: "data/minor_catalog"
+#   general_knowledge_path: "data/general_knowledge"
+#   4_year_plans: "data/4_year_plans"
+
+data_directories:
+  major_catalogs: "data/major_catalog"
+  minor_catalogs: "data/minor_catalog"
+  general_knowledge: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
 
 # Embedding Configuration
@@ -48,7 +124,7 @@ chunker:
 # LLM Configuration
 llm:
   # main response generation model
-  model: "gpt-oss:120b"
+  primary_model: "gpt-oss:120b"
   temperature: 0.0  # deterministic for consistency
   top_p: 0.9        # slightly higher for natural conciseness
   min_tokens: 100    # allow very short answers when appropriate
@@ -70,11 +146,11 @@ llm:
     num_ctx: 128000
   
   system_prompt: >
-    You are a concise AI academic advisor for Chapman's Fowler School of Engineering. Answer questions directly using catalog information.
+    You are a concise AI {role} for {department}. Answer questions directly using the provided information.
     
     CORE PRINCIPLES:
     - Get straight to the answer - no fluff or pleasantries
-    - Use exact course codes, credit hours, and catalog year references
+    - Use exact references from the knowledge base
     - One answer per question - don't anticipate follow-ups
     - Dense information, minimal words
     
@@ -86,9 +162,9 @@ llm:
     - Maximum clarity, minimum tokens
     
     ACCURACY RULES:
-    - Trust provided context from official catalogs
+    - Trust provided context from official sources
     - State facts without hedging unless truly uncertain
-    - If context lacks info: "This information isn't in the provided catalogs. Contact fseadvising@chapman.edu"
+    - If context lacks info: "This information isn't in the provided knowledge base. Contact {contact_email}"
     - For partial info: Give what you have, state what's missing
     
     KEY POLICIES (state only when asked):
@@ -107,9 +183,9 @@ llm:
 
 # Retrieval Configuration
 retrieval:
-  initial_top_k: 20
+  initial_top_k: 40
   # after reranking
-  final_top_k: 15
+  final_top_k: 35
   enable_reranking: true 
   
   # Dynamic chunk allocation per collection type
@@ -125,13 +201,13 @@ retrieval:
   
   # Per-collection max limits
   collection_max_chunks:
-    major_catalogs: 9
-    minor_catalogs: 4
-    4_year_plans: 2
-    general_knowledge: 15
+    major_catalogs: 20
+    minor_catalogs: 9
+    4_year_plans: 6
+    general_knowledge: 25
   
   # Total retrieval budget (will be distributed dynamically)
-  total_retrieval_budget: 40
+  total_retrieval_budget: 50
   
   k_dense: 50
   k_sparse: 50
@@ -157,12 +233,38 @@ query_router:
   
   # Collection descriptions for LLM routing decisions
   collection_descriptions:
-    major_catalogs: "Major program requirements, course descriptions, degree requirements, prerequisites, and graduation criteria for Computer Science, Software Engineering, Computer Engineering, Data Science, and Electrical Engineering programs across different catalog years (2022-2025)"
-    minor_catalogs: "Minor program requirements, course requirements, and completion criteria for various engineering and computer science minors"
+    major_catalogs: "Major program requirements, course requirements, and completion criteria for various Fowler School of Engineering majors"
+    minor_catalogs: "Minor program requirements, course requirements, and completion criteria for various Fowler School of Engineering minors"
     4_year_plans: "Sample four-year degree plans showing semester-by-semester course sequencing, recommended schedules, and graduation timelines for different majors and catalog years"
     general_knowledge: "Academic policies, registration procedures, GPA requirements, study abroad information, course availability patterns, and general university guidelines"
-
-# Reranker Configuration
+  
+  # Keyword mappings for simple routing (fallback if LLM unavailable)
+  collection_keywords:
+    4_year_plans:
+      - "4-year"
+      - "4 year"
+      - "plan"
+      - "schedule"
+      - "sequence"
+      - "timeline"
+    minor_catalogs:
+      - "minor"
+      - "minors"
+    major_catalogs:
+      - "prerequisite"
+      - "prereq"
+      - "course"
+      - "credit"
+      - "requirement"
+      - "major"
+      - "degree"
+      - "graduation"
+    general_knowledge:
+      - "policy"
+      - "registration"
+      - "gpa"
+      - "study abroad"
+      - "waitlist"# Reranker Configuration
 reranker:
   model: "xitao/bge-reranker-v2-m3"
   batch_size: 32

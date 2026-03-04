@@ -114,7 +114,7 @@ class MessageHandler:
             return None
             
         minor_mappings = {
-            "Analytics Minor": "analytics",
+            "Analytics Minor": "anal",
             "Computer Engineering Minor": "ce", 
             "Computer Science Minor": "cs",
             "Electrical Engineering Minor": "ee",

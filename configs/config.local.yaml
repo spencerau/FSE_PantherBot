@@ -1,0 +1,271 @@
+# Local Testing Configuration (smaller models)
+# Inherits from config.yaml but overrides model sizes for laptop testing
+
+system:
+  name: "Fowler School of Engineering Academic Advisor"
+  version: "1.0.0-local"
+  description: "Unified collection-based RAG system for academic advising (local testing)"
+
+domain:
+  bot_name: "PantherBot"
+  role: "academic advisor"
+  institution: "Chapman University"
+  department: "Fowler School of Engineering"
+  contact_email: "fseadvising@chapman.edu"
+  
+  programs:
+    Computer Science: "compsci"
+    Computer Engineering: "compeng"
+    Electrical Engineering: "eleceng"
+    Software Engineering: "softeng"
+    Data Science: "datasci"
+  
+  available_programs:
+    - "Computer Science"
+    - "Computer Engineering"
+    - "Software Engineering"
+    - "Electrical Engineering"
+    - "Data Science"
+  
+  minors:
+    Analytics: "anal"
+    Computer Science: "compsci"
+    Computer Engineering: "compeng"
+    Electrical Engineering: "eleceng"
+    Game Development: "gamedev"
+    Information Security Policy: "isp"
+  
+  catalog_years:
+    - "2022"
+    - "2023"
+    - "2024"
+    - "2025"
+  
+  router_context: "an academic advising chatbot"
+  prompt_context: "Chapman University's academic catalogs"
+  
+  document_type_mapping:
+    "major_catalog": "major_catalogs"
+    "minor_catalog": "minor_catalogs"
+    "4_year_plan": "4_year_plans"
+    "general_knowledge": "general_knowledge"
+
+qdrant:
+  host: "localhost"
+  port: 6333
+  timeout: 60
+  collections:
+    major_catalogs: "major_catalogs"
+    minor_catalogs: "minor_catalogs"
+    4_year_plans: "4_year_plans"
+    general_knowledge: "general_knowledge"
+
+data_directories:
+  major_catalogs: "data/major_catalog"
+  minor_catalogs: "data/minor_catalog"
+  general_knowledge: "data/general_knowledge"
+  4_year_plans: "data/4_year_plans"
+
+embedding:
+  model: "bge-m3:567m"
+  batch_size: 8  # Reduced for lower memory
+  ollama_host: "localhost"
+  ollama_port: 11434
+  add_prefixes: true
+  lowercase: false
+  normalize_unicode: true
+  collapse_whitespace: true
+  dehyphenate: true
+
+ingestion:
+  section_detection:
+    enabled: true
+    default_section: "general"
+    patterns:
+      - pattern: "grand challenges initiative"
+        section: "grand_challenges"
+      - pattern: "lower-division (?:core )?requirements"
+        section: "lower_division"
+      - pattern: "upper-division requirements"
+        section: "upper_division"
+      - pattern: "electives \\(\\d+ credits\\)"
+        section: "electives"
+      - pattern: "professional portfolio"
+        section: "portfolio"
+      - pattern: "colloquium requirement"
+        section: "colloquium"
+      - pattern: "total credits"
+        section: "summary"
+
+chunker:
+  strategy: "recursive"
+  target_tokens: 400  # Reduced to avoid Ollama 500 errors
+  min_tokens: 200
+  overlap_ratio: 0.1
+  respect_headings: true
+
+# LOCAL LLM MODELS - Smaller for testing
+llm:
+  primary_model: "gemma3:4b"  # Main response model (was gpt-oss:120b)
+  model: "gemma3:4b"  # Alias for compatibility
+  temperature: 0.0
+  top_p: 0.9
+  min_tokens: 100
+  max_tokens: 6000  # Reduced for smaller models
+  context_length: 128000 
+  timeout: 300
+  
+  router_model: "gemma3:1b"  # Query routing (was gpt-oss:20b)
+  router_temperature: 0.1
+  router_max_tokens: 500
+  router_timeout: 30
+  router_host: "localhost"
+  router_port: 11434  # Same Ollama instance for local testing
+  
+  ollama_options:
+    keep_alive: "10m"
+    num_ctx: 128000
+  
+  system_prompt: >
+    You are a concise AI {role} for {department}. Answer questions directly using the provided information.
+    
+    CORE PRINCIPLES:
+    - Get straight to the answer - no fluff or pleasantries
+    - Use exact references from the knowledge base
+    - One answer per question - don't anticipate follow-ups
+    - Dense information, minimal words
+    
+    RESPONSE STYLE (Slack chat - mobile friendly):
+    - Lead with the direct answer in first sentence
+    - Use bullets only when listing 3+ items
+    - Skip introductory phrases like "Based on the catalog..." or "According to..."
+    - No markdown headers - use plain text organization
+    - Maximum clarity, minimum tokens
+    
+    ACCURACY RULES:
+    - Trust provided context from official sources
+    - State facts without hedging unless truly uncertain
+    - If context lacks info: "This information isn't in the provided knowledge base. Contact {contact_email}"
+    - For partial info: Give what you have, state what's missing
+    
+    KEY POLICIES (state only when asked):
+    - 42 upper division units required to graduate
+    - 18 credit max per semester
+    - Study abroad upper division courses count; lower division need UD replacement
+    - "Every semester" = fall and spring
+    - Waitlisted courses: Talk to instructor in person first week, then request permission code online
+    
+    WHEN TO BE COMPREHENSIVE vs BRIEF:
+    - "What are the requirements" → Full list
+    - "How many credits" → Just the number
+    - "Can I take..." → Yes/no + critical constraint if any
+    - "List all electives" → Complete list
+    - "Tell me about [program]" → Key highlights only (5-7 bullets max)
+
+retrieval:
+  initial_top_k: 40  # Must be higher to retrieve enough before filtering
+  final_top_k: 35    # Allow sum of collection_max_chunks (20+9+5+20=54, but capped here)
+  enable_reranking: true  # Enable for better relevance ordering
+  
+  collection_weights:
+    major_catalogs: 0.4
+    minor_catalogs: 0.1
+    4_year_plans: 0.35
+    general_knowledge: 0.15
+  
+  min_chunks_per_collection: 3
+  max_chunks_per_collection: 20
+  
+  collection_max_chunks:
+    major_catalogs: 20
+    minor_catalogs: 9
+    4_year_plans: 4
+    general_knowledge: 20
+  
+  total_retrieval_budget: 50
+  
+  k_dense: 50    # Increased for better initial recall with chunked data
+  k_sparse: 50   # Increased to match k_dense
+  rrf_k: 60      # Increased for better fusion
+  fuse_weights:
+    dense: 0.7
+    sparse: 0.3
+
+memory:
+  compression_threshold: 5
+
+query_router:
+  last_n_messages: 5
+  routing_method: 'llm'
+  use_intermediate_llm: false  # Use same Ollama instance locally
+  
+  min_tokens: 200
+  max_tokens: 10000
+  
+  prompt_template: |
+    Route the query to the correct collection(s). Follow rules EXACTLY.
+
+    Collections:
+    - major_catalogs: Major requirements, major electives, major courses, prerequisites
+    - minor_catalogs: Minor program requirements ONLY
+    - 4_year_plans: Course scheduling - which semester/year to take a specific course
+    - general_knowledge: Registration deadlines, academic policies, procedures
+
+    RULES (apply in order):
+    1. If query asks "when should I take [COURSE]" or "what semester" → ["4_year_plans", "major_catalogs"]
+    2. If query contains "minor" → ["minor_catalogs"] ONLY
+    3. If query about major electives/requirements/courses → ["major_catalogs"] ONLY
+    4. If query about deadlines/registration/policies → ["general_knowledge"] ONLY
+
+    NOTE: "When should I take CPSC 406?" is asking about COURSE SCHEDULING (rule 1), NOT registration deadlines.
+
+    Student: {context}
+    Query: "{query}"
+
+    Examples:
+    - "What electives can I take?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "major electives"}}
+    - "analytics minor requirements" → {{"collections": ["minor_catalogs"], "token_allocation": 300, "reasoning": "minor requirements"}}
+    - "When should I take CPSC 406?" → {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 400, "reasoning": "course scheduling question"}}
+    - "What semester should I take CPSC 350?" → {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 400, "reasoning": "course scheduling"}}
+    - "registration deadline" → {{"collections": ["general_knowledge"], "token_allocation": 200, "reasoning": "policy question"}}
+
+    Respond with JSON only:
+  
+  collection_descriptions:
+    major_catalogs: "Major program requirements, course requirements, and completion criteria for various Fowler School of Engineering majors"
+    minor_catalogs: "Minor program requirements, course requirements, and completion criteria for various Fowler School of Engineering minors"
+    4_year_plans: "Sample four-year degree plans showing semester-by-semester course sequencing, recommended schedules, and graduation timelines for different majors and catalog years"
+    general_knowledge: "Academic policies, registration procedures, GPA requirements, study abroad information, course availability patterns, and general university guidelines"
+  
+  collection_keywords:
+    4_year_plans:
+      - "4-year"
+      - "4 year"
+      - "plan"
+      - "schedule"
+      - "sequence"
+      - "timeline"
+    minor_catalogs:
+      - "minor"
+      - "minors"
+    major_catalogs:
+      - "prerequisite"
+      - "prereq"
+      - "course"
+      - "credit"
+      - "requirement"
+      - "major"
+      - "degree"
+      - "graduation"
+    general_knowledge:
+      - "policy"
+      - "registration"
+      - "gpa"
+      - "study abroad"
+      - "waitlist"
+
+reranker:
+  model: "xitao/bge-reranker-v2-m3"
+  batch_size: 16
+  max_candidates_for_rerank: 100
+  activation: "sigmoid"

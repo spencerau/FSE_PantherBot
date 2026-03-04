@@ -9,6 +9,9 @@ pytest
 pymupdf
 sentence-transformers
 
+# Core RAG package
+core-rag @ git+https://github.com/spencerau/Core_RAG.git
+
 # Slack integration
 slack-bolt
 slack-sdk

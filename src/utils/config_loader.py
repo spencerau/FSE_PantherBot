@@ -13,13 +13,34 @@ def get_project_root():
     
     return os.getcwd()
 
-def load_config(config_name="config.yaml"):
+def load_config(config_name=None):
+    """
+    Load configuration file. Priority order:
+    1. CONFIG_FILE environment variable (full path or filename)
+    2. config_name parameter
+    3. Default: config.yaml
+    
+    Examples:
+        export CONFIG_FILE=fse_pantherbot.config.yaml
+        export CONFIG_FILE=asd_training.config.yaml
+    """
+    if config_name is None:
+        # Check environment variable first
+        config_name = os.environ.get('CONFIG_FILE', 'config.yaml')
+    
     project_root = get_project_root()
-    config_path = os.path.join(project_root, "configs", config_name)
+    
+    # If CONFIG_FILE is absolute path, use it directly
+    if os.path.isabs(config_name):
+        config_path = config_name
+    else:
+        config_path = os.path.join(project_root, "configs", config_name)
     
     try:
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
+        
+        print(f"Loaded config: {config_path}")
         
         local_config_path = os.path.join(project_root, "configs", "config.local.yaml")
         if os.path.exists(local_config_path):

@@ -73,7 +73,7 @@ class PantherSlackBot:
     def _get_rag_system(self):
         """Lazily construct the RAG pipeline so heavy dependencies are only imported when needed."""
         if self._rag_system is None:
-            from retrieval.unified_rag import UnifiedRAG
+            from retrieval.fse_unified_rag import UnifiedRAG
             self._rag_system = UnifiedRAG()
         return self._rag_system
     

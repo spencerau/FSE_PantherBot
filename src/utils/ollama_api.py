@@ -224,11 +224,16 @@ def get_intermediate_ollama_api(timeout: int = 60) -> OllamaAPI:
         if host and port:
             base_url = f"http://{host}:{port}"
         else:
-            config = load_config()
-            llm_config = config.get('llm', {})
-            host = llm_config.get('router_host', 'localhost')
-            port = llm_config.get('router_port', 11435)
-            base_url = f"http://{host}:{port}"
+            host = os.environ.get("OLLAMA_HOST")
+            if host:
+                port = 11434
+                base_url = f"http://{host}:{port}"
+            else:
+                config = load_config()
+                llm_config = config.get('llm', {})
+                host = llm_config.get('router_host', 'localhost')
+                port = llm_config.get('router_port', 11434)
+                base_url = f"http://{host}:{port}"
         
         _intermediate_ollama_api = OllamaAPI(base_url=base_url, timeout=timeout)
         print(f"Using intermediate Ollama API at {base_url}")
