@@ -17,13 +17,13 @@ class OllamaAPI:
             cluster_config = config.get('cluster', {})
             if cluster_config.get('enabled', False):
                 host = cluster_config.get('ollama_host', 'localhost')
-                port = cluster_config.get('ollama_port', 11434)
+                port = cluster_config.get('ollama_port', 10000)
                 self.base_url = f"http://{host}:{port}"
                 print(f"Using cluster Ollama at {self.base_url}")
             else:
                 embedding_config = config.get('embedding', {})
                 host = embedding_config.get('ollama_host', self._get_ollama_host())
-                port = embedding_config.get('ollama_port', 11434)
+                port = embedding_config.get('ollama_port', 10000)
                 self.base_url = f"http://{host}:{port}"
         
         self.timeout = timeout
@@ -218,23 +218,18 @@ def get_ollama_api(timeout: int = 300) -> OllamaAPI:
 def get_intermediate_ollama_api(timeout: int = 60) -> OllamaAPI:
     global _intermediate_ollama_api
     if _intermediate_ollama_api is None:
-        host = os.environ.get("OLLAMA_INTERMEDIATE_HOST")
-        port = os.environ.get("OLLAMA_INTERMEDIATE_PORT")
-        
-        if host and port:
-            base_url = f"http://{host}:{port}"
+        intermediate_host = os.environ.get("OLLAMA_INTERMEDIATE_HOST")
+        intermediate_port = os.environ.get("OLLAMA_INTERMEDIATE_PORT")
+
+        if intermediate_host and intermediate_port:
+            base_url = f"http://{intermediate_host}:{intermediate_port}"
         else:
-            host = os.environ.get("OLLAMA_HOST")
-            if host:
-                port = 11434
-                base_url = f"http://{host}:{port}"
-            else:
-                config = load_config()
-                llm_config = config.get('llm', {})
-                host = llm_config.get('router_host', 'localhost')
-                port = llm_config.get('router_port', 11434)
-                base_url = f"http://{host}:{port}"
-        
+            config = load_config()
+            llm_config = config.get('llm', {})
+            host = intermediate_host or os.environ.get("OLLAMA_HOST") or llm_config.get('router_host', 'localhost')
+            port = intermediate_port or llm_config.get('router_port', 10001)
+            base_url = f"http://{host}:{port}"
+
         _intermediate_ollama_api = OllamaAPI(base_url=base_url, timeout=timeout)
         print(f"Using intermediate Ollama API at {base_url}")
     return _intermediate_ollama_api

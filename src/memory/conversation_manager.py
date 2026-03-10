@@ -85,7 +85,7 @@ Provide a concise summary that preserves context for future conversations.
         
         try:
             messages = [{"role": "user", "content": prompt}]
-            model_name = self.config.get('llm', {}).get('model', 'gemma3:4b')
+            model_name = self.config.get('llm', {}).get('router_model', 'qwen3.5:35b')
             response = self.ollama_api.chat(
                 model=model_name,
                 messages=messages,

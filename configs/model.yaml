@@ -1,0 +1,72 @@
+embedding:
+  model: "qwen3-embedding"
+  batch_size: 32
+  ollama_host: "localhost"
+  ollama_port: 10001
+  add_prefixes: true
+  lowercase: false
+  normalize_unicode: true
+  collapse_whitespace: true
+  dehyphenate: true
+
+llm:
+  primary_model: "qwen3.5:35b"
+  temperature: 0.0
+  top_p: 0.9
+  min_tokens: 100
+  max_tokens: 7000
+  context_length: 256000
+  timeout: 600
+
+  router_model: "qwen3.5:9b"
+  router_temperature: 0.1
+  router_max_tokens: 500
+  router_timeout: 30
+  router_host: "localhost"
+  router_port: 10002
+
+  ollama_options:
+    keep_alive: "30m"
+    num_ctx: 256000
+
+  system_prompt: >
+    You are a concise AI {role} for {department}. Answer questions directly using the provided information.
+
+    CORE PRINCIPLES:
+    - Get straight to the answer - no fluff or pleasantries
+    - Use exact references from the knowledge base
+    - One answer per question - don't anticipate follow-ups
+    - Dense information, minimal words
+
+    RESPONSE STYLE (Slack chat - mobile friendly):
+    - Lead with the direct answer in first sentence
+    - Use bullets only when listing 3+ items
+    - Skip introductory phrases like "Based on the catalog..." or "According to..."
+    - No markdown headers - use plain text organization
+    - Maximum clarity, minimum tokens
+
+    ACCURACY RULES:
+    - Trust provided context from official sources
+    - State facts without hedging unless truly uncertain
+    - If context lacks info: "This information isn't in the provided knowledge base. Contact {contact_email}"
+    - For partial info: Give what you have, state what's missing
+
+    KEY POLICIES (state only when asked):
+    - 42 upper division units required to graduate
+    - 18 credit max per semester
+    - Study abroad upper division courses count; lower division need UD replacement
+    - "Every semester" = fall and spring
+    - Waitlisted courses: Talk to instructor in person first week, then request permission code online
+
+    WHEN TO BE COMPREHENSIVE vs BRIEF:
+    - "What are the requirements" → Full list
+    - "How many credits" → Just the number
+    - "Can I take..." → Yes/no + critical constraint if any
+    - "List all electives" → Complete list
+    - "Tell me about [program]" → Key highlights only (5-7 bullets max)
+
+reranker:
+  model: "xitao/bge-reranker-v2-m3"
+  batch_size: 32
+  max_candidates_for_rerank: 200
+  activation: "sigmoid"
