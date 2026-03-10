@@ -1,0 +1,327 @@
+{
+  "program": "Data Science B.S.",
+  "catalog_year": "2026",
+  "total_credits": 75,
+  "requirements_summary": {
+    "major_electives": {
+      "needed": 3,
+      "fulfilled": 3
+    },
+    "general_education": {
+      "needed": 7,
+      "fulfilled": 7
+    },
+    "cpsc_298_courses": {
+      "needed": 5,
+      "fulfilled": 5
+    },
+    "themed_inquiries": {
+      "needed": 4,
+      "fulfilled": 4
+    }
+  },
+  "curriculum": [
+    {
+      "year": 1,
+      "semester": "Fall",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "FFC100B",
+          "title": "First Year Foundations",
+          "credits": 3,
+          "category": "foundation"
+        },
+        {
+          "code": "CPSC230",
+          "title": "Computer Science I",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ENGR101",
+          "title": "Foundations of Design and Fabrication",
+          "credits": 3,
+          "category": "engineering_core"
+        },
+        {
+          "code": "MATH110",
+          "title": "Single Variable Calculus I",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Introduction to *nix",
+          "credits": 1,
+          "category": "special_topics"
+        }
+      ]
+    },
+    {
+      "year": 1,
+      "semester": "Spring",
+      "total_credits": 15,
+      "courses": [
+        {
+          "code": "GCISXXX",
+          "title": "All-in-one GCI",
+          "credits": 3,
+          "category": "general_core"
+        },
+        {
+          "code": "CPSC231",
+          "title": "Computer Science II",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ECON200",
+          "title": "Principles of Microeconomics",
+          "credits": 3,
+          "category": "economics"
+        },
+        {
+          "code": "MATH203",
+          "title": "Introduction to Statistics",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Fall",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "MGSC220",
+          "title": "Foundations of Business Analytics",
+          "credits": 3,
+          "category": "analytics"
+        },
+        {
+          "code": "CPSC293",
+          "title": "Mathematical Foundations of Machine Learning",
+          "credits": 3,
+          "category": "data_science_core"
+        },
+        {
+          "code": "CPSC285",
+          "title": "Social and Ethical Issues in Computing",
+          "credits": 3,
+          "category": "computing_ethics"
+        },
+        {
+          "code": "CPSC298",
+          "title": "C++",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "CPSC349",
+          "title": "Human Factors",
+          "credits": 3,
+          "category": "computing"
+        },
+        {
+          "code": "CPSC350",
+          "title": "Data Structures and Algorithms",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Fall",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "MGSC310",
+          "title": "Statistical Models in Business Analytics",
+          "credits": 3,
+          "category": "analytics"
+        },
+        {
+          "code": "CPSC392",
+          "title": "Introduction to Data Science",
+          "credits": 3,
+          "category": "data_science_core"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "MGSC410",
+          "title": "Applied Business Analytics",
+          "credits": 3,
+          "category": "analytics"
+        },
+        {
+          "code": "CPSC393",
+          "title": "Machine Learning",
+          "credits": 3,
+          "category": "data_science_core"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Fall",
+      "total_credits": 15,
+      "courses": [
+        {
+          "code": "CPSC353",
+          "title": "Data Communications and Computer Networks",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "CPSC390",
+          "title": "Artificial Intelligence",
+          "credits": 3,
+          "category": "ai"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "CPSC355",
+          "title": "Human Computer Interaction",
+          "credits": 3,
+          "category": "computing"
+        },
+        {
+          "code": "CPSC408",
+          "title": "Database Management",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ENGR397",
+          "title": "Engineering Portfolio",
+          "credits": 1,
+          "category": "engineering"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    }
+  ]
+}

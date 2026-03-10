@@ -1,0 +1,309 @@
+{
+  "program": "Electrical Engineering B.S.",
+  "catalog_year": "2026",
+  "total_credits": 80,
+  "requirements_summary": {
+    "major_electives": {
+      "needed": 3,
+      "fulfilled": 3
+    },
+    "general_education": {
+      "needed": 7,
+      "fulfilled": 7
+    },
+    "eeng_398_courses": {
+      "needed": 2,
+      "fulfilled": 2
+    },
+    "themed_inquiries": {
+      "needed": 4,
+      "fulfilled": 4
+    }
+  },
+  "curriculum": [
+    {
+      "year": 1,
+      "semester": "Fall",
+      "total_credits": 15,
+      "courses": [
+        {
+          "code": "FFC100B",
+          "title": "First Year Foundations",
+          "credits": 3,
+          "category": "foundation"
+        },
+        {
+          "code": "CPSC230",
+          "title": "Computer Science I",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ENGR101",
+          "title": "Foundations of Design and Fabrication",
+          "credits": 3,
+          "category": "engineering_core"
+        },
+        {
+          "code": "MATH110",
+          "title": "Single Variable Calculus I",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 1,
+      "semester": "Spring",
+      "total_credits": 14,
+      "courses": [
+        {
+          "code": "PHYS101",
+          "title": "General Physics I",
+          "credits": 4,
+          "category": "science"
+        },
+        {
+          "code": "GCISXXX",
+          "title": "All-in-one GCI",
+          "credits": 3,
+          "category": "general_core"
+        },
+        {
+          "code": "CENG231",
+          "title": "Systems Programming",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "MATH111",
+          "title": "Single Variable Calculus II",
+          "credits": 3,
+          "category": "math"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Fall",
+      "total_credits": 15,
+      "courses": [
+        {
+          "code": "PHYS102",
+          "title": "General Physics II",
+          "credits": 4,
+          "category": "science"
+        },
+        {
+          "code": "EENG200",
+          "title": "Electronics and Circuits I",
+          "credits": 4,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "MATH210",
+          "title": "Multivariable Calculus",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "EENG398",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "PHYS201",
+          "title": "General Physics III",
+          "credits": 3,
+          "category": "science"
+        },
+        {
+          "code": "EENG201",
+          "title": "Digital Signals and Filters",
+          "credits": 3,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "EENG300",
+          "title": "Electronics and Circuits II",
+          "credits": 4,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Fall",
+      "total_credits": 14,
+      "courses": [
+        {
+          "code": "EENG320",
+          "title": "Microelectronics I",
+          "credits": 4,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "MATH215",
+          "title": "Linear Algebra and Differential Equations",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "EENG398",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Spring",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "EENG330",
+          "title": "Electromagnetics I",
+          "credits": 3,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "CENG330",
+          "title": "Digital Logic Design",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Fall",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "EENG310",
+          "title": "Mathematical Methods for Physics and Engineering",
+          "credits": 3,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "CENG366",
+          "title": "Digital Logic Design II",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "EENG410",
+          "title": "Control Systems",
+          "credits": 3,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "ENGR397",
+          "title": "Engineering Portfolio",
+          "credits": 1,
+          "category": "engineering"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    }
+  ]
+}

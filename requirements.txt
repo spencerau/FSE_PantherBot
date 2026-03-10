@@ -8,6 +8,7 @@ streamlit
 pytest
 pymupdf
 sentence-transformers
+docling
 
 # Core RAG package
 core-rag @ git+https://github.com/spencerau/Core_RAG.git

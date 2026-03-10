@@ -273,7 +273,7 @@
   { "id": "adv_q133", "question": "Do TES and Transferology show the exact number of credits that will transfer?", "source_file": "transfer_credit_articulation.pdf",
     "answer": { "canonical": "No, these tools show course equivalencies but not the final number of credits that will transfer.", "key_facts": ["equivalency only", "not credit amount"] } },
   { "id": "adv_q134", "question": "Who should students contact if a course has not yet been evaluated for transfer credit?", "source_file": "transfer_credit_articulation.pdf",
-    "answer": { "canonical": "Students should email articulation@chapman.edu to request evaluation of a course.", "key_facts": ["articulation email", "course evaluation"] } },
+    "answer": { "canonical": "Students should÷ email articulation@chapman.edu to request evaluation of a course.", "key_facts": ["articulation email", "course evaluation"] } },
   { "id": "adv_q135", "question": "Can students take courses at other institutions while enrolled at Chapman?", "source_file": "transfer_credit_articulation.pdf",
     "answer": { "canonical": "Yes, students may take approved courses at other institutions that transfer toward their degree.", "key_facts": ["transfer coursework"] } },
   { "id": "adv_q136", "question": "Do students need approval before taking courses elsewhere for transfer credit?", "source_file": "transfer_credit_articulation.pdf",

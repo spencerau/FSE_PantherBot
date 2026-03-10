@@ -1,0 +1,315 @@
+{
+  "program": "Computer Engineering B.S.",
+  "catalog_year": "2026",
+  "total_credits": 80,
+  "requirements_summary": {
+    "major_electives": {
+      "needed": 3,
+      "fulfilled": 3
+    },
+    "general_education": {
+      "needed": 7,
+      "fulfilled": 7
+    },
+    "cpsc_298_courses": {
+      "needed": 3,
+      "fulfilled": 3
+    },
+    "themed_inquiries": {
+      "needed": 4,
+      "fulfilled": 4
+    }
+  },
+  "curriculum": [
+    {
+      "year": 1,
+      "semester": "Fall",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "FFC100B",
+          "title": "First Year Foundations",
+          "credits": 3,
+          "category": "foundation"
+        },
+        {
+          "code": "CPSC230",
+          "title": "Computer Science I",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ENGR101",
+          "title": "Foundations of Design and Fabrication",
+          "credits": 3,
+          "category": "engineering_core"
+        },
+        {
+          "code": "MATH110",
+          "title": "Single Variable Calculus I",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Introduction to *nix",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 1,
+      "semester": "Spring",
+      "total_credits": 14,
+      "courses": [
+        {
+          "code": "GCISXXX",
+          "title": "All-in-one GCI",
+          "credits": 3,
+          "category": "general_core"
+        },
+        {
+          "code": "CENG231",
+          "title": "Systems Programming",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "MATH111",
+          "title": "Single Variable Calculus II",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "PHYS101",
+          "title": "General Physics I",
+          "credits": 4,
+          "category": "science"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Fall",
+      "total_credits": 14,
+      "courses": [
+        {
+          "code": "PHYS102",
+          "title": "General Physics II",
+          "credits": 4,
+          "category": "science"
+        },
+        {
+          "code": "MATH250",
+          "title": "Discrete Math",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "MATH210",
+          "title": "Multivariable Calculus",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "CPSC298",
+          "title": "C++",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 2,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "PHYS201",
+          "title": "General Physics III",
+          "credits": 3,
+          "category": "science"
+        },
+        {
+          "code": "EENG200",
+          "title": "Electronics and Circuits I",
+          "credits": 4,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "CPSC350",
+          "title": "Data Structures and Algorithms",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Fall",
+      "total_credits": 14,
+      "courses": [
+        {
+          "code": "CENG330",
+          "title": "Digital Logic Design",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "MATH215",
+          "title": "Linear Algebra and Differential Equations",
+          "credits": 3,
+          "category": "math"
+        },
+        {
+          "code": "CPSC298",
+          "title": "Student's Choice",
+          "credits": 1,
+          "category": "special_topics"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 3,
+      "semester": "Spring",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "CPSC351",
+          "title": "Computer Architecture I",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "EENG300",
+          "title": "Electronics and Circuits II",
+          "credits": 4,
+          "category": "electrical_engineering_core"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Fall",
+      "total_credits": 16,
+      "courses": [
+        {
+          "code": "CENG366",
+          "title": "Digital Logic Design II",
+          "credits": 4,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "CPSC380",
+          "title": "Operating Systems",
+          "credits": 3,
+          "category": "major_core"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "TI",
+          "title": "Themed Inquiry",
+          "credits": 3,
+          "category": "themed_inquiry"
+        }
+      ]
+    },
+    {
+      "year": 4,
+      "semester": "Spring",
+      "total_credits": 13,
+      "courses": [
+        {
+          "code": "CENG465",
+          "title": "Integrated Circuit Design I",
+          "credits": 3,
+          "category": "computer_engineering_core"
+        },
+        {
+          "code": "ENGR397",
+          "title": "Engineering Portfolio",
+          "credits": 1,
+          "category": "engineering"
+        },
+        {
+          "code": "ME",
+          "title": "Major Elective",
+          "credits": 3,
+          "category": "major_elective"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        },
+        {
+          "code": "GE",
+          "title": "General Education",
+          "credits": 3,
+          "category": "general_education"
+        }
+      ]
+    }
+  ]
+}
