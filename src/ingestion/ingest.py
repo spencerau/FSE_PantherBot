@@ -3,12 +3,10 @@
 import os
 import sys
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from utils.config_loader import load_config
-
-sys.path.insert(0, os.path.dirname(__file__))
-from fse_ingestion import FSEIngestion
+from ingestion.fse_ingestion import FSEIngestion
 
 
 def main():

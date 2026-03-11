@@ -1,5 +1,6 @@
 embedding:
   model: "qwen3-embedding"
+  dimension: 4096
   batch_size: 32
   ollama_host: "localhost"
   ollama_port: 10001
@@ -18,9 +19,6 @@ llm:
   context_length: 256000
   timeout: 600
 
-  router_model: "qwen3.5:9b"
-  router_temperature: 0.1
-  router_max_tokens: 500
   router_timeout: 30
   router_host: "localhost"
   router_port: 10002
@@ -70,3 +68,8 @@ reranker:
   batch_size: 32
   max_candidates_for_rerank: 200
   activation: "sigmoid"
+
+query_router:
+  router_model: "qwen3.5:9b"
+  router_temperature: 0.1
+  router_max_tokens: 500

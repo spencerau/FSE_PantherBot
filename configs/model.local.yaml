@@ -1,7 +1,8 @@
 embedding:
   model: "bge-m3:567m"
+  dimension: 1024
   batch_size: 8
-  ollama_port: 11434
+  ollama_port: 10001
 
 llm:
   primary_model: "gemma3:4b"
@@ -9,10 +10,13 @@ llm:
   max_tokens: 6000
   timeout: 300
   router_model: "gemma3:1b"
-  router_port: 11434
+  router_port: 10001
   ollama_options:
     keep_alive: "10m"
 
 reranker:
   batch_size: 16
   max_candidates_for_rerank: 100
+
+query_router:
+  router_model: "gemma3:1b"

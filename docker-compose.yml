@@ -8,8 +8,11 @@ services:
     environment:
       - QDRANT_HOST=qdrant
       - OLLAMA_HOST=host.docker.internal
+      - OLLAMA_INTERMEDIATE_HOST=host.docker.internal
+      - OLLAMA_INTERMEDIATE_PORT=10002
       - RERANK_DISABLED=true
       - PYTHONPATH=/app/src
+      - LOCAL_DEV
     env_file:
       - ./src/slack/.env
       - ./src/memory/.env
@@ -31,10 +34,11 @@ services:
       - ./data:/app/data
     environment:
       - QDRANT_HOST=qdrant
-      - OLLAMA_HOST=host.docker.internal  # Use native Ollama on Mac
+      - OLLAMA_HOST=host.docker.internal
       - OLLAMA_INTERMEDIATE_HOST=host.docker.internal
-      - OLLAMA_INTERMEDIATE_PORT=11434
+      - OLLAMA_INTERMEDIATE_PORT=10002
       - PYTHONPATH=/app/src
+      - LOCAL_DEV
     depends_on:
       - qdrant
       - tika
@@ -66,30 +70,30 @@ services:
       timeout: 5s
       retries: 5
 
-  memory-compressor:
-    build: .
-    command: bash scripts/memory_compression.sh
-    volumes:
-      - ./configs:/app/configs
-      - ./scripts:/app/scripts
-    environment:
-      - OLLAMA_HOST=host.docker.internal
-      - PYTHONPATH=/app/src
-    env_file:
-      - ./src/memory/.env
-    depends_on:
-      postgres:
-        condition: service_healthy
-    restart: unless-stopped
-    profiles:
-      - full
+  # memory-compressor:
+  #   build: .
+  #   command: bash scripts/memory_compression.sh
+  #   volumes:
+  #     - ./configs:/app/configs
+  #     - ./scripts:/app/scripts
+  #   environment:
+  #     - OLLAMA_HOST=host.docker.internal
+  #     - PYTHONPATH=/app/src
+  #   env_file:
+  #     - ./src/memory/.env
+  #   depends_on:
+  #     postgres:
+  #       condition: service_healthy
+  #   restart: unless-stopped
+  #   profiles:
+  #     - full
 
-  ollama:
-    image: ollama/ollama:latest
-    ports:
-      - "11434:11434"
-    volumes:
-      - ./ollama_models:/root/.ollama
-    restart: unless-stopped
-    profiles:
-      - local
+  # ollama:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "11434:11434"
+  #   volumes:
+  #     - ./ollama_models:/root/.ollama
+  #   restart: unless-stopped
+  #   profiles:
+  #     - local

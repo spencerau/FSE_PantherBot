@@ -28,28 +28,26 @@ def load_config(config_name=None):
         with open(config_path, 'r') as file:
             config = yaml.safe_load(file)
 
-        print(f"Loaded config: {config_path}")
+        config_dir = os.path.dirname(os.path.abspath(config_path))
 
-        model_config_path = os.path.join(project_root, "configs", "model.yaml")
+        model_config_path = os.path.join(config_dir, "model.yaml")
         if os.path.exists(model_config_path):
             with open(model_config_path, 'r') as file:
                 model_config = yaml.safe_load(file)
             config = merge_configs(config, model_config)
-            print(f"Loaded model config from {model_config_path}")
 
-        local_config_path = os.path.join(project_root, "configs", "config.local.yaml")
-        if os.path.exists(local_config_path):
-            with open(local_config_path, 'r') as file:
-                local_config = yaml.safe_load(file)
-            config = merge_configs(config, local_config)
-            print(f"Loaded local config overrides from {local_config_path}")
+        if os.environ.get('LOCAL_DEV', '').lower() == 'true':
+            local_config_path = os.path.join(config_dir, "config.local.yaml")
+            if os.path.exists(local_config_path):
+                with open(local_config_path, 'r') as file:
+                    local_config = yaml.safe_load(file)
+                config = merge_configs(config, local_config)
 
-        model_local_path = os.path.join(project_root, "configs", "model.local.yaml")
-        if os.path.exists(model_local_path):
-            with open(model_local_path, 'r') as file:
-                model_local = yaml.safe_load(file)
-            config = merge_configs(config, model_local)
-            print(f"Loaded local model config from {model_local_path}")
+            model_local_path = os.path.join(config_dir, "model.local.yaml")
+            if os.path.exists(model_local_path):
+                with open(model_local_path, 'r') as file:
+                    model_local = yaml.safe_load(file)
+                config = merge_configs(config, model_local)
 
         if 'QDRANT_HOST' in os.environ:
             config['qdrant']['host'] = os.environ['QDRANT_HOST']
@@ -61,6 +59,11 @@ def load_config(config_name=None):
 
             if 'cluster' in config:
                 config['cluster']['ollama_host'] = os.environ['OLLAMA_HOST']
+
+        if 'OLLAMA_PORT' in os.environ:
+            if 'embedding' not in config:
+                config['embedding'] = {}
+            config['embedding']['ollama_port'] = int(os.environ['OLLAMA_PORT'])
 
         return config
     except FileNotFoundError:

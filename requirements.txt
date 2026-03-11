@@ -8,6 +8,7 @@ streamlit
 pytest
 pymupdf
 sentence-transformers
+python-dotenv
 docling
 
 # Core RAG package

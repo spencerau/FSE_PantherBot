@@ -1,9 +1,12 @@
 #!/bin/bash
 
-# Local testing script - uses smaller models and local Ollama
+# Local testing script - uses smaller models and local Ollama.
+# Sets LOCAL_DEV=true so config.local.yaml + model.local.yaml are loaded.
 
 echo "=== FSE_PantherBot Local Testing Setup ==="
 echo
+
+export LOCAL_DEV=true
 
 # Force a safe context window for local embedding runs (bge-m3 only supports 8192)
 export OLLAMA_NUM_CTX=8192
@@ -126,7 +129,7 @@ if [ "$INGEST" = true ]; then
     echo
     echo "Running ingestion with local config..."
     source .venv/bin/activate
-    CONFIG_FILE=config.local.yaml PYTHONPATH=src python3 src/ingestion/ingest.py
+    LOCAL_DEV=true PYTHONPATH=src python3 src/ingestion/ingest.py
     echo
 fi
 
@@ -146,7 +149,7 @@ echo "   Ollama (native):  http://localhost:11434"
 echo
 echo "To run ingestion manually:"
 echo "   source .venv/bin/activate"
-echo "   CONFIG_FILE=config.local.yaml python3 src/ingestion/ingest.py"
+echo "   LOCAL_DEV=true PYTHONPATH=src python3 src/ingestion/ingest.py"
 echo
 echo "To stop Docker services:"
 echo "   docker compose down"

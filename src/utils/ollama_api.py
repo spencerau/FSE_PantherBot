@@ -227,7 +227,7 @@ def get_intermediate_ollama_api(timeout: int = 60) -> OllamaAPI:
             config = load_config()
             llm_config = config.get('llm', {})
             host = intermediate_host or os.environ.get("OLLAMA_HOST") or llm_config.get('router_host', 'localhost')
-            port = intermediate_port or llm_config.get('router_port', 10001)
+            port = intermediate_port or llm_config.get('router_port', 10002)
             base_url = f"http://{host}:{port}"
 
         _intermediate_ollama_api = OllamaAPI(base_url=base_url, timeout=timeout)
