@@ -11,11 +11,11 @@ domain:
   contact_email: "fseadvising@chapman.edu"
 
   programs:
-    Computer Science: "compsci"
-    Computer Engineering: "compeng"
-    Electrical Engineering: "eleceng"
-    Software Engineering: "softeng"
-    Data Science: "datasci"
+    Computer Science: "cs"
+    Computer Engineering: "ce"
+    Electrical Engineering: "ee"
+    Software Engineering: "se"
+    Data Science: "ds"
 
   available_programs:
     - "Computer Science"
@@ -26,10 +26,10 @@ domain:
 
   minors:
     Analytics: "anal"
-    Computer Science: "compsci"
-    Computer Engineering: "compeng"
-    Electrical Engineering: "eleceng"
-    Game Development: "gamedev"
+    Computer Science: "cs"
+    Computer Engineering: "ce"
+    Electrical Engineering: "ee"
+    Game Development: "game"
     Information Security Policy: "isp"
 
   catalog_years:
@@ -78,7 +78,7 @@ data_directories:
 chunker:
   strategy: "recursive"
   target_tokens: 1000
-  min_tokens: 500
+  min_tokens: 100
   overlap_ratio: 0.1
   respect_headings: true
 
@@ -118,6 +118,8 @@ query_router:
   last_n_messages: 5
   routing_method: 'llm'
   use_intermediate_llm: true
+  default_collections:
+    - "major_catalogs"
 
   min_tokens: 200
   max_tokens: 15000
@@ -136,6 +138,7 @@ query_router:
       - "schedule"
       - "sequence"
       - "timeline"
+      - "graduation"
     minor_catalogs:
       - "minor"
       - "minors"

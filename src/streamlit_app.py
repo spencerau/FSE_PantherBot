@@ -157,20 +157,20 @@ def main():
             with st.spinner("Searching academic catalogs..."):
                 try:
                     program_codes = {
-                        "Computer Science": "compsci",
-                        "Computer Engineering": "compeng", 
-                        "Software Engineering": "softeng",
-                        "Electrical Engineering": "eleceng",
-                        "Data Science": "datasci"
+                        "Computer Science": "cs",
+                        "Computer Engineering": "ce",
+                        "Software Engineering": "se",
+                        "Electrical Engineering": "ee",
+                        "Data Science": "ds"
                     }
-                    program_code = program_codes.get(student_program, "compsci")
-                    
+                    program_code = program_codes.get(student_program, "cs")
+
                     minor_codes = {
                         "Analytics": "anal",
-                        "Computer Science": "compsci",
-                        "Computer Engineering": "compeng",
-                        "Electrical Engineering": "eleceng", 
-                        "Game Development": "gamedev", 
+                        "Computer Science": "cs",
+                        "Computer Engineering": "ce",
+                        "Electrical Engineering": "ee",
+                        "Game Development": "game",
                         "Information Security Policy": "isp"
                     }
                     minor_code = minor_codes.get(student_minor) if student_minor else None

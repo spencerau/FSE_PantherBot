@@ -75,12 +75,12 @@ class FSEUnifiedRAG(BaseUnifiedRAG):
             'year': student_year,
             'minor': student_minor,
         }.items() if v is not None}
-        return super().search_collection(
+        return self._dense_search(
             query=query,
             collection_name=collection_name,
             user_context=final_context if final_context else None,
             top_k=top_k,
-            **kwargs
+            document_type=kwargs.get('document_type'),
         )
 
     def answer_question(self, query: str, student_program: str = None,

@@ -73,3 +73,33 @@ query_router:
   router_model: "qwen3.5:9b"
   router_temperature: 0.1
   router_max_tokens: 500
+  prompt_template: |
+    Route this academic advising query to the correct collection(s). Follow the rules EXACTLY.
+
+    Collections:
+    - major_catalogs: Degree requirements, required courses, major electives, prerequisites, graduation requirements for a major
+    - minor_catalogs: Minor program requirements and courses ONLY
+    - 4_year_plans: Course scheduling — which semester/year to take a course, recommended 4-year schedules
+    - general_knowledge: Administrative policies, registration deadlines, GPA rules, petitions, study abroad
+
+    RULES (apply in order, use the FIRST matching rule):
+    1. "When/what semester should I take [course]?" or course scheduling → ["4_year_plans", "major_catalogs"]
+    2. Query mentions "minor" requirements/courses → ["minor_catalogs"] ONLY
+    3. What courses/requirements are needed for a degree or graduation → ["major_catalogs"] ONLY
+    4. Prerequisites, major electives, major course requirements → ["major_catalogs"] ONLY
+    5. Administrative policies, deadlines, registration, GPA policies → ["general_knowledge"] ONLY
+
+    NOTE: Graduation REQUIREMENTS (what courses you need) → major_catalogs. Graduation PROCEDURES/POLICIES → general_knowledge.
+
+    Student Context: {context}
+    Query: "{query}"
+
+    Examples:
+    - "What math courses do I need for graduation?" → {{"collections": ["major_catalogs"], "token_allocation": 400, "reasoning": "graduation requirements"}}
+    - "What are the CPSC 350 prerequisites?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "prerequisites"}}
+    - "What electives can I take for CS?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "major electives"}}
+    - "analytics minor requirements" → {{"collections": ["minor_catalogs"], "token_allocation": 300, "reasoning": "minor requirements"}}
+    - "When should I take CPSC 406?" → {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 400, "reasoning": "course scheduling"}}
+    - "add/drop deadline" → {{"collections": ["general_knowledge"], "token_allocation": 200, "reasoning": "registration policy"}}
+
+    Respond with JSON ONLY: {{"collections": [...], "token_allocation": <number>, "reasoning": "brief explanation"}}

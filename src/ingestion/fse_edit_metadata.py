@@ -1,55 +1,43 @@
 import os
+import re
 import sys
+from pathlib import Path
+
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 from core_rag.ingestion.edit_metadata import MetadataExtractor
-from utils.config_loader import load_config
+
+# Convention: YYYY_<code>[_plan].<ext>  e.g. 2023_cs_plan.md, 2022_anal.pdf
+_FILENAME_RE = re.compile(r'^(\d{4})_([A-Za-z]+?)(?:_plan)?\.\w+$', re.IGNORECASE)
+
+_DOC_TYPE_MAP = {
+    'major_catalog':      'major_catalog',
+    'major_catalog_json': 'major_catalog',
+    'minor_catalog':      'minor_catalog',
+    '4_year_plan':        '4_year_plan',
+    '4_year_plans':       '4_year_plan',
+    'general_knowledge':  'general_knowledge',
+}
 
 
 class FSEMetadataExtractor(MetadataExtractor):
-    
-    def get_subject_mappings(self):
-        config = load_config()
-        programs = config.get('domain', {}).get('programs', {})
-        minors = config.get('domain', {}).get('minors', {})
-        
-        mappings = {}
-        
-        for name, code in programs.items():
-            clean_name = name.replace(' ', '')
-            if clean_name not in mappings:
-                mappings[clean_name] = (name, code)
-        
-        for name, code in minors.items():
-            clean_name = name.replace(' ', '')
-            if clean_name not in mappings:
-                mappings[clean_name] = (name, code)
-        
-        return mappings
-    
+
     def extract_metadata_from_path(self, file_path: str) -> dict:
-        metadata = super().extract_metadata_from_path(file_path)
-        
-        path_lower = file_path.lower()
-        if 'major_catalog' in path_lower:
-            doc_type = 'major_catalog'
-        elif 'minor_catalog' in path_lower:
-            doc_type = 'minor_catalog'
-        elif '4_year_plan' in path_lower or '4yearplan' in path_lower:
-            doc_type = '4_year_plan'
-        elif 'general_knowledge' in path_lower:
-            doc_type = 'general_knowledge'
-        else:
-            doc_type = metadata.get('program_type', metadata.get('document_type', 'general'))
-        
-        fse_metadata = {
-            'DocumentType': doc_type,
-            'Year': metadata.get('year'),
-            'Subject': metadata.get('subject'),
-            'SubjectCode': metadata.get('subject_code')
-        }
-        
-        return {k: v for k, v in fse_metadata.items() if v is not None}
+        path = Path(file_path)
+
+        doc_type = 'general_knowledge'
+        for part in [p.lower() for p in path.parts]:
+            if part in _DOC_TYPE_MAP:
+                doc_type = _DOC_TYPE_MAP[part]
+                break
+
+        metadata = {'DocumentType': doc_type}
+        m = _FILENAME_RE.match(path.name)
+        if m:
+            metadata['Year'] = m.group(1)
+            metadata['SubjectCode'] = m.group(2).lower()
+
+        return metadata
 
 
 MetadataExtractor = FSEMetadataExtractor

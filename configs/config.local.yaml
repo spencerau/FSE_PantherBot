@@ -21,10 +21,6 @@ ingestion:
       - pattern: "total credits"
         section: "summary"
 
-chunker:
-  target_tokens: 400
-  min_tokens: 200
-
 retrieval:
   min_chunks_per_collection: 3
   collection_max_chunks:
@@ -34,31 +30,3 @@ retrieval:
 query_router:
   use_intermediate_llm: false
   max_tokens: 10000
-  prompt_template: |
-    Route the query to the correct collection(s). Follow rules EXACTLY.
-
-    Collections:
-    - major_catalogs: Major requirements, major electives, major courses, prerequisites
-    - minor_catalogs: Minor program requirements ONLY
-    - 4_year_plans: Course scheduling - which semester/year to take a specific course
-    - general_knowledge: Registration deadlines, academic policies, procedures
-
-    RULES (apply in order):
-    1. If query asks "when should I take [COURSE]" or "what semester" → ["4_year_plans", "major_catalogs"]
-    2. If query contains "minor" → ["minor_catalogs"] ONLY
-    3. If query about major electives/requirements/courses → ["major_catalogs"] ONLY
-    4. If query about deadlines/registration/policies → ["general_knowledge"] ONLY
-
-    NOTE: "When should I take CPSC 406?" is asking about COURSE SCHEDULING (rule 1), NOT registration deadlines.
-
-    Student: {context}
-    Query: "{query}"
-
-    Examples:
-    - "What electives can I take?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "major electives"}}
-    - "analytics minor requirements" → {{"collections": ["minor_catalogs"], "token_allocation": 300, "reasoning": "minor requirements"}}
-    - "When should I take CPSC 406?" → {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 400, "reasoning": "course scheduling question"}}
-    - "What semester should I take CPSC 350?" → {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 400, "reasoning": "course scheduling"}}
-    - "registration deadline" → {{"collections": ["general_knowledge"], "token_allocation": 200, "reasoning": "policy question"}}
-
-    Respond with JSON only:
