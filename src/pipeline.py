@@ -1,5 +1,5 @@
 
-from src.retrieval.reranker import BGEReranker
+from src.fse_retrieval.reranker import BGEReranker
 
 def ingest_documents(paths, collection):
     return 0
