@@ -63,7 +63,7 @@ async def test_get_user_context_valid_user_allowed(mock_bot):
 
 @pytest.mark.asyncio
 async def test_memory_interface_blocks_invalid_users():
-    from src.memory.memory_interface import MemoryInterface
+    from src.fse_memory.memory_interface import MemoryInterface
     
     with patch('src.memory.memory_interface.DatabaseManager') as mock_db:
         mock_db_instance = AsyncMock()
@@ -79,7 +79,7 @@ async def test_memory_interface_blocks_invalid_users():
 
 @pytest.mark.asyncio 
 async def test_database_validation_prevents_cross_contamination():
-    from src.memory.database import DatabaseManager
+    from src.fse_memory.database import DatabaseManager
     
     db = DatabaseManager()
     

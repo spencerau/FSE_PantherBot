@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 from unittest.mock import AsyncMock, patch
-from src.memory.conversation_manager import ConversationMemoryManager
+from src.fse_memory.conversation_manager import ConversationMemoryManager
 
 @pytest.fixture
 async def memory_manager():

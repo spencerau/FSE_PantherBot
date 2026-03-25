@@ -2,7 +2,7 @@ import pytest
 import pytest_asyncio
 import asyncio
 from unittest.mock import AsyncMock, patch, MagicMock
-from src.memory.compress_memory import MemoryCompressionService
+from src.fse_memory.compress_memory import MemoryCompressionService
 
 class AsyncContextManagerMock:
     def __init__(self, return_value):
@@ -105,7 +105,7 @@ async def test_memory_compression_integration():
     os.environ['POSTGRES_DB'] = 'pantherbot'
     os.environ['POSTGRES_PORT'] = '5432'
     
-    from memory.conversation_manager import ConversationMemoryManager
+    from fse_memory.conversation_manager import ConversationMemoryManager
     
     test_user_id = "U123456789"
     
@@ -188,7 +188,7 @@ async def test_memory_compression_cooking():
     os.environ['POSTGRES_DB'] = 'pantherbot'
     os.environ['POSTGRES_PORT'] = '5432'
     
-    from memory.conversation_manager import ConversationMemoryManager
+    from fse_memory.conversation_manager import ConversationMemoryManager
     
     test_user_id = "U987654321"
     

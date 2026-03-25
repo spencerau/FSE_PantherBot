@@ -1,7 +1,7 @@
 import pytest
 import asyncio
 from unittest.mock import AsyncMock, patch
-from src.memory.student_profile import StudentProfileManager
+from src.fse_memory.student_profile import StudentProfileManager
 
 @pytest.fixture
 async def profile_manager():

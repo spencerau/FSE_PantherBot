@@ -10,19 +10,12 @@ domain:
   department: "Fowler School of Engineering"
   contact_email: "fseadvising@chapman.edu"
 
-  programs:
+  majors:
     Computer Science: "cs"
     Computer Engineering: "ce"
     Electrical Engineering: "ee"
     Software Engineering: "se"
     Data Science: "ds"
-
-  available_programs:
-    - "Computer Science"
-    - "Computer Engineering"
-    - "Software Engineering"
-    - "Electrical Engineering"
-    - "Data Science"
 
   minors:
     Analytics: "anal"
@@ -74,6 +67,14 @@ data_directories:
   minor_catalogs: "data/minor_catalog"
   general_knowledge: "data/general_knowledge"
   4_year_plans: "data/4_year_plans"
+
+postgresql:
+  host: "localhost"
+  port: 5432
+  database: "pantherbot"
+  user: "pantherbot"
+  password: ""
+  pool_max: 10
 
 chunker:
   strategy: "recursive"

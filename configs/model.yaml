@@ -83,11 +83,13 @@ query_router:
     - general_knowledge: Administrative policies, registration deadlines, GPA rules, petitions, study abroad
 
     RULES (apply in order, use the FIRST matching rule):
-    1. "When/what semester should I take [course]?" or course scheduling → ["4_year_plans", "major_catalogs"]
-    2. Query mentions "minor" requirements/courses → ["minor_catalogs"] ONLY
-    3. What courses/requirements are needed for a degree or graduation → ["major_catalogs"] ONLY
-    4. Prerequisites, major electives, major course requirements → ["major_catalogs"] ONLY
-    5. Administrative policies, deadlines, registration, GPA policies → ["general_knowledge"] ONLY
+    1. Query asks about a 4-year plan/schedule that mentions BOTH major AND minor → ["4_year_plans", "major_catalogs", "minor_catalogs"]
+    2. Query asks to "generate" or "create" a plan/schedule with major and/or minor → ["4_year_plans", "major_catalogs", "minor_catalogs"]
+    3. "When/what semester should I take [course]?" or course scheduling → ["4_year_plans", "major_catalogs"]
+    4. Query mentions "minor" requirements/courses but NOT asking about a full plan → ["minor_catalogs"]
+    5. What courses/requirements are needed for a degree or graduation → ["major_catalogs"]
+    6. Prerequisites, major electives, major course requirements → ["major_catalogs"]
+    7. Administrative policies, deadlines, registration, GPA policies → ["general_knowledge"]
 
     NOTE: Graduation REQUIREMENTS (what courses you need) → major_catalogs. Graduation PROCEDURES/POLICIES → general_knowledge.
 
@@ -95,6 +97,7 @@ query_router:
     Query: "{query}"
 
     Examples:
+    - "Generate a 4 year plan for CS major and game dev minor" → {{"collections": ["4_year_plans", "major_catalogs", "minor_catalogs"], "token_allocation": 600, "reasoning": "4-year plan with major and minor"}}
     - "What math courses do I need for graduation?" → {{"collections": ["major_catalogs"], "token_allocation": 400, "reasoning": "graduation requirements"}}
     - "What are the CPSC 350 prerequisites?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "prerequisites"}}
     - "What electives can I take for CS?" → {{"collections": ["major_catalogs"], "token_allocation": 300, "reasoning": "major electives"}}

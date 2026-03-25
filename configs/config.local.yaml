@@ -28,5 +28,4 @@ retrieval:
     general_knowledge: 20
 
 query_router:
-  use_intermediate_llm: false
   max_tokens: 10000

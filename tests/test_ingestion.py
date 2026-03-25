@@ -17,8 +17,8 @@ if str(src_path) not in sys.path:
 
 project_root = Path(__file__).parent.parent.resolve()
 
-from ingestion.ingest import UnifiedIngestion
-from ingestion.content_extract import extract_content
+from fse_ingestion.ingest import UnifiedIngestion
+from fse_ingestion.content_extract import extract_content
 from utils.config_loader import load_config
 from utils.ollama_api import get_ollama_api
 
@@ -83,7 +83,7 @@ def ingest_text_to_collection(text, collection_name):
 
 def ingest_file_to_collection(file_path, collection_name):
     """Helper function to ingest a file directly to a specific collection"""
-    from ingestion.content_extract import extract_content
+    from fse_ingestion.content_extract import extract_content
     
     try:
         text, metadata = extract_content(file_path)

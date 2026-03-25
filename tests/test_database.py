@@ -3,7 +3,7 @@ import pytest_asyncio
 import asyncio
 import os
 from unittest.mock import patch, AsyncMock, MagicMock
-from src.memory.database import DatabaseManager
+from src.fse_memory.database import DatabaseManager
 
 class AsyncContextManagerMock:
     def __init__(self, mock_conn):

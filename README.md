@@ -56,3 +56,12 @@ See [`configs/README.md`](configs/README.md) for detailed options including:
 ssh dgx0.chapman.edu
 ./scripts/run_cluster.sh -b -c -f
 ```
+
+### Make an ssh tunnel (assuming hostname is already configured; else update that)
+
+ssh -L 10001:localhost:10001 -L 10002:localhost:10002 dgx_cluster
+
+### Run Streamlit
+
+streamlit run src/streamlit_app.py
+
