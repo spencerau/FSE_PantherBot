@@ -11,10 +11,10 @@ FSE_PantherBot is a sophisticated RAG (Retrieval-Augmented Generation) system th
 ### Core Components
 
 - **Document Ingestion**: Apache Tika extracts content from PDFs and academic catalogs
-- **Embedding Model**: BGE-M3 generates semantic embeddings for documents and queries
+- **Embedding Model**: Qwen3-Embedding generates semantic embeddings for documents and queries
 - **Vector Database**: Qdrant stores document embeddings with hybrid search capabilities
 - **Reranker**: BGE-Reranker-V2-M3 improves retrieval relevance
-- **LLM**: GPT-OSS 120B generates final responses via Ollama
+- **LLM**: Qwen3.5: 30B generates final responses via Ollama
 - **Memory System**: PostgreSQL stores conversation history with automatic compression
 
 ### Retrieval Pipeline
@@ -64,4 +64,12 @@ ssh -L 10001:localhost:10001 -L 10002:localhost:10002 dgx_cluster
 ### Run Streamlit
 
 streamlit run src/streamlit_app.py
+
+
+
+## I need to update this README because the documentation is bad
+
+Run `docker compose up -d` to start up containers (QDrant, PostgreSQL, 2 Ollama Containers)
+
+Run Ingestion `python fse_ingestion/ingest.py`
 

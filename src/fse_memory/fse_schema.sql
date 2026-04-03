@@ -8,7 +8,6 @@ CREATE TABLE IF NOT EXISTS student_profiles (
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Migration: add column if upgrading an existing DB
 ALTER TABLE student_profiles
     ADD COLUMN IF NOT EXISTS additional_program_asked BOOLEAN DEFAULT FALSE;
 

@@ -163,8 +163,6 @@ cython_debug/
 
 # custom
 .DS_Store
-old
-ollama_data
 qdrant_data
 postgres_data
 .vscode/
@@ -173,4 +171,6 @@ postgres_data
 .reports
 .idea
 data/minor_catalog_raw/
-src_core_rag/
+Shell_CopyPaste.sh
+
+

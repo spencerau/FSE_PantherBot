@@ -1,98 +1,116 @@
 import pytest
-import asyncio
-from unittest.mock import AsyncMock, patch
-from src.slack.bot import PantherSlackBot
+from unittest.mock import patch
+
+from fse_memory.fse_student_manager import FSEStudentManager
+
+FSE_VALID_MAJORS = [
+    "Computer Science",
+    "Computer Engineering",
+    "Data Science",
+    "Software Engineering",
+    "Electrical Engineering",
+]
+
+FSE_VALID_YEARS = [2022, 2023, 2024, 2025]
+
 
 @pytest.fixture
-async def mock_bot():
-    with patch('src.slack.bot.load_slack_config') as mock_config, \
-         patch('src.slack.bot.load_config') as mock_rag_config, \
-         patch('src.slack.bot.UnifiedRAG') as mock_rag, \
-         patch('src.slack.bot.StudentProfileManager') as mock_student, \
-         patch('src.slack.bot.MemoryInterface') as mock_memory:
-        
-        mock_config.return_value.bot_token = "test_token"
-        mock_config.return_value.app_token = "test_app_token"
-        
-        bot = PantherSlackBot()
-        bot.student_manager = AsyncMock()
-        bot.memory_interface = AsyncMock()
-        
-        yield bot
+def manager():
+    return FSEStudentManager(config=None)
 
-@pytest.mark.asyncio
-async def test_validate_user_access_valid_user(mock_bot):
-    bot = mock_bot
-    
-    assert bot._validate_user_access("U1234567890") is True
-    assert bot._validate_user_access("UABCDEF123") is True
 
-@pytest.mark.asyncio
-async def test_validate_user_access_invalid_user(mock_bot):
-    bot = mock_bot
-    
-    assert bot._validate_user_access("") is False
-    assert bot._validate_user_access(None) is False
-    assert bot._validate_user_access("invalid") is False
-    assert bot._validate_user_access("U123") is False
-    assert bot._validate_user_access("X1234567890") is False
-    assert bot._validate_user_access("U123456789!") is False
+def test_parse_major_accepts_only_valid_fse_majors(manager):
+    for major in FSE_VALID_MAJORS:
+        result = manager.parse_major_input(major)
+        assert result == major
 
-@pytest.mark.asyncio
-async def test_get_user_context_invalid_user_blocked(mock_bot):
-    bot = mock_bot
-    bot.logger = AsyncMock()
-    
-    result = await bot._get_user_context("invalid_user")
-    
-    assert result == {'program': None, 'year': None}
-    bot.logger.warning.assert_called_once()
 
-@pytest.mark.asyncio
-async def test_get_user_context_valid_user_allowed(mock_bot):
-    bot = mock_bot
-    bot.student_manager.get_student_profile.return_value = {
-        'major': 'Computer Science',
-        'catalog_year': 2024
+def test_parse_major_rejects_arbitrary_strings(manager):
+    garbage = [
+        "History", "Biology", "Art",
+        "DROP TABLE students;",
+        "'; SELECT * FROM students; --",
+        "../../etc/passwd",
+        "", "   ",
+    ]
+    for bad_input in garbage:
+        result = manager.parse_major_input(bad_input.strip())
+        assert result is None, f"Expected None for input: {repr(bad_input)}"
+
+
+def test_parse_major_short_codes_map_to_valid_majors(manager):
+    code_to_major = {
+        "cs": "Computer Science",
+        "ce": "Computer Engineering",
+        "ds": "Data Science",
+        "se": "Software Engineering",
+        "ee": "Electrical Engineering",
     }
-    
-    result = await bot._get_user_context("U1234567890")
-    
-    assert result['program'] == 'Computer Science'
-    assert result['year'] == 2024
+    for code, expected in code_to_major.items():
+        assert manager.parse_major_input(code) == expected
+
+
+def test_parse_catalog_year_accepts_valid_years(manager):
+    for year in FSE_VALID_YEARS:
+        assert manager.parse_catalog_year_input(str(year)) == year
+
+
+def test_parse_catalog_year_rejects_out_of_range(manager):
+    invalid_years = ["2019", "2020", "2021", "2026", "2030", "1999", "9999"]
+    for y in invalid_years:
+        assert manager.parse_catalog_year_input(y) is None, f"Expected None for year: {y}"
+
 
 @pytest.mark.asyncio
-async def test_memory_interface_blocks_invalid_users():
-    from src.fse_memory.memory_interface import MemoryInterface
-    
-    with patch('src.memory.memory_interface.DatabaseManager') as mock_db:
-        mock_db_instance = AsyncMock()
-        mock_db_instance._validate_slack_user_id.return_value = False
-        mock_db.return_value = mock_db_instance
-        
-        interface = MemoryInterface()
-        interface.db_manager = mock_db_instance
-        
-        await interface.add_conversation_turn("invalid_user", "test", "response")
-        
-        mock_db_instance.add_raw_message.assert_not_called()
+async def test_profile_creation_rejects_invalid_major_before_db_write(manager):
+    with patch('fse_memory.fse_student_manager.upsert_student_profile') as mock_upsert:
+        success, _ = await manager.create_student_profile('U1234567890', 'Philosophy', 2024)
+    assert success is False
+    mock_upsert.assert_not_called()
 
-@pytest.mark.asyncio 
-async def test_database_validation_prevents_cross_contamination():
-    from src.fse_memory.database import DatabaseManager
-    
-    db = DatabaseManager()
-    
-    assert db._validate_slack_user_id("U1234567890") is True
-    assert db._validate_slack_user_id("invalid") is False
-    assert db._validate_slack_user_id("") is False
-    assert db._validate_slack_user_id(None) is False
 
 @pytest.mark.asyncio
-async def test_profile_setup_requires_valid_user_format(mock_bot):
-    bot = mock_bot
-    say_mock = AsyncMock()
-    
-    await bot._handle_user_message("Major: Computer Science", "invalid_user", say_mock)
-    
-    say_mock.assert_called_with("Sorry, I encountered an error. Please try again.")
+async def test_profile_creation_rejects_invalid_year_before_db_write(manager):
+    with patch('fse_memory.fse_student_manager.upsert_student_profile') as mock_upsert:
+        success, _ = await manager.create_student_profile('U1234567890', 'Computer Science', 2019)
+    assert success is False
+    mock_upsert.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_profile_creation_writes_db_only_for_valid_data(manager):
+    with patch('fse_memory.fse_student_manager.upsert_student_profile', return_value=True) as mock_upsert:
+        success, _ = await manager.create_student_profile('U1234567890', 'Computer Science', 2024)
+    assert success is True
+    mock_upsert.assert_called_once()
+
+
+@pytest.mark.asyncio
+async def test_update_profile_rejects_invalid_major(manager):
+    with patch('fse_memory.fse_student_manager.upsert_student_profile') as mock_upsert:
+        success, _ = await manager.update_student_profile('U1234567890', major='Not A Major')
+    assert success is False
+    mock_upsert.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_update_profile_rejects_invalid_year(manager):
+    with patch('fse_memory.fse_student_manager.upsert_student_profile') as mock_upsert:
+        success, _ = await manager.update_student_profile('U1234567890', catalog_year=1999)
+    assert success is False
+    mock_upsert.assert_not_called()
+
+
+@pytest.mark.asyncio
+async def test_profile_isolation_different_users(manager):
+    calls = []
+
+    def capture_upsert(user_id, major, catalog_year, minor, additional_program_asked, config):
+        calls.append(user_id)
+        return True
+
+    with patch('fse_memory.fse_student_manager.upsert_student_profile', side_effect=capture_upsert):
+        await manager.create_student_profile('U0000000001', 'Computer Science', 2024)
+        await manager.create_student_profile('U0000000002', 'Data Science', 2025)
+
+    assert calls == ['U0000000001', 'U0000000002']

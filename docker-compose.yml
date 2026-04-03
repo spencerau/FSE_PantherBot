@@ -1,47 +1,50 @@
 services:
-  slack-bot:
-    build: .
-    command: python src/slack/bot.py
-    volumes:
-      - ./configs:/app/configs
-      - ./data:/app/data
-    environment:
-      - QDRANT_HOST=qdrant
-      - OLLAMA_HOST=host.docker.internal
-      - OLLAMA_INTERMEDIATE_HOST=host.docker.internal
-      - OLLAMA_INTERMEDIATE_PORT=10002
-      - RERANK_DISABLED=true
-      - PYTHONPATH=/app/src
-      - LOCAL_DEV
-    env_file:
-      - ./src/slack/.env
-      - ./src/memory/.env
-    depends_on:
-      - qdrant
-      - postgres
-    restart: unless-stopped
-    profiles:
-      - full
+  # slack-bot:
+  #   build: .
+  #   command: python src/slack/bot.py
+  #   volumes:
+  #     - ./configs:/app/configs
+  #     - ./data:/app/data
+  #   environment:
+  #     - QDRANT_HOST=qdrant
+  #     - OLLAMA_HOST=ollama
+  #     - OLLAMA_PORT=11434
+  #     - OLLAMA_INTERMEDIATE_HOST=intermediate-llm
+  #     - OLLAMA_INTERMEDIATE_PORT=11434
+  #     - RERANK_DISABLED=true
+  #     - PYTHONPATH=/app/src
+  #     - LOCAL_DEV
+  #   env_file:
+  #     - ./src/slack/.env
+  #     - ./src/memory/.env
+  #   depends_on:
+  #     - qdrant
+  #     - postgres
+  #     - ollama
+  #     - intermediate-llm
+  #   restart: unless-stopped
+  #   profiles:
+  #     - full
 
-  streamlit:
-    build: .
-    command: streamlit run src/streamlit_app.py --server.port=8501 --server.address=0.0.0.0
-    ports:
-      - "8501:8501"
-    volumes:
-      - ./src:/app/src
-      - ./configs:/app/configs
-      - ./data:/app/data
-    environment:
-      - QDRANT_HOST=qdrant
-      - OLLAMA_HOST=host.docker.internal
-      - OLLAMA_INTERMEDIATE_HOST=host.docker.internal
-      - OLLAMA_INTERMEDIATE_PORT=10002
-      - PYTHONPATH=/app/src
-      - LOCAL_DEV
-    depends_on:
-      - qdrant
-      - tika
+  # streamlit:
+  #   build: .
+  #   command: streamlit run src/streamlit_app.py --server.port=8501 --server.address=0.0.0.0
+  #   ports:
+  #     - "8501:8501"
+  #   volumes:
+  #     - ./src:/app/src
+  #     - ./configs:/app/configs
+  #     - ./data:/app/data
+  #   environment:
+  #     - QDRANT_HOST=qdrant
+  #     - OLLAMA_HOST=host.docker.internal
+  #     - OLLAMA_INTERMEDIATE_HOST=host.docker.internal
+  #     - OLLAMA_INTERMEDIATE_PORT=10002
+  #     - PYTHONPATH=/app/src
+  #     - LOCAL_DEV
+  #   depends_on:
+  #     - qdrant
+  #     - tika
 
   qdrant:
     image: qdrant/qdrant
@@ -60,7 +63,7 @@ services:
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
     env_file:
-      - ./src/memory/.env
+      - ./src/fse_memory/.env
     ports:
       - "5432:5432"
     restart: unless-stopped
@@ -70,30 +73,29 @@ services:
       timeout: 5s
       retries: 5
 
-  # memory-compressor:
-  #   build: .
-  #   command: bash scripts/memory_compression.sh
-  #   volumes:
-  #     - ./configs:/app/configs
-  #     - ./scripts:/app/scripts
-  #   environment:
-  #     - OLLAMA_HOST=host.docker.internal
-  #     - PYTHONPATH=/app/src
-  #   env_file:
-  #     - ./src/memory/.env
-  #   depends_on:
-  #     postgres:
-  #       condition: service_healthy
-  #   restart: unless-stopped
-  #   profiles:
-  #     - full
-
   # ollama:
   #   image: ollama/ollama:latest
   #   ports:
   #     - "11434:11434"
+  #   environment:
+  #     - OLLAMA_FLASH_ATTENTION=1
+  #     - OLLAMA_KV_CACHE_TYPE=q8_0
+  #     # - OLLAMA_CONTEXT_LENGTH=32768
+  #     - OLLAMA_NUM_PARALLEL=3
   #   volumes:
-  #     - ./ollama_models:/root/.ollama
+  #     - ~/.ollama:/root/.ollama
   #   restart: unless-stopped
-  #   profiles:
-  #     - local
+
+  # intermediate-llm:
+  #   image: ollama/ollama:latest
+  #   ports:
+  #     - "11435:11434"
+  #   environment:
+  #     - OLLAMA_FLASH_ATTENTION=1
+  #     - OLLAMA_KV_CACHE_TYPE=q8_0
+  #     # - OLLAMA_CONTEXT_LENGTH=32768
+  #     - OLLAMA_NUM_PARALLEL=3
+
+  #   volumes:
+  #     - ~/.ollama:/root/.ollama
+  #   restart: unless-stopped

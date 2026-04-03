@@ -133,13 +133,6 @@ def main():
 
         st.subheader("Response Settings")
 
-        enable_reranking = st.checkbox(
-            "Enable Reranking",
-            value=True,
-            help="Use AI reranking for better results (slower, ~30s first use).",
-            key="enable_reranking"
-        )
-
         debug_mode = st.checkbox(
             "Debug Mode",
             value=True,
@@ -190,7 +183,6 @@ def main():
                         top_k=config.get('retrieval', {}).get('final_top_k', 15),
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
-                        enable_reranking=st.session_state.get('enable_reranking', config.get('retrieval', {}).get('enable_reranking', True)),
                         return_debug_info=True,
                     )
 

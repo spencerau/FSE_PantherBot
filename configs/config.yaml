@@ -86,7 +86,6 @@ chunker:
 retrieval:
   initial_top_k: 40
   final_top_k: 35
-  enable_reranking: true
 
   collection_weights:
     major_catalogs: 0.4
@@ -114,6 +113,31 @@ retrieval:
 
 memory:
   compression_threshold: 5
+
+collection_config:
+  major_catalogs:
+    summary_enabled: false
+    reranking_enabled: false
+    hybrid_enabled: false
+  minor_catalogs:
+    summary_enabled: false
+    reranking_enabled: false
+    hybrid_enabled: false
+  4_year_plans:
+    summary_enabled: false
+    reranking_enabled: false
+    hybrid_enabled: false
+  general_knowledge:
+    summary_enabled: true
+    reranking_enabled: true
+    hybrid_enabled: false
+
+rag:
+  base_chunks_per_collection: 20
+  priority_boost: 5
+  collection_priority:
+    - general_knowledge
+  top_k: 25
 
 query_router:
   last_n_messages: 5

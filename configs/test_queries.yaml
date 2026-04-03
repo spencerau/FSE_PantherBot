@@ -1,119 +1,197 @@
 queries:
-  - year: "2022"
-    major_or_minor: "major"
-    major: "Computer Science"
-    question: "What are the core requirements for a Computer Science major in the 2022 catalog?"
-    must_contain: ["CPSC", "core", "requirement"]
-    must_cite_substring: ["Computer Science", "2022"]
+
+# -------------------------------------- Majors -------------------------------------------- # 
 
   - year: "2022"
-    major_or_minor: "major"
     major: "Computer Science"
-    question: "How many units are required for graduation with a Computer Science degree?"
-    must_contain: ["units", "graduation"]
-    must_cite_substring: ["Computer Science", "units"]
-
-  - year: "2022"
-    major_or_minor: "minor"
-    question: "What courses are required for a Computer Science minor in 2022?"
-    must_contain: ["minor", "Computer Science"]
-    must_cite_substring: ["minor", "CPSC"]
+    question: "What are the upper division requirements for my major?"
+    acceptable_answer: >
+      Should list required CS upper division classes for the 2022 catalog, which are CPSC 330/L (basically the same as CPSC 330 & CPSC 330L), CPSC 350, CPSC 351, CPSC 353, 
+      CPSC 354, CPSC 380, CPSC 406, and CPSC 408.
+    sample_answer: >
+      The upper division requirements for the Computer Science major CPSC 330/L, CPSC 350, CPSC 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408.
+    expected_collections: ["major_catalogs"]
 
   - year: "2023"
-    major_or_minor: "major"
+    major: "Computer Science"
+    question: "What are the science classes I can take to fulfill the general science requirement for my major?"
+    acceptable_answer: >
+      Should list the 4 sequences the student can take for the science requirement.
+      Sequence 1: BIOL 204/L (BIOL 204 and BIOL 204L) and BIOL 205/L (BIOL 205 and BIOL 205L)
+      Sequence 2: BIOL 204/L (BIOL 204 and BIOL 204L) and BIOL 208/L (BIOL 208 and BIOL 208L)
+      Sequence 3: CHEM 140/L (CHEM 140 and CHEM 140L) and CHEM 150/L (CHEM 150 and CHEM 150L)
+      Sequence 4: PHYS 101/L (PHYS 101 and PHYS 101L) and PHYS 102/L (PHYS 102 and PHYS 102L)
+    sample_answer: >
+      To fulfill the general science requuirement for the Computer Science major, you must take one of the following 4 sequences:
+      Sequence 1: BIOL 204/L and BIOL 205/L
+      Sequence 2: BIOL 204/L and BIOL 208/L 
+      Sequence 3: CHEM 140/L and CHEM 150/L
+      Sequence 4: PHYS 101/L and PHYS 102/L
+    expected_collections: ["major_catalogs"]
+
+  - year: "2024"
+    major: "Computer Science"
+    question: "What are the math courses I can take for my major?"
+    acceptable_answer: >
+      Should list the required math courses which are MATH 215 and MATH 250. Also should list the choice of either the sequence with MATH 110, 111, and 210 or the sequence
+      with MATH 115 and 116.
+    sample_answer: >
+      For the Computer Science major, you MUST take MATH 215 and MATH 250. In addition, you can choose to take either MATH 110, MATH 111, and MATH 210 or an accelerated
+      sequence with MATH 115 and MATH 116."
+    expected_collections: ["major_catalogs"]
+
+  - year: "2025"
+    major: "Computer Science"
+    question: "What are the upper division requirements for my major?"
+    acceptable_answer: >
+      Should list required CS upper division classes for the 2025 catalog, which are CENG 330/L (basically the same as CENG 330 & CENG 330L), CPSC 350, CENG 351, CPSC 353, 
+      CPSC 354, CPSC 380, CPSC 406, and CPSC 408.
+    sample_answer: >
+      The upper division requirements for the Computer Science major are CENG 330/L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408.
+    expected_collections: ["major_catalogs"]
+
+  - year: "2025"
+    major: "Computer Science"
+    question: "What electives can I take for my major?"
+    acceptable_answer: >
+      Should list CPSC 285, SE 300, SE 310, CPSC 320, SE 320, CPSC 349, CPSC 355, CPSC 356, CPSC 357, CPSC 358, CPSC 359, CPSC 360, ENGR 360, ISP 363, CPSC 370, CENG 381, 
+      ENGR 385, CPSC 390, CPSC 392, CPSC 393, CPSC 402, CPSC 445, CPSC 453, CPSC 458
+    sample_answer: >
+      The classes you can take as an elective for the Computer Science are CPSC 285, SE 300, SE 310, CPSC 320, SE 320, CPSC 349, CPSC 355, CPSC 356, CPSC 357, CPSC 358, CPSC 359, 
+      CPSC 360, ENGR 360, ISP 363, CPSC 370, CENG 381, ENGR 385, CPSC 390, CPSC 392, CPSC 393, CPSC 402, CPSC 445, CPSC 453, CPSC 458"
+    expected_collections: ["major_catalogs"]
+
+  - year: "2025"
     major: "Software Engineering"
-    question: "What are the prerequisites for CPSC 340 in the 2023 Software Engineering program?"
-    must_contain: ["CPSC 340", "prerequisite"]
-    must_cite_substring: ["CPSC 340", "prerequisite"]
+    question: "What are prerequisites for the Software Engineering Capstone?"
+    acceptable_answer: >
+      Should state that the prerequisite for SE 498 - Software Engineering Capstone Project is SE 320.
+    sample_answer: >
+      The prequisite for SE 498 - Software Engineering Capstone Project is SE 320.
+    expected_collections: ["major_catalogs"]
 
-  - year: "2023"
-    major_or_minor: "major"
+  - year: "2025"
     major: "Data Science"
-    question: "What math courses are required for Data Science majors in 2023?"
-    must_contain: ["math", "Data Science"]
-    must_cite_substring: ["MATH", "Data Science"]
+    question: "How many sections of CPSC 298 do I need to take?"
+    acceptable_answer: >
+      Should state that the student is required to take 5 sections of CPSC 298.
+      The answer does not need to mention credits or the course name — just correctly stating 5 sections is sufficient.
+    sample_answer: >
+      For the Data Science major, you need to take 5 sections of CPSC 298.
+    expected_collections: ["major_catalogs"]
 
-  - year: "2023"
-    major_or_minor: "minor"
-    question: "How many courses are needed for an Analytics minor?"
-    must_contain: ["Analytics", "minor"]
-    must_cite_substring: ["Analytics", "minor"]
-
-  - year: "2024"
-    major_or_minor: "major"
-    major: "Computer Engineering"
-    question: "What is the capstone requirement for Computer Engineering in 2024?"
-    must_contain: ["capstone", "Computer Engineering"]
-    must_cite_substring: ["capstone", "Computer Engineering"]
-
-  - year: "2024"
-    major_or_minor: "major"
+  - year: "2025"
     major: "Electrical Engineering"
     question: "What are the laboratory requirements for Electrical Engineering students?"
-    must_contain: ["laboratory", "lab", "Electrical Engineering"]
-    must_cite_substring: ["lab", "Electrical Engineering"]
+    acceptable_answer: >
+      Should list laboratory courses (classes ending in an L) required for Electrical Engineering students with course codes (EENG/PHYS/CENG lab courses). 
+      The courses are PHYS 101L, PHYS 102L, EENG 200L, CENG 231L, EENG 300L, EENG 320L, CENG 330L, and CENG 366L
+    sample_answer: > 
+      The lab courses you just take for the Electrical Engineering major are PHYS 101L, PHYS 102L, EENG 200L, CENG 231L, EENG 300L, EENG 320L, CENG 330L, and CENG 366L
+    expected_collections: ["major_catalogs"]
 
-  - year: "2024"
-    major_or_minor: "minor"
-    question: "What programming languages are covered in the Game Development Programming minor?"
-    must_contain: ["Game Development", "programming"]
-    must_cite_substring: ["Game Development", "programming"]
+  - year: "2025"
+    major: "Computer Engineering"
+    question: "What are the lower division laboratory requirements for Computer Engineering students?"
+    acceptable_answer: >
+      Should list out the lower division lab courses (classes ending in an L) for the Computer Engineering major with course codes (EENG/PHYS/CENG lab courses).
+      The courses are PHYS 101L, PHYS 102L, EENG 200L, and CENG 231L.
+    sample_answer: >
+      The lower division lab courses you just take for the Computer Engineering major are PHYS 101L, PHYS 102L, EENG 200L, and CENG 231L.
+    expected_collections: ["major_catalogs"]
 
-  - year: "2022"
-    major_or_minor: "major"
-    major: "Computer Science"
-    question: "Are there any elective requirements for Computer Science majors?"
-    must_contain: ["elective", "Computer Science"]
-    must_cite_substring: ["elective", "Computer Science"]
+# -------------------------------------- Minors -------------------------------------------- # 
 
-  - year: "2023"
-    major_or_minor: "major"
-    major: "Software Engineering"
-    question: "What is the difference between Software Engineering and Computer Science programs?"
-    must_contain: ["Software Engineering", "Computer Science", "difference"]
-    must_cite_substring: ["Software Engineering", "Computer Science"]
+  - year: "2025"
+    minor: "Analytics"
+    question: "How many credits do I need to take outside of my major for my minor"
+    acceptable_answer: >
+      Should state that the student is required to take 12 credits (4 courses) outside of their major.
+      Mentioning the Analytics minor is nice but optional.
 
-  - year: "2024"
-    major_or_minor: "major"
-    major: "Data Science"
-    question: "What statistics courses are required for Data Science in 2024?"
-    must_contain: ["statistics", "Data Science"]
-    must_cite_substring: ["STAT", "Data Science"]
+    sample_answer: >
+      For the Analytics minor, you are required to take at least 12 credits (or 4 courses) outside of your major.
+    expected_collections: ["minor_catalogs"]
 
-  # New routing system test queries
+  - year: "2025"
+    minor: "Computer Engineering"
+    question: "For my minor, how many upper division credits must be taken at Chapman?"
+    acceptable_answer: >
+      Should state that 6 upper division credits must be taken in residence at Chapman. 
+      Mentioning the Computer Engineering minor is nice but optional.
+    sample_answer: >
+      For the Computer Engineering minor, 6 upper division credits must be taken in residence at Chapman.
+    expected_collections: ["minor_catalogs"]
+
+  - year: "2025"
+    minor: "Computer Science"
+    question: "For my minor, how many upper division credits are required?"
+    acceptable_answer: >
+      Should state that 9 upper division credits are required.
+      Mentioning the Computer Science minor is nice but optional.
+    sample_answer: >
+      For the Computer Science minor, you are required to have 9 upper division credits.
+    expected_collections: ["minor_catalogs"]
+
+  - year: "2025"
+    minor: "Electrical Engineering"
+    question: "How many unique credits do I need for my minor?"
+    acceptable_answer: >
+      Should state that a minimum of 12 credits need to be completed that are unique and/or not duplicated by the
+      student's major or any other minor. Mentioning the Electrical Engineering minor is nice but optional.
+    sample_answer: >
+      For the Electrical Engineering minor, you are required to take a minimum of 12 credits that are unique, meaning that 12 credits can not be duplicated by 
+      your major or any other minor.
+    expected_collections: ["minor_catalogs"]
+
+  - year: "2025"
+    minor: "Game Development"
+    question: "What are the GAME 340 prerequisites?"
+    acceptable_answer: >
+      Should state that for GAME 340, the prequisites are having to take GAME 244 and either CPSC 231 or CPSC 236. For example, 
+      you can take GAME 244 and CPSC 231 OR GAME 244 and GAME 236.
+    sample_answer: >
+      For GAME 340 - Game Development, the prequisites are that you have to take GAME 244 and either CPSC 231 or CPSC 236. For example, 
+      you can take GAME 244 and CPSC 231 OR GAME 244 and GAME 236.
+    expected_collections: ["minor_catalogs"]
+
+  - year: "2025"
+    minor: "Information Security Policy"
+    question: "How many credits are required for my minor"
+    acceptable_answer: >
+      Should state that the student is required to take 28 credits.
+      Mentioning the Information Security & Policy (ISP) minor is nice but optional
+    sample_answer: >
+      For the Information Security & Policy (ISP) minor, you are required to take 28 credits.
+    expected_collections: ["minor_catalogs"]
+
+# -------------------------------------- General Knowledge -------------------------------------------- # 
+
   - year: null
-    major_or_minor: "general"
-    question: "How do I book an appointment with an academic advisor?"
-    must_contain: ["appointment", "advisor", "booking"]
-    must_cite_substring: ["academic advising", "appointment"]
-    expected_collections: ["general_knowledge"]
-
-  - year: null  
-    major_or_minor: "general"
     question: "When are registration deadlines?"
-    must_contain: ["registration", "deadline"]
-    must_cite_substring: ["registration", "deadline"]
-    expected_collections: ["general_knowledge"]
+    acceptable_answer: >
+      Should provide information about academic registration deadlines
+      (add/drop periods, enrollment windows, or similar).
+    sample_answer: >
 
-  - year: "2024"
-    major_or_minor: "scheduling"
-    major: "Computer Science" 
-    question: "What courses should I take in my freshman year for CS?"
-    must_contain: ["freshman", "courses", "Computer Science"]
-    must_cite_substring: ["freshman", "CS", "Computer Science"]
-    expected_collections: ["4_year_plans", "major_catalogs"]
+    expected_collections: ["general_knowledge"]
 
   - year: null
-    major_or_minor: "general"
     question: "How do I get permission numbers for classes?"
-    must_contain: ["permission", "number"]
-    must_cite_substring: ["permission", "number"]
+    acceptable_answer: >
+      Should explain how to obtain permission numbers for classes
+      (who to contact, how to request them, or the process involved).
+    sample_answer: >
+    
     expected_collections: ["general_knowledge"]
 
+# -------------------------------------- Multi Collection -------------------------------------------- #
+
   - year: "2024"
-    major_or_minor: "mixed"
     major: "Computer Science"
-    question: "What are the CS graduation requirements and when should I register?"
-    must_contain: ["graduation", "requirements", "Computer Science", "register"]
-    must_cite_substring: ["Computer Science", "requirements", "registration"]
-    expected_collections: ["major_catalogs", "general_knowledge"]
+    question: "What courses should I take in my freshman year for CS?"
+    acceptable_answer: >
+      Should suggest courses appropriate for a CS freshman's first year,
+      referencing the 4-year plan or standard course sequence.
+    sample_answer: ""
+    expected_collections: ["4_year_plans", "major_catalogs"]
