@@ -163,6 +163,11 @@ class FSEUnifiedRAG(BaseUnifiedRAG):
                             'collection': collection_name,
                         })
                     results.sort(key=lambda x: x['score'], reverse=True)
+
+                    coll_cfg = self.config.get('collection_config', {}).get(collection_name, {})
+                    if coll_cfg.get('hybrid_enabled') and not self.hybrid_disabled and results:
+                        results = self._fuse_with_bm25(query, results)
+
                     return results
 
         query_vector = self.search_engine.get_embedding(query)
@@ -183,6 +188,21 @@ class FSEUnifiedRAG(BaseUnifiedRAG):
             'metadata': {k: v for k, v in hit.payload.items() if k != 'chunk_text'},
             'collection': collection_name,
         } for hit in results.points]
+
+    def _fuse_with_bm25(self, query: str, chunks: List[Dict]) -> List[Dict]:
+        from core_rag.retrieval.bm25 import BM25
+        from core_rag.retrieval.fusion import reciprocal_rank_fusion
+        try:
+            bm25 = BM25()
+            bm25.fit([c['text'] for c in chunks])
+            bm25_raw = bm25.search(query, top_k=len(chunks))
+            dense = [dict(c, doc_id=i) for i, c in enumerate(chunks)]
+            sparse = [dict(chunks[r['doc_id']], doc_id=r['doc_id'], score=r['score'])
+                      for r in bm25_raw if r['doc_id'] < len(chunks)]
+            return reciprocal_rank_fusion(dense, sparse, k=60)
+        except Exception as e:
+            print(f"BM25 fusion failed, using dense only: {e}")
+            return chunks
 
     def _build_filter(self, user_context: Dict = None,
                       document_type: str = None) -> Optional[Filter]:

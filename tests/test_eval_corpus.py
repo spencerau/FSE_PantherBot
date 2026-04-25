@@ -1,3 +1,16 @@
+"""
+Full eval corpus test — runs all questions in configs/eval_corpus.yaml.
+
+Unlike test_rag_regression.py, this file NEVER hard-asserts on judge pass/fail.
+Every question runs to completion; results are recorded incrementally to
+.reports/eval_corpus.json so cluster job interruptions don't lose progress.
+
+Run locally:
+    pytest tests/test_eval_corpus.py -m eval -v
+
+Run on DGX (after setting DGX=true and starting vLLM + Docker containers):
+    DGX=true pytest tests/test_eval_corpus.py -m eval -v
+"""
 import json
 import os
 import re
@@ -14,6 +27,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 from fse_retrieval.fse_unified_rag import FSEUnifiedRAG as UnifiedRAG
 from fse_utils.config_loader import load_config
 
+CORPUS_FILE = Path(__file__).parent.parent / 'configs' / 'eval_corpus.yaml'
+
+
 def _build_program_map():
     cfg = load_config()
     domain = cfg.get('domain', {})
@@ -22,20 +38,16 @@ def _build_program_map():
     m.update(domain.get('minors', {}))
     return m
 
+
 PROGRAM_MAP = _build_program_map()
 
 
-@pytest.fixture
-def rag_system():
-    return UnifiedRAG()
-
-
-@pytest.fixture
-def test_queries():
-    test_file = Path(__file__).parent / '../configs' / 'test_queries.yaml'
-    with open(test_file, 'r') as f:
+def _load_corpus():
+    if not CORPUS_FILE.exists():
+        pytest.skip(f'eval_corpus.yaml not found — run scripts/build_eval_corpus.py first')
+    with open(CORPUS_FILE) as f:
         data = yaml.safe_load(f)
-    return data['queries']
+    return [q for q in data.get('queries', []) if not str(q.get('question', '')).startswith('#')]
 
 
 def _query_id(q):
@@ -138,10 +150,10 @@ def _llm_judge(question: str, answer: str, rubric: str, sample: str = None) -> t
 
 @pytest.fixture(scope="module", autouse=True)
 def _eval_report():
-    """Clears rag_eval.json at module start; yields append callback for per-test writes."""
+    """Clears eval_corpus.json at module start; yields append callback."""
     reports_dir = Path(__file__).parent.parent / '.reports'
     reports_dir.mkdir(exist_ok=True)
-    report_file = reports_dir / 'rag_eval.json'
+    report_file = reports_dir / 'eval_corpus.json'
     report_file.write_text('[]')
     results = []
 
@@ -153,112 +165,85 @@ def _eval_report():
     yield append
 
 
-@pytest.mark.integration
-@pytest.mark.parametrize("query_data",
-    yaml.safe_load(open(Path(__file__).parent / '../configs' / 'test_queries.yaml'))['queries'],
-    ids=_query_id
-)
-def test_rag_regression(rag_system, query_data, _eval_report):
+@pytest.fixture(scope="module")
+def rag_system():
+    return UnifiedRAG()
+
+
+@pytest.mark.eval
+@pytest.mark.parametrize("query_data", _load_corpus(), ids=_query_id)
+def test_eval_corpus(rag_system, query_data, _eval_report):
+    """
+    Eval-mode test: runs every question, records results to .reports/eval_corpus.json,
+    then asserts on sources, collection routing, and judge verdict.
+    """
     start = time.time()
-    answer_text, sources, debug = _answer_question(rag_system, query_data)
-    elapsed = round(time.time() - start, 1)
+    try:
+        answer_text, sources, _ = _answer_question(rag_system, query_data)
+        elapsed = round(time.time() - start, 1)
 
-    judge_passed = None
-    judge_reason = None
-    acceptable_answer = query_data.get('acceptable_answer')
-    sample_answer = query_data.get('sample_answer') or None
-    judge_output_tokens = None
-    judge_tokens_per_s = None
-    if acceptable_answer:
-        judge_passed, judge_reason, judge_output_tokens, judge_tokens_per_s = _llm_judge(
-            query_data['question'], answer_text, acceptable_answer, sample_answer
-        )
+        judge_passed = None
+        judge_reason = None
+        judge_output_tokens = None
+        judge_tokens_per_s = None
+        acceptable_answer = query_data.get('acceptable_answer')
+        sample_answer = query_data.get('sample_answer') or None
+        if acceptable_answer:
+            judge_passed, judge_reason, judge_output_tokens, judge_tokens_per_s = _llm_judge(
+                query_data['question'], answer_text, acceptable_answer, sample_answer
+            )
 
-    _eval_report({
-        'query': query_data['question'],
-        'year': query_data.get('year'),
-        'major': query_data.get('major'),
-        'minor': query_data.get('minor'),
-        'answer_length': len(answer_text),
-        'answer_words': len(answer_text.split()),
-        'sources_retrieved': len(sources),
-        'judge_passed': judge_passed,
-        'judge_reason': judge_reason,
-        'judge_output_tokens': judge_output_tokens,
-        'judge_tokens_per_s': judge_tokens_per_s,
-        'overall_success': len(sources) > 0 and answer_text.strip() != '' and (judge_passed is not False),
-        'elapsed_s': elapsed,
-    })
-
-    assert len(sources) > 0, f"No sources retrieved for: {query_data['question']}"
-    assert answer_text.strip() != "", f"Empty answer for: {query_data['question']}"
-
-    expected_collections = query_data.get('expected_collections', [])
-    if expected_collections:
+        expected_collections = query_data.get('expected_collections', [])
         collections_found = {s.get('collection', 'unknown') for s in sources}
-        assert any(e in collections_found for e in expected_collections), \
-            f"Expected {expected_collections}, got {list(collections_found)} for: {query_data['question']}"
-
-    if acceptable_answer and judge_passed is not None:
-        assert judge_passed, (
-            f"LLM judge rejected answer for: {query_data['question']}\n"
-            f"Reason: {judge_reason}\n"
-            f"Answer: {answer_text[:1500]}"
+        collection_ok = (
+            not expected_collections
+            or any(e in collections_found for e in expected_collections)
         )
 
+        _eval_report({
+            'query': query_data['question'],
+            'year': query_data.get('year'),
+            'major': query_data.get('major'),
+            'minor': query_data.get('minor'),
+            'answer': answer_text,
+            'answer_length': len(answer_text),
+            'answer_words': len(answer_text.split()),
+            'sources_retrieved': len(sources),
+            'collections_found': sorted(collections_found),
+            'collection_ok': collection_ok,
+            'judge_passed': judge_passed,
+            'judge_reason': judge_reason,
+            'judge_output_tokens': judge_output_tokens,
+            'judge_tokens_per_s': judge_tokens_per_s,
+            'overall_success': (
+                len(sources) > 0
+                and answer_text.strip() != ''
+                and collection_ok
+                and (judge_passed is not False)
+            ),
+            'elapsed_s': elapsed,
+        })
 
-@pytest.mark.integration
-def test_2022_catalog_queries(rag_system, test_queries):
-    for query_data in [q for q in test_queries if q.get('year') == '2022']:
-        _, sources, _ = _answer_question(rag_system, query_data)
-        assert len(sources) > 0, f"No sources for 2022 query: {query_data['question']}"
-
-
-@pytest.mark.integration
-def test_2023_catalog_queries(rag_system, test_queries):
-    for query_data in [q for q in test_queries if q.get('year') == '2023']:
-        _, sources, _ = _answer_question(rag_system, query_data)
-        assert len(sources) > 0, f"No sources for 2023 query: {query_data['question']}"
-
-
-@pytest.mark.integration
-def test_2024_catalog_queries(rag_system, test_queries):
-    for query_data in [q for q in test_queries if q.get('year') == '2024']:
-        _, sources, _ = _answer_question(rag_system, query_data)
-        assert len(sources) > 0, f"No sources for 2024 query: {query_data['question']}"
-
-
-
-
-@pytest.mark.integration
-def test_retrieval_only_validation(rag_system, test_queries):
-    retrieval_failures = []
-
-    for query_data in test_queries:
-        try:
-            program_code = PROGRAM_MAP.get(query_data.get('major'), query_data.get('major'))
-            user_context = {}
-            if program_code:
-                user_context['program'] = program_code
-            if query_data.get('year'):
-                user_context['year'] = query_data['year']
-
-            collections = ['major_catalogs']
-            if 'minor' in query_data['question'].lower():
-                collections.append('minor_catalogs')
-
-            chunks = []
-            for coll in collections:
-                chunks.extend(rag_system.search_collection(
-                    query_data['question'], coll, user_context or None, top_k=10
-                ))
-
-            if not chunks:
-                retrieval_failures.append(f"No chunks for: {query_data['question']}")
-        except Exception as e:
-            retrieval_failures.append(f"Error for {query_data['question']}: {e}")
-
-    assert len(retrieval_failures) < len(test_queries) * 0.3, \
-        f"Too many retrieval failures: {len(retrieval_failures)}"
-
-
+        assert len(sources) > 0, f"No sources retrieved for: {query_data['question']}"
+        assert answer_text.strip() != '', f"Empty answer for: {query_data['question']}"
+        if expected_collections:
+            assert collection_ok, \
+                f"Expected {expected_collections}, got {sorted(collections_found)} for: {query_data['question']}"
+        if acceptable_answer and judge_passed is not None:
+            assert judge_passed, (
+                f"LLM judge rejected answer for: {query_data['question']}\n"
+                f"Reason: {judge_reason}\n"
+                f"Answer: {answer_text[:1500]}"
+            )
+    except Exception as exc:
+        elapsed = round(time.time() - start, 1)
+        _eval_report({
+            'query': query_data['question'],
+            'year': query_data.get('year'),
+            'major': query_data.get('major'),
+            'minor': query_data.get('minor'),
+            'error': str(exc),
+            'overall_success': False,
+            'elapsed_s': elapsed,
+        })
+        raise

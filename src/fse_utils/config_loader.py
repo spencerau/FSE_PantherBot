@@ -49,6 +49,13 @@ def load_config(config_name=None):
                     model_local = yaml.safe_load(file)
                 config = merge_configs(config, model_local)
 
+        if os.environ.get('DGX', '').lower() == 'true':
+            dgx_model_path = os.path.join(config_dir, "model.dgx.yaml")
+            if os.path.exists(dgx_model_path):
+                with open(dgx_model_path, 'r') as file:
+                    dgx_config = yaml.safe_load(file)
+                config = merge_configs(config, dgx_config)
+
         if 'QDRANT_HOST' in os.environ:
             config['qdrant']['host'] = os.environ['QDRANT_HOST']
 

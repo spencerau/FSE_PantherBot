@@ -114,10 +114,10 @@ intermediate_llm:
 
     Examples:
     - "Generate a 4 year plan for CS major and game dev minor" -> {{"collections": ["4_year_plans", "major_catalogs", "minor_catalogs"], "token_allocation": 6000}}
-    - "What math courses do I need for graduation?" -> {{"collections": ["major_catalogs"], "token_allocation": 800}}
+    - "What math courses do I need for graduation?" -> {{"collections": ["major_catalogs"], "token_allocation": 1000}}
     - "What are the CPSC 350 prerequisites?" -> {{"collections": ["major_catalogs"], "token_allocation": 300}}
-    - "What electives can I take for CS?" -> {{"collections": ["major_catalogs"], "token_allocation": 500}}
-    - "analytics minor requirements" -> {{"collections": ["minor_catalogs"], "token_allocation": 500}}
+    - "What electives can I take for CS?" -> {{"collections": ["major_catalogs"], "token_allocation": 2000}}
+    - "analytics minor requirements" -> {{"collections": ["minor_catalogs"], "token_allocation": 3500}}
     - "When should I take CPSC 406?" -> {{"collections": ["4_year_plans", "major_catalogs"], "token_allocation": 600}}
     - "add/drop deadline" -> {{"collections": ["general_knowledge"], "token_allocation": 200}}
     - "What are the GAME 340 prerequisites?" (context has minor: game) -> {{"collections": ["minor_catalogs"], "token_allocation": 300}}

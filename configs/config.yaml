@@ -1,12 +1,9 @@
 system:
   name: "Fowler School of Engineering Academic Advisor"
-  version: "1.0.0"
-  description: "Unified collection-based RAG system for academic advising"
 
 domain:
   bot_name: "PantherBot"
   role: "academic advisor"
-  institution: "Chapman University"
   department: "Fowler School of Engineering"
   contact_email: "fseadvising@chapman.edu"
 
@@ -32,7 +29,6 @@ domain:
     - "2025"
 
   router_context: "an academic advising chatbot"
-  prompt_context: "Chapman University's academic catalogs"
 
   document_type_mapping:
     "major_catalog": "major_catalogs"
@@ -117,15 +113,15 @@ memory:
 collection_config:
   major_catalogs:
     summary_enabled: false
-    reranking_enabled: false
-    hybrid_enabled: false
+    reranking_enabled: true
+    hybrid_enabled: true
   minor_catalogs:
     summary_enabled: false
-    reranking_enabled: false
-    hybrid_enabled: false
+    reranking_enabled: true
+    hybrid_enabled: true
   4_year_plans:
     summary_enabled: false
-    reranking_enabled: false
+    reranking_enabled: true
     hybrid_enabled: false
   general_knowledge:
     summary_enabled: true

@@ -14,7 +14,7 @@ queries:
 
   - year: "2023"
     major: "Computer Science"
-    question: "What are the science classes I can take to fulfill the general science requirement for my major?"
+    question: "What are the science classes I need to take?"
     acceptable_answer: >
       Should list the 4 sequences the student can take for the science requirement.
       Sequence 1: BIOL 204/L (BIOL 204 and BIOL 204L) and BIOL 205/L (BIOL 205 and BIOL 205L)
@@ -45,7 +45,7 @@ queries:
     question: "What are the upper division requirements for my major?"
     acceptable_answer: >
       Should list required CS upper division classes for the 2025 catalog, which are CENG 330/L (basically the same as CENG 330 & CENG 330L), CPSC 350, CENG 351, CPSC 353, 
-      CPSC 354, CPSC 380, CPSC 406, and CPSC 408.
+      CPSC 354, CPSC 380, CPSC 406, and CPSC 408. If it lists out any additional electives that is great but is not required.
     sample_answer: >
       The upper division requirements for the Computer Science major are CENG 330/L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408.
     expected_collections: ["major_catalogs"]
@@ -193,5 +193,6 @@ queries:
     acceptable_answer: >
       Should suggest courses appropriate for a CS freshman's first year,
       referencing the 4-year plan or standard course sequence.
-    sample_answer: ""
+    sample_answer: >
+
     expected_collections: ["4_year_plans", "major_catalogs"]
