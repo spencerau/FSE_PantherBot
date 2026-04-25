@@ -168,9 +168,6 @@ postgres_data
 .vscode/
 *.bak
 .github
-.reports
 .idea
 data/minor_catalog_raw/
 Shell_CopyPaste.sh
-
-
