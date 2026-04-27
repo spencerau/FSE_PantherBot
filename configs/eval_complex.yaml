@@ -1,0 +1,69 @@
+defaults: &defaults
+  major: "Computer Science"
+  minor: "Game Development"
+  year: "2025"
+
+queries:
+  - <<: *defaults
+    question: >
+      What courses should I take in my freshman year for CS?
+
+  - <<: *defaults
+    question: >
+      What are the remaining upper division classes I need to take if I have taken CPSC 350, CENG 330/L, CENG 351, and GAME 339?
+
+  - <<: *defaults
+    question: >
+      Generate a 4 year plan for me including both my major and minor
+
+  - <<: *defaults
+    question: >
+      What are the classes that can double count for my major and minor?
+
+  - <<: *defaults
+    question: >
+      Are there any electives you would recommend I take to count for both my major and minor?
+
+  - <<: *defaults
+    question: >
+      Generate a semester by semester schedule for me to graduate in 2 year if I have already taken CPSC 350, CENG 330/L, CENG 351, 
+      the lab science and math requirements for my major, and all the lower division requirements for both my major and minor.
+
+  - <<: *defaults
+    question: >
+      What is the full prerequisite chain required before I can enroll in GAME 440 (capstone), 
+      and when is the earliest semester I could realistically take it?
+
+  - <<: *defaults
+    question: >
+      I want to take GAME 245 (Unity Programming) but I missed it this semester. When is it offered again, and is GAME 246 (Unreal) 
+      a valid substitute if I'm trying to fulfill the Game Dev minor's lower-division requirements?"
+
+  - <<: *defaults
+    question: >
+      I earned a 2.3 GPA in my lower-division CS core courses but a 2.8 across all major courses overall. 
+      Do I meet the CS major's GPA requirements to graduate?"
+
+  - <<: *defaults
+    question: >
+      "I have already completed CPSC 231. Do I still need to take GAME 230, or does CPSC 231 satisfy the prerequisites that GAME 230 is used as"
+
+  - <<: *defaults
+    question: >
+      Do I have to do the Grand Challenges Initiative courses if I transferred in? Someone told me transfers are exempt, but I want to confirm this.
+
+  - <<: *defaults
+    question: >
+      Can CPSC 285 count for both my major electives and the diversity requirement at the same time, or do I have to pick one?
+
+  - <<: *defaults
+    question: >
+      GAME 245 is completely full and I need it for my minor. How do I get on the waitlist, and what happens now?
+
+  - <<: *defaults
+    question: >
+      Can I take a class at a community college over the summer to knock out some of my requirements, or is there a limit on how many credits I can bring in after I've already enrolled at Chapman?
+
+  - <<: *defaults
+    question: >
+      A lot of my CPSC courses say 'letter grade with Pass/No Pass option'. Can I just take them as pass/no pass to protect my GPA?

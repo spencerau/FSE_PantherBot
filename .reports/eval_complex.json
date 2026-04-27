@@ -1,0 +1,164 @@
+{
+  "major": "Computer Science",
+  "minor": "Game Development",
+  "year": "2025",
+  "results": [
+    {
+      "question": "What courses should I take in my freshman year for CS?\n",
+      "answer": "Based on the 2025-2026 catalog, here are the freshman year courses for Computer Science:\n\n**Fall Semester (15-16 credits):**\n- CPSC 230 - Computer Science I (3 credits)\n- MATH 110 - Single Variable Calculus I (3 credits)\n- PHYS 101 - General Physics I (3 credits)\n- PHYS 101L - General Physics I Laboratory (1 credit)\n- FFC 100B - First Year Foundations: Grand Challenges in Science and Engineering (3 credits)\n\n**Spring Semester (15-16 credits):**\n- CPSC 231 - Computer Science II (3 credits)\n- MATH 111 - Single Variable Calculus II (3 credits)\n- PHYS 102 - General Physics II (3 credits)\n- PHYS 102L - General Physics II Laboratory (1 credit)\n- GCI 150 - Grand Challenges in Science and Engineering I (1 credit)\n\n**Additional freshman year requirements:**\n- CPSC 298 - Computer Science Colloquium (1 credit sections, take 5 total over 4 years)\n- GCI 200 - Grand Challenges in Science and Engineering II (1 credit, take sophomore year)\n- GCI 250 - Grand Challenges in Science and Engineering III (1 credit, take junior/senior year)\n\n**Notes:**\n- MATH 250 - Discrete Mathematics I is typically taken sophomore year (prerequisite is MATH 101 or equivalent)\n- The 5 colloquium credits can be spread across all four years\n- Total freshman year: approximately 30-32 credits",
+      "answer_words": 216,
+      "sources_retrieved": 12,
+      "collections_found": [
+        "major_catalogs"
+      ],
+      "elapsed_s": 27.7
+    },
+    {
+      "question": "What are the remaining upper division classes I need to take if I have taken CPSC 350, CENG 330/L, CENG 351, and GAME 339?\n",
+      "answer": "Based on the Computer Science major requirements, you have completed all 4 upper-division core requirements (10 credits):\n- CENG 330/330L - Digital Logic Design I\n- CPSC 350 - Data Structures and Algorithms  \n- CENG 351 - Computer Architecture I\n\n**Remaining requirement: 11 upper-division credits from electives**\n\nThe major requires a minimum of 21 upper-division credits total. You need to select electives with at least 3 being upper-division courses.\n\n**Upper-division elective options:**\n- CPSC 390 - Artificial Intelligence\n- CPSC 392 - Introduction to Data Science\n- CPSC 393 - Machine Learning\n- CPSC 402 - Compiler Construction\n- CPSC 445 - High Performance Computing\n- CPSC 453 - Network Implementation and Security\n- CPSC 458 - Web Engineering\n- CPSC 353 - Data Communications and Computer Networks\n- CPSC 354 - Programming Languages\n- CPSC 380 - Operating Systems\n- CPSC 406 - Algorithm Analysis\n- CPSC 408 - Database Management\n- CPSC 370 - Topics in Computer Science\n- CPSC 357 - iOS Application Development\n- CPSC 358 - Assistive Technology\n- CPSC 359 - Computer-Supported Cooperative Work\n- CPSC 360 - Computer Graphics\n\n**Lower-division elective options:**\n- CPSC 285 - Social and Ethical Issues in Computing\n- SE 300 - Software Requirements and Testing\n- SE 310 - Software Design\n- SE 320 - The Software Development Lifecycle\n- CPSC 349 - Human Factors\n- CPSC 355 - Human Computer Interaction\n- CPSC 356 - Android Application Development\n- ISP 363 - Cybersecurity 1\n- CENG 381 - Modeling and Simulation\n\nSelect electives in consultation with the computer science advising committee.",
+      "answer_words": 264,
+      "sources_retrieved": 12,
+      "collections_found": [
+        "major_catalogs"
+      ],
+      "elapsed_s": 23.3
+    },
+    {
+      "question": "Generate a 4 year plan for me including both my major and minor\n",
+      "answer": "# Computer Science Major + Game Development Programming Minor - 4-Year Plan (2025)\n\n## Year 1\n\n### Fall Semester (16-17 credits)\n- FFC 100B - First Year Foundations: Grand Challenges in Science and Engineering (3 credits)\n- ENGR 101 - Foundations of Design and Fabrication (3 credits)\n- CPSC 230 - Computer Science I (3 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- MATH 110 - Single Variable Calculus I (3 credits) OR MATH 115 - Accelerated Calculus Part I (4 credits)\n- GAME 230 - Introduction to Game Programming (3 credits)\n\n### Spring Semester (14-15 credits)\n- CPSC 231 - Computer Science II (3 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- GCI 150 - Grand Challenges in Science and Engineering I (1 credit)\n- MATH 111 - Single Variable Calculus II (3 credits) OR MATH 116 - Accelerated Calculus Part II (4 credits)\n- GAME 242 - Introduction to the Game Industry (3 credits)\n\n## Year 2\n\n### Fall Semester (16-17 credits)\n- Computer Science Upper Division Requirement (4 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- MATH 210 - Multivariable Calculus (3 credits) [Not required if took MATH 116]\n- First Lab Science (4 credits)\n- GCI 200 - Grand Challenges in Science and Engineering II (1 credit)\n- GAME 236 - Object-Oriented Programming in C# (3 credits)\n\n### Spring Semester (17-18 credits)\n- Computer Science Upper Division Requirement (3-4 credits)\n- Computer Science Upper Division Requirement (3-4 credits)\n- MATH 250 - Discrete Mathematics I (3 credits)\n- GCI 250 - Grand Challenges in Science and Engineering III (1 credit)\n- Second Lab Science (4 credits)\n- GAME 244 - Level Design I (3 credits)\n\n## Year 3\n\n### Fall Semester (16-17 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- Computer Science Upper Division Requirement (3-4 credits)\n- Computer Science Elective (3 credits)\n- MATH 215 - Introduction to Linear Algebra and Differential Equations (3 credits)\n- GAME 245 - Unity Programming (3 credits) OR GAME 246 - The Unreal Game Engine (3 credits)\n- GAME 339 - Game Planning and Design (3 credits)\n\n### Spring Semester (16-17 credits)\n- Computer Science Upper Division Requirement (3-4 credits)\n- Computer Science Upper Division Requirement (3-4 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- GAME 340 - Game Development (3 credits)\n\n## Year 4\n\n### Fall Semester (16-17 credits)\n- CPSC 354 - Programming Languages (3 credits)\n- Computer Science Upper Division Requirement (3 credits)\n- Computer Science Elective (3 credits)\n- GAME 440 - Collaborative Game Development (3 credits)\n- GAME 344 - Level Design II (3 credits) OR ENG 328 - Writing for Video Games (3 credits) OR MGSC 346 - Production and Operations Management (3 credits) OR CPSC 349 - Human Factors (3 credits) OR CPSC 353 - Data Communications and Computer Networks (3 credits) OR CPSC 355 - Human Computer Interaction (3 credits) OR CPSC 360 - Computer Graphics (3 credits) OR GAME 370 - Topics in Game Development (3 credits) OR CPSC 390 - Artificial Intelligence (3 credits)\n\n### Spring Semester (14-15 credits)\n- CPSC 298 - Computer Science Colloquium (1 credit)\n- Computer Science Elective (3 credits)\n- Computer Science Elective (3 credits)\n- GAME 344 - Level Design II (3 credits) OR ENG 328 - Writing for Video Games (3 credits) OR MGSC 346 - Production and Operations Management (3 credits) OR CPSC 349 - Human Factors (3 credits) OR CPSC 353 - Data Communications and Computer Networks (3 credits) OR CPSC 355 - Human Computer Interaction (3 credits) OR CPSC 360 - Computer Graphics (3 credits) OR GAME 370 - Topics in Game Development (3 credits) OR CPSC 390 - Artificial Intelligence (3 credits)\n\n---\n\n## Key Requirements Summary\n\n| Requirement | Major | Minor |\n|-------------|-------|-------|\n| Total Credits | 77-78 | 27 |\n| Upper Division Credits | 21+ | 9+ |\n| GPA | 2.500 lower-division, 2.000 overall | 2.000 |\n| Max Credits/Semester | 18 | 18 |\n\n## Important Notes\n\n- **Colloquium**: Complete 5 sections of CPSC 298 (1 credit each)\n- **Grand Challenges**: Complete GCI 150, GCI 200, GCI 250 (1 credit each)\n- **Lab Science**: Complete two 4-credit lab science courses\n- **Minor Overlap**: At least 12 credits in the minor must not be duplicated by the major or other minor\n- **Minor Upper Division**: At least 9 upper division credits in the minor, with 6 credits in residence at Chapman\n- **Professional Portfolio**: Complete ENGR 397 (1 credit) for the major",
+      "answer_words": 764,
+      "sources_retrieved": 25,
+      "collections_found": [
+        "4_year_plans",
+        "major_catalogs",
+        "minor_catalogs"
+      ],
+      "elapsed_s": 92.2
+    },
+    {
+      "question": "What are the classes that can double count for my major and minor?\n",
+      "answer": "Based on the 2025 catalog, the Game Development Programming minor requires completing a minimum of 12 credits that are not duplicated by the major or any other minor. This means up to 15 credits of the 27-credit minor requirement can potentially double count with your Computer Science major.\n\nHowever, the catalog does not provide an explicit list of which specific courses can double count. The policy only specifies the minimum number of credits that must be unique to the minor.\n\nTo determine which specific courses can double count, you need to consult with your academic advisor, as they can review your individual course plan and determine which courses satisfy requirements for both programs.\n\nContact fseadvising@chapman.edu for specific guidance on course double-counting for your situation.",
+      "answer_words": 124,
+      "sources_retrieved": 25,
+      "collections_found": [
+        "major_catalogs",
+        "minor_catalogs"
+      ],
+      "elapsed_s": 21.8
+    },
+    {
+      "question": "Are there any electives you would recommend I take to count for both my major and minor?\n",
+      "answer": "This information isn't in the provided knowledge base. The catalog details Computer Science major electives but doesn't include Game Development minor requirements.\n\nTo find courses that count for both, you need to:\n1. Check the Game Development minor requirements\n2. Compare them against CS major electives\n\nContact fseadvising@chapman.edu with your specific course list to verify double-counting eligibility.",
+      "answer_words": 57,
+      "sources_retrieved": 12,
+      "collections_found": [
+        "major_catalogs"
+      ],
+      "elapsed_s": 16.6
+    },
+    {
+      "question": "Generate a semester by semester schedule for me to graduate in 2 year if I have already taken CPSC 350, CENG 330/L, CENG 351,  the lab science and math requirements for my major, and all the lower division requirements for both my major and minor.\n",
+      "answer": "I couldn't generate a response.",
+      "answer_words": 5,
+      "sources_retrieved": 25,
+      "collections_found": [
+        "4_year_plans",
+        "major_catalogs",
+        "minor_catalogs"
+      ],
+      "elapsed_s": 151.2
+    },
+    {
+      "question": "What is the full prerequisite chain required before I can enroll in GAME 440 (capstone),  and when is the earliest semester I could realistically take it?\n",
+      "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu\n\nGAME 440 and Game Development minor requirements are not included in the Computer Science major catalog excerpts provided. The documents only contain Computer Science major requirements, not the Game Development minor curriculum.",
+      "answer_words": 42,
+      "sources_retrieved": 13,
+      "collections_found": [
+        "4_year_plans",
+        "major_catalogs"
+      ],
+      "elapsed_s": 17.8
+    },
+    {
+      "question": "I want to take GAME 245 (Unity Programming) but I missed it this semester. When is it offered again, and is GAME 246 (Unreal)  a valid substitute if I'm trying to fulfill the Game Dev minor's lower-division requirements?\"\n",
+      "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu\n\nThe context only contains Computer Science major requirements and course catalogs. There is no information about GAME 245, GAME 246, or the Game Development minor requirements in the documents provided.",
+      "answer_words": 40,
+      "sources_retrieved": 13,
+      "collections_found": [
+        "4_year_plans",
+        "major_catalogs"
+      ],
+      "elapsed_s": 14.8
+    },
+    {
+      "question": "I earned a 2.3 GPA in my lower-division CS core courses but a 2.8 across all major courses overall.  Do I meet the CS major's GPA requirements to graduate?\"\n",
+      "answer": "No. You do not meet the CS major's GPA requirements to graduate.\n\nThe catalog specifies two GPA requirements:\n- **2.500 GPA for all required lower-division major courses** \u2014 You have 2.3, which does not meet this requirement\n- **2.000 GPA for all required major courses** \u2014 You have 2.8, which meets this requirement\n\nYou fail the lower-division GPA requirement. You must raise your lower-division major course GPA to at least 2.500 to satisfy the program learning outcomes.",
+      "answer_words": 77,
+      "sources_retrieved": 12,
+      "collections_found": [
+        "major_catalogs"
+      ],
+      "elapsed_s": 13.8
+    },
+    {
+      "question": "\"I have already completed CPSC 231. Do I still need to take GAME 230, or does CPSC 231 satisfy the prerequisites that GAME 230 is used as\"\n",
+      "answer": "**No, you still need to take GAME 230.**\n\nGAME 230 is a required course in the minor (one of the 15 lower-division credits). While CPSC 231 can substitute for GAME 230 as a prerequisite for other courses, it does not replace GAME 230 itself.\n\n**What CPSC 231 satisfies:**\n- CPSC 236 (Object-Oriented Programming in C#) - prerequisite is GAME 230 or CPSC 231\n- GAME 244 (Level Design I) - prerequisites include GAME 230, or CPSC 231, or CPSC 236\n\n**What you still need:**\n- GAME 230 (Introduction to Game Programming) - required course, prerequisite is MATH 100\n\nYou would take GAME 230 first, then proceed with the remaining minor courses.",
+      "answer_words": 111,
+      "sources_retrieved": 13,
+      "collections_found": [
+        "minor_catalogs"
+      ],
+      "elapsed_s": 18.2
+    },
+    {
+      "question": "Do I have to do the Grand Challenges Initiative courses if I transferred in? Someone told me transfers are exempt, but I want to confirm this.\n",
+      "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+      "answer_words": 10,
+      "sources_retrieved": 5,
+      "collections_found": [
+        "general_knowledge"
+      ],
+      "elapsed_s": 126.3
+    },
+    {
+      "question": "Can CPSC 285 count for both my major electives and the diversity requirement at the same time, or do I have to pick one?\n",
+      "answer": "Based on the provided catalog information, I cannot answer this question definitively.\n\n**What I can confirm:**\n- CPSC 285 is listed as an approved elective course for the Computer Science major (12 credits total, with at least 3 upper-division courses required)\n\n**What's missing:**\n- The provided catalog does not contain information about a \"diversity requirement\" for the Computer Science major or Game Development minor\n\n**Answer:**\nThis information isn't in the provided knowledge base. Contact fseadvising@chapman.edu\n\nThe catalog shows CPSC 285 as an elective option, but there's no mention of a diversity requirement or whether courses can double-count between requirements. You'll need to verify this policy with an advisor.",
+      "answer_words": 108,
+      "sources_retrieved": 12,
+      "collections_found": [
+        "major_catalogs"
+      ],
+      "elapsed_s": 19.8
+    },
+    {
+      "question": "GAME 245 is completely full and I need it for my minor. How do I get on the waitlist, and what happens now?\n",
+      "answer": "GAME 245 is offered in the fall semester and requires CPSC 236 as a prerequisite.\n\nThe provided catalog doesn't contain specific waitlist procedures for GAME 245. \n\nGeneral waitlist policy: Talk to instructor in person during the first week, then request permission code online.\n\nFor GAME 245-specific waitlist information, contact fseadvising@chapman.edu.",
+      "answer_words": 50,
+      "sources_retrieved": 13,
+      "collections_found": [
+        "minor_catalogs"
+      ],
+      "elapsed_s": 15.7
+    },
+    {
+      "question": "Can I take a class at a community college over the summer to knock out some of my requirements, or is there a limit on how many credits I can bring in after I've already enrolled at Chapman?\n",
+      "answer": "**Yes, you can take a class at a community college over the summer, but there is a limit.**\n\n**Maximum 24 credits** may be transferred after matriculation at Chapman.\n\n**Additional limits:**\n- Maximum of **70 semester credits** of community college credit total toward the bachelor's degree\n- Maximum of **15 credits** of baccalaureate-level correspondence, extension, or continuing education courses (no more than 6 toward GE, no more than 6 toward major)\n\n**Important requirements:**\n- Minimum grade of **\"C-\"** required for transfer credit\n- All transfer credit must be **evaluated and approved by the Office of the University Registrar**\n- You must **check the online transfer articulation database** (TES or Transferology) before enrolling to confirm the course is transferable\n- Contact **articulation@chapman.edu** for questions about specific courses\n\n**Summer term note:** There are no course load limitations during summer terms, so you can take more than the standard 18-credit maximum if needed.\n\n**Contact:** articulation@chapman.edu for transfer credit questions or registrar@chapman.edu for official transcript submission.",
+      "answer_words": 161,
+      "sources_retrieved": 5,
+      "collections_found": [
+        "general_knowledge"
+      ],
+      "elapsed_s": 149.4
+    },
+    {
+      "question": "A lot of my CPSC courses say 'letter grade with Pass/No Pass option'. Can I just take them as pass/no pass to protect my GPA?\n",
+      "answer": "**Answer:**\n\nThe catalog states that \"Some courses are restricted to letter grades only and these are noted in the course descriptions.\" This means some CPSC courses may not allow P/NP grading.\n\nThe general policy allows changing to P/NP by the end of the fifth week of a standard semester, but once a course is graded, the option cannot be changed.\n\nYou need to check the specific course descriptions in the catalog or your program evaluation to see which CPSC courses are restricted to letter grades only. Contact your Faculty Program Advisor for major-specific guidance on P/NP policies for your Computer Science major and Game Development minor.",
+      "answer_words": 106,
+      "sources_retrieved": 5,
+      "collections_found": [
+        "general_knowledge"
+      ],
+      "elapsed_s": 175.6
+    }
+  ]
+}
