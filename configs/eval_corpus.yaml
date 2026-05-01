@@ -28,11 +28,11 @@ queries:
   expected_collections:
   - major_catalogs
 - id: 4
-  question: How many colloquium credits do I need to complete?
+  question: What is the colloquium requirement for my CE major and which course satisfies it?
   year: '2025'
   major: Computer Engineering
-  acceptable_answer: 'Should mention: 3 credits'
-  sample_answer: Students must complete three 1-credit sections of CENG 298 Computer Engineering Colloquium (3 total credits).
+  acceptable_answer: 'Should mention: CENG 298 Computer Engineering Colloquium; multiple 1-credit sections required'
+  sample_answer: The colloquium requirement is satisfied by completing multiple 1-credit sections of CENG 298 Computer Engineering Colloquium.
   expected_collections:
   - major_catalogs
 - id: 5
@@ -42,11 +42,11 @@ queries:
   expected_collections:
   - general_knowledge
 - id: 6
-  question: How many total credits do I need to graduate?
+  question: What major-specific requirements do I need to complete to earn my CS degree?
   year: '2024'
   major: Computer Science
-  acceptable_answer: 'Should mention: 77-78 credits'
-  sample_answer: 77-78 total credits are required.
+  acceptable_answer: 'Should mention: lower-division core, upper-division requirements, electives, GCI sequence, science sequences, colloquium, ENGR 101'
+  sample_answer: You need to complete lower-division core courses, upper-division required courses (CENG 330/330L, CPSC 350, CENG 351, etc.), electives, the GCI sequence, lab science sequences, colloquium sections, and ENGR 101.
   expected_collections:
   - major_catalogs
 - id: 7
@@ -89,9 +89,9 @@ queries:
 - id: 12
   question: What do I need to take before SE 300?
   year: '2024'
-  major: Computer Science
-  acceptable_answer: 'Should mention: CPSC 231 as a prerequisite'
-  sample_answer: CPSC 231 and corequisite SE 310.
+  major: Software Engineering
+  acceptable_answer: 'Should mention: CPSC 231 as a prerequisite for SE 300'
+  sample_answer: SE 300 (Software Requirements and Testing) requires CPSC 231 as a prerequisite.
   expected_collections:
   - major_catalogs
 - id: 13
@@ -141,17 +141,17 @@ queries:
   expected_collections:
   - major_catalogs
 - id: 19
-  question: How many upper-division credits do I need for my major?
+  question: What are the required upper-division courses for my Computer Engineering major?
   year: '2024'
   major: Computer Engineering
-  acceptable_answer: 'Should mention: 21 upper-division credits'
-  sample_answer: Students must complete at least 21 upper-division credits within the major.
+  acceptable_answer: 'Should mention: EENG 300/300L, CENG 330/330L, CPSC 350, CENG 351, CENG 366/366L, CPSC 380, CENG 465'
+  sample_answer: 'EENG 300/300L, CENG 330/330L, CPSC 350, CENG 351, CENG 366/366L, CPSC 380, and CENG 465.'
   expected_collections:
   - major_catalogs
 - id: 20
-  question: I'm almost done with my degree but still need upper-division credits — what should I focus on?
-  acceptable_answer: 'Should mention: upper division requirement'
-  sample_answer: Students must ensure they complete the required number of upper-division credits.
+  question: I'm almost done with my degree but still have a few upper-division requirements left — what are my options for finishing those?
+  acceptable_answer: 'Should mention: consult advisor, review remaining upper-division requirements, check elective options in major catalog'
+  sample_answer: Review your remaining upper-division requirements with your advisor and check the elective options in your catalog to identify courses that can fill the remaining slots.
   expected_collections:
   - general_knowledge
 - id: 21
@@ -163,11 +163,11 @@ queries:
   expected_collections:
   - major_catalogs
 - id: 22
-  question: How many upper-division credits do I need for my major?
+  question: What are all the required upper-division courses for my SE major?
   year: '2025'
   major: Software Engineering
-  acceptable_answer: 'Should mention: 21 upper-division credits'
-  sample_answer: A minimum of 21 upper-division credits in the major is required.
+  acceptable_answer: 'Should mention: SE 300, SE 310, SE 320, CPSC 349, CPSC 350, CPSC 354, CPSC 355, CPSC 380, ENGR 385, CPSC 408, SE 498'
+  sample_answer: 'SE 300, SE 310, SE 320, CPSC 349, CPSC 350, CPSC 354, CPSC 355, CPSC 380, ENGR 385, CPSC 408, and SE 498.'
   expected_collections:
   - major_catalogs
 - id: 23
@@ -177,11 +177,11 @@ queries:
   expected_collections:
   - general_knowledge
 - id: 24
-  question: How many colloquium credits do I have to complete?
+  question: What is the colloquium requirement for Computer Engineering and which course satisfies it?
   year: '2022'
   major: Computer Engineering
-  acceptable_answer: 'Should mention: 4 credits'
-  sample_answer: Students must complete four 1-credit sections of CENG 298 Computer Engineering Colloquium (4 total credits).
+  acceptable_answer: 'Should mention: CENG 298 Computer Engineering Colloquium; multiple 1-credit sections required'
+  sample_answer: The colloquium requirement is satisfied by completing multiple 1-credit sections of CENG 298 Computer Engineering Colloquium.
   expected_collections:
   - major_catalogs
 - id: 25
@@ -578,11 +578,11 @@ queries:
   expected_collections:
   - major_catalogs
 - id: 78
-  question: How many credits of EENG 398 do I need?
+  question: What is EENG 398 and is it required for my EE major?
   year: '2024'
   major: Electrical Engineering
-  acceptable_answer: 'Should mention: 3 credits'
-  sample_answer: Students must complete three 1-credit sections of EENG 398 - Topics in Advanced Engineering Applications.
+  acceptable_answer: 'Should say yes; EENG 398 Topics in Advanced Engineering Applications is required (multiple 1-credit sections)'
+  sample_answer: Yes, EENG 398 (Topics in Advanced Engineering Applications) is required. Students complete multiple 1-credit sections of this course as an applications requirement.
   expected_collections:
   - major_catalogs
 - id: 79
@@ -900,12 +900,1095 @@ queries:
   expected_collections:
   - minor_catalogs
 
-# ------ DIFFICULT CUSTOM QUESTIONS --------
-  # - year: "2025"
-  #   major: "Computer Science"
-  #   minor: "Game Development"     # optional — include for multi-collection
-  #   question: "..."
-  #   acceptable_answer: "Should mention: ..."
-  #   sample_answer: "..."
-  #   expected_collections: ["major_catalogs", "minor_catalogs"]
 
+# ==================== Additional Major Catalogs ====================
+# -- Computer Science --
+- id: 121
+  question: What are the required upper-division courses for my Computer Science major?
+  year: '2022'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CPSC 330/330L, CPSC 350, CPSC 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408'
+  sample_answer: 'CPSC 330/330L, CPSC 350 (Data Structures), CPSC 351 (Computer Architecture I), CPSC 353 (Networks), CPSC 354 (Programming Languages), CPSC 380 (Operating Systems), CPSC 406 (Algorithm Analysis), and CPSC 408 (Database Management).'
+  expected_collections:
+  - major_catalogs
+- id: 122
+  question: What are the required lower-division courses for my CS major?
+  year: '2023'
+  major: Computer Science
+  acceptable_answer: 'Should mention: ENGR 101, CPSC 230, CPSC 231, MATH 250, MATH 215, and a calculus sequence (MATH 110/111/210 or MATH 115/116)'
+  sample_answer: 'ENGR 101, CPSC 230, CPSC 231, MATH 250, MATH 215, plus a calculus sequence: either MATH 110/111/210 or the accelerated MATH 115/116.'
+  expected_collections:
+  - major_catalogs
+- id: 123
+  question: What GPA do I need in my lower-division major courses to move on?
+  year: '2024'
+  major: Computer Science
+  acceptable_answer: 'Should mention: 2.5 GPA for lower-division requirements; 2.0 for overall major'
+  sample_answer: A minimum 2.5 GPA is required across lower-division major requirements, and a 2.0 GPA across all required major courses overall.
+  expected_collections:
+  - major_catalogs
+- id: 124
+  question: What are all the required upper-division courses for my major?
+  year: '2024'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CENG 330/330L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408'
+  sample_answer: 'CENG 330/330L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, and CPSC 408.'
+  expected_collections:
+  - major_catalogs
+- id: 125
+  question: What electives can I choose from for my CS major?
+  year: '2024'
+  major: Computer Science
+  acceptable_answer: 'Should mention: SE 300, SE 310, SE 320, CPSC 285, CPSC 349, CPSC 355, CPSC 390, CPSC 392, CPSC 393, ISP 363, among others'
+  sample_answer: 'CS electives include SE 300, SE 310, SE 320, CPSC 285, CPSC 349, CPSC 355, CPSC 356, CPSC 357, CPSC 358, CPSC 359, CPSC 360, CPSC 370, CPSC 390, CPSC 392, CPSC 393, CPSC 402, CPSC 445, CPSC 453, ISP 363, and others.'
+  expected_collections:
+  - major_catalogs
+- id: 126
+  question: What is the prerequisite for CENG 351?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CENG 330'
+  sample_answer: CENG 330 (Digital Logic Design I) is the prerequisite for CENG 351 (Computer Architecture I).
+  expected_collections:
+  - major_catalogs
+- id: 127
+  question: What are all the required upper-division courses for my CS major?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CENG 330/330L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, CPSC 408'
+  sample_answer: 'CENG 330/330L, CPSC 350, CENG 351, CPSC 353, CPSC 354, CPSC 380, CPSC 406, and CPSC 408.'
+  expected_collections:
+  - major_catalogs
+- id: 128
+  question: What are the required lower-division courses for my CS major?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: ENGR 101, CPSC 230, CPSC 231, MATH 250, MATH 215, and a calculus sequence'
+  sample_answer: 'ENGR 101, CPSC 230, CPSC 231, MATH 250, MATH 215, plus a calculus sequence: MATH 110/111/210 or MATH 115/116.'
+  expected_collections:
+  - major_catalogs
+# -- Data Science --
+- id: 129
+  question: What are the required lower-division courses for my Data Science major?
+  year: '2022'
+  major: Data Science
+  acceptable_answer: 'Should mention: ENGR 101, MATH 110, ECON 200, MATH 203, MGSC 220, CPSC 230, CPSC 231, CPSC 285, CPSC 293'
+  sample_answer: 'ENGR 101, MATH 110, ECON 200, MATH 203, MGSC 220, CPSC 230, CPSC 231, CPSC 285, and CPSC 293.'
+  expected_collections:
+  - major_catalogs
+- id: 130
+  question: What are all the required upper-division courses for Data Science?
+  year: '2023'
+  major: Data Science
+  acceptable_answer: 'Should mention: MGSC 310, CPSC 349, CPSC 350, CPSC 353, CPSC 355, CPSC 390, CPSC 392, CPSC 393, CPSC 408, MGSC 410'
+  sample_answer: 'MGSC 310, CPSC 349, CPSC 350, CPSC 353, CPSC 355, CPSC 390, CPSC 392, CPSC 393, CPSC 408, and MGSC 410.'
+  expected_collections:
+  - major_catalogs
+- id: 131
+  question: What elective options do I have for my Data Science major?
+  year: '2024'
+  major: Data Science
+  acceptable_answer: 'Should mention: MATH 303, ENV 310, MATH 360, MATH 361, ISP 363, CPSC 430, CPSC 435, CPSC 445, ECON 452, CPSC 458, MGSC 406, MGSC 496'
+  sample_answer: 'DS electives (choose 3) include MATH 303, ENV 310, CPSC 358, CPSC 359, MATH 360, MATH 361, ISP 363, MGSC 406, CPSC 430, CPSC 435, CPSC 445, ECON 452, CPSC 458, and MGSC 496.'
+  expected_collections:
+  - major_catalogs
+- id: 132
+  question: What is CPSC 293 and is it required for my major?
+  year: '2024'
+  major: Data Science
+  acceptable_answer: 'Should say yes; CPSC 293 Mathematical Foundations of Machine Learning is a required lower-division course'
+  sample_answer: Yes, CPSC 293 Mathematical Foundations of Machine Learning is a required lower-division course for DS majors.
+  expected_collections:
+  - major_catalogs
+- id: 133
+  question: What are all the required upper-division courses for my Data Science major?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: MGSC 310, CPSC 349, CPSC 350, CPSC 353, CPSC 355, CPSC 390, CPSC 392, CPSC 393, CPSC 408, MGSC 410'
+  sample_answer: 'MGSC 310, CPSC 349, CPSC 350, CPSC 353, CPSC 355, CPSC 390, CPSC 392, CPSC 393, CPSC 408, and MGSC 410.'
+  expected_collections:
+  - major_catalogs
+# -- Software Engineering --
+- id: 134
+  question: What are the required lower-division courses for my Software Engineering major?
+  year: '2022'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: ENGR 101, MATH 115/116, MATH 203, MATH 215, CPSC 230, CPSC 231, MATH 250, CPSC 285'
+  sample_answer: 'ENGR 101, MATH 115, MATH 116, MATH 203, MATH 215, CPSC 230, CPSC 231, MATH 250, and CPSC 285.'
+  expected_collections:
+  - major_catalogs
+- id: 135
+  question: What is the prerequisite for CPSC 380 in my SE major?
+  year: '2023'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: CPSC 350'
+  sample_answer: CPSC 350 (Data Structures and Algorithms) is the prerequisite for CPSC 380 (Operating Systems).
+  expected_collections:
+  - major_catalogs
+- id: 136
+  question: What are all the required upper-division courses for my Software Engineering major?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: SE 300, SE 310, SE 320, CPSC 349, CPSC 350, CPSC 354, CPSC 355, CPSC 380, ENGR 385, CPSC 408, SE 498'
+  sample_answer: 'SE 300, SE 310, SE 320, CPSC 349, CPSC 350, CPSC 354, CPSC 355, CPSC 380, ENGR 385, CPSC 408, and SE 498.'
+  expected_collections:
+  - major_catalogs
+- id: 137
+  question: What are the required lower-division courses for the SE major?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: ENGR 101, MATH 115/116, MATH 203, MATH 215, CPSC 230, CPSC 231, MATH 250, CPSC 285'
+  sample_answer: 'ENGR 101, MATH 115, MATH 116, MATH 203, MATH 215, CPSC 230, CPSC 231, MATH 250, and CPSC 285.'
+  expected_collections:
+  - major_catalogs
+- id: 138
+  question: What electives can I choose from for my SE major?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: CPSC 356, CPSC 357, ISP 363, CPSC 390, CPSC 392, CPSC 406, SE 370, SE 410, SE 420'
+  sample_answer: 'SE electives include CPSC 356, CPSC 357, CPSC 358, CPSC 359, ISP 363, SE 370, CENG 381, CPSC 390, CPSC 392, CPSC 393, CPSC 406, CPSC 458, SE 410, and SE 420.'
+  expected_collections:
+  - major_catalogs
+# -- Computer Engineering --
+- id: 139
+  question: What are the required upper-division courses for my Computer Engineering major?
+  year: '2023'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: EENG 300/300L, CENG 330/330L, CPSC 350, CENG 351, CENG 366/366L, CPSC 380, CENG 465'
+  sample_answer: 'EENG 300/300L, CENG 330/330L, CPSC 350, CENG 351, CENG 366/366L, CPSC 380, and CENG 465.'
+  expected_collections:
+  - major_catalogs
+- id: 140
+  question: What are the required lower-division courses for the CE major?
+  year: '2024'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: ENGR 101, PHYS 101/101L, PHYS 102/102L, PHYS 201, EENG 200/200L, MATH 215, CPSC 230, CENG 231/231L, MATH 250'
+  sample_answer: 'ENGR 101, PHYS 101/101L, PHYS 102/102L, PHYS 201, EENG 200/200L, MATH 215, CPSC 230, CENG 231/231L, and MATH 250.'
+  expected_collections:
+  - major_catalogs
+# -- Electrical Engineering --
+- id: 141
+  question: What are all the required upper-division courses for my EE major?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 300/300L, EENG 310, EENG 320/320L, CENG 330/330L, EENG 330, CENG 366/366L, EENG 410'
+  sample_answer: 'EENG 300/300L, EENG 310, EENG 320/320L, CENG 330/330L, EENG 330, CENG 366/366L, and EENG 410.'
+  expected_collections:
+  - major_catalogs
+
+# ==================== Additional Minor Catalogs ====================
+# -- Game Development --
+- id: 142
+  question: What lower-division courses are required for the Game Dev minor?
+  year: '2025'
+  minor: Game Development
+  acceptable_answer: 'Should mention: GAME 230, CPSC 236, GAME 242, GAME 244, GAME 245 or GAME 246'
+  sample_answer: 'GAME 230, CPSC 236, GAME 242, GAME 244, and either GAME 245 or GAME 246.'
+  expected_collections:
+  - minor_catalogs
+- id: 143
+  question: What are the prerequisites for GAME 339?
+  year: '2025'
+  minor: Game Development
+  acceptable_answer: 'Should mention: CPSC 236, GAME 242, GAME 244'
+  sample_answer: GAME 339 (Game Engine Design) requires CPSC 236, GAME 242, and GAME 244.
+  expected_collections:
+  - minor_catalogs
+- id: 144
+  question: What are all the required upper-division courses in the Game Dev minor?
+  year: '2025'
+  minor: Game Development
+  acceptable_answer: 'Should mention: GAME 339, GAME 340, GAME 440'
+  sample_answer: 'The required upper-division courses are GAME 339 (Game Engine Design), GAME 340 (Game Development I), and GAME 440 (Game Development II).'
+  expected_collections:
+  - minor_catalogs
+# -- Analytics --
+- id: 145
+  question: What upper-division courses are required for the Analytics minor?
+  year: '2025'
+  minor: Analytics
+  acceptable_answer: 'Should mention: MGSC 310, CPSC 392'
+  sample_answer: The required upper-division courses are MGSC 310 (Statistical Models in Business Analytics) and CPSC 392 (Introduction to Data Science).
+  expected_collections:
+  - minor_catalogs
+- id: 146
+  question: What lower-division courses are required for the Analytics minor?
+  year: '2024'
+  minor: Analytics
+  acceptable_answer: 'Should mention: MGSC 220, CPSC 230, and a statistics course'
+  sample_answer: 'The lower-division requirements include MGSC 220 (Foundations of Business Analytics), CPSC 230 (Computer Science I), and a statistics course such as MATH 203.'
+  expected_collections:
+  - minor_catalogs
+# -- Information Security Policy --
+- id: 147
+  question: What are the required core courses for the ISP minor?
+  year: '2025'
+  minor: Information Security Policy
+  acceptable_answer: 'Should mention: CPSC 230, CENG 231/231L, CPSC 353, ISP 363, ENGR 385, ISP 452, HUM 312'
+  sample_answer: 'Core courses include CPSC 230, CENG 231/231L, CPSC 353, ISP 363, ENGR 385, ISP 452, and HUM 312.'
+  expected_collections:
+  - minor_catalogs
+- id: 148
+  question: What is the prerequisite for ISP 363?
+  year: '2025'
+  minor: Information Security Policy
+  acceptable_answer: 'Should mention: CPSC 353'
+  sample_answer: ISP 363 (Cybersecurity 1) requires CPSC 353 (Data Communications and Computer Networks).
+  expected_collections:
+  - minor_catalogs
+# -- Computer Science minor --
+- id: 149
+  question: What lower-division courses are required for the Computer Science minor?
+  year: '2025'
+  minor: Computer Science
+  acceptable_answer: 'Should mention: CPSC 230, CPSC 231, CPSC 285, MATH 250'
+  sample_answer: 'The lower-division required courses are CPSC 230, CPSC 231, CPSC 285, and MATH 250.'
+  expected_collections:
+  - minor_catalogs
+- id: 150
+  question: What upper-division elective options are available for the CS minor?
+  year: '2024'
+  minor: Computer Science
+  acceptable_answer: 'Should mention: SE 310, SE 320, CENG 330/330L, CENG 351, CPSC 353'
+  sample_answer: 'Upper-division electives for the CS minor include SE 310, SE 320, CENG 330/330L, CENG 351, CPSC 353, and others.'
+  expected_collections:
+  - minor_catalogs
+# -- Computer Engineering minor --
+- id: 151
+  question: What courses are required for the Computer Engineering minor?
+  year: '2025'
+  minor: Computer Engineering
+  acceptable_answer: 'Should mention: EENG 200/200L, CPSC 230, CENG 231/231L, CENG 330/330L, CENG 351, CENG 366/366L'
+  sample_answer: 'EENG 200/200L, CPSC 230, CENG 231/231L, CENG 330/330L, CENG 351, and CENG 366/366L.'
+  expected_collections:
+  - minor_catalogs
+# -- Electrical Engineering minor --
+- id: 152
+  question: What are the required courses for the Electrical Engineering minor?
+  year: '2025'
+  minor: Electrical Engineering
+  acceptable_answer: 'Should mention: MATH 115, EENG 200/200L, EENG 300/300L, EENG 320/320L, EENG 420, physics sequence'
+  sample_answer: 'MATH 115, a physics sequence, EENG 200/200L, EENG 300/300L, EENG 320/320L, and EENG 420.'
+  expected_collections:
+  - minor_catalogs
+- id: 153
+  question: What is the prerequisite for EENG 300?
+  year: '2024'
+  minor: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 200'
+  sample_answer: EENG 300 (Electronics and Circuits II) requires EENG 200; EENG 300L requires EENG 200L.
+  expected_collections:
+  - minor_catalogs
+
+# ==================== Additional General Knowledge ====================
+- id: 154
+  question: What is the maximum number of credits I can take in a semester?
+  acceptable_answer: 'Should mention: 18 credits standard; up to 21 with 3.0+ GPA and approval'
+  sample_answer: Students can take up to 18 credits per semester as a standard load; exceeding that requires a 3.0+ GPA and dean approval for up to 21 credits.
+  expected_collections:
+  - general_knowledge
+- id: 155
+  question: How does being on the waitlist work — will I be automatically enrolled when a spot opens?
+  acceptable_answer: 'Should mention: waitlist runs nightly; automatic enrollment if spot opens and no schedule conflict; permission number needed after term begins'
+  sample_answer: 'Yes, the waitlist runs nightly. If a spot opens and you have no schedule conflicts, you will be automatically enrolled. After the term begins, a permission number is required instead.'
+  expected_collections:
+  - general_knowledge
+- id: 156
+  question: I want to take 19 credits this semester — do I need special approval?
+  acceptable_answer: 'Should mention: yes, credit overload requires approval; 3.0+ GPA typically needed'
+  sample_answer: Yes, taking more than 18 credits requires approval from the dean's office and typically a 3.0+ GPA.
+  expected_collections:
+  - general_knowledge
+- id: 157
+  question: Can I take a required major course on a pass/no pass basis?
+  acceptable_answer: 'Should say no; required courses must be taken for a letter grade'
+  sample_answer: No, required major courses must be taken for a letter grade, not on a pass/no pass basis.
+  expected_collections:
+  - general_knowledge
+- id: 158
+  question: How many credits can I take on a pass/no pass basis per year?
+  acceptable_answer: 'Should mention: up to 6 credits per year on P/NP'
+  sample_answer: Students may take up to 6 credits per academic year on a Pass/No Pass basis.
+  expected_collections:
+  - general_knowledge
+- id: 159
+  question: What should I do before my registration appointment opens?
+  acceptable_answer: 'Should mention: clear holds, review degree audit or program evaluation, plan your schedule'
+  sample_answer: Clear all holds (financial, advising, etc.), review your program evaluation or degree audit, and plan your courses in advance.
+  expected_collections:
+  - general_knowledge
+- id: 160
+  question: What kinds of holds can prevent me from registering?
+  acceptable_answer: 'Should mention: financial holds, advising holds, immunization holds, library holds'
+  sample_answer: Common holds include financial holds, advising holds, immunization holds, and library fine holds — all must be cleared before you can register.
+  expected_collections:
+  - general_knowledge
+- id: 161
+  question: I'm a transfer student — how many credits can I bring in from my community college?
+  acceptable_answer: 'Should mention: maximum 70 semester units from a two-year college'
+  sample_answer: Transfer students may bring in a maximum of 70 semester units of credit from a two-year community college.
+  expected_collections:
+  - general_knowledge
+- id: 162
+  question: What is the add/drop period, and what happens if I drop a class after it ends?
+  acceptable_answer: 'Should mention: first two weeks of semester; late drops require approval and may appear as W on transcript'
+  sample_answer: The add/drop period is the first two weeks of the semester. Dropping after that requires approval and may result in a W on your transcript.
+  expected_collections:
+  - general_knowledge
+- id: 163
+  question: What GPA triggers academic probation?
+  acceptable_answer: 'Should mention: cumulative GPA below 2.0'
+  sample_answer: A student is placed on academic probation when their cumulative GPA falls below 2.0.
+  expected_collections:
+  - general_knowledge
+- id: 164
+  question: My waitlisted class just opened up, but it conflicts with another class — will I be enrolled?
+  acceptable_answer: 'Should mention: no, schedule conflicts prevent automatic enrollment from waitlist'
+  sample_answer: No. Even if a spot opens, a schedule conflict will prevent automatic enrollment from the waitlist. You would need to resolve the conflict first.
+  expected_collections:
+  - general_knowledge
+- id: 165
+  question: What is the difference between the waitlist and a permission number?
+  acceptable_answer: 'Should mention: waitlist is automatic queue; permission number allows direct enrollment, often used after term starts'
+  sample_answer: The waitlist automatically enrolls you when a seat opens. A permission number is provided by the instructor and lets you enroll directly, bypassing the waitlist or a prerequisite.
+  expected_collections:
+  - general_knowledge
+- id: 166
+  question: Can I enroll in two different sections of the same course at the same time?
+  acceptable_answer: 'Should say no; cannot be enrolled in two sections of the same course simultaneously'
+  sample_answer: No, students cannot be enrolled in two sections of the same course simultaneously.
+  expected_collections:
+  - general_knowledge
+
+
+# ==================== 4-Year Plans ====================
+# -- Computer Science 2025 --
+- id: 167
+  question: What courses does the 4-year plan suggest for my first semester as a CS major?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: FFC 100B, ENGR 101, CPSC 230, CPSC 298, MATH 110 or MATH 115'
+  sample_answer: 'Year 1 Fall: FFC 100B, ENGR 101, CPSC 230, CPSC 298 (Intro to *Nix), and MATH 110 or MATH 115.'
+  expected_collections:
+  - 4_year_plans
+- id: 168
+  question: What does Year 1 Spring look like in the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CPSC 231, CPSC 298, GCI 150, MATH 111 or MATH 116'
+  sample_answer: 'Year 1 Spring: CPSC 231, CPSC 298 (any topic), GCI 150, and MATH 111 or MATH 116.'
+  expected_collections:
+  - 4_year_plans
+- id: 169
+  question: When does the CS 4-year plan suggest I take MATH 250?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: Year 2 Spring'
+  sample_answer: The CS 4-year plan places MATH 250 (Discrete Mathematics I) in Year 2 Spring.
+  expected_collections:
+  - 4_year_plans
+- id: 170
+  question: When does the CS plan suggest I take MATH 215?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: Year 3 Fall'
+  sample_answer: MATH 215 (Linear Algebra and Differential Equations) is placed in Year 3 Fall in the CS 4-year plan.
+  expected_collections:
+  - 4_year_plans
+- id: 171
+  question: What specific required course is called out by name in Year 4 Fall of the CS plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CPSC 354 Programming Languages'
+  sample_answer: CPSC 354 (Programming Languages) is the specifically named required course in Year 4 Fall of the CS plan.
+  expected_collections:
+  - 4_year_plans
+- id: 172
+  question: When do I take lab science courses according to the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: Year 2 Fall (first lab science) and Year 2 Spring (second lab science)'
+  sample_answer: The CS plan places the first lab science in Year 2 Fall and the second lab science in Year 2 Spring.
+  expected_collections:
+  - 4_year_plans
+- id: 173
+  question: How many total credits do I need to graduate with a CS degree?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: 120 total credits; 77-78 major-specific credits'
+  sample_answer: CS students need a minimum of 120 credits to graduate, with 77-78 of those being major-specific credits.
+  expected_collections:
+  - 4_year_plans
+- id: 174
+  question: What does Year 2 Fall look like in the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CS upper-division requirement, CPSC 298, MATH 210, first lab science, GCI 200'
+  sample_answer: 'Year 2 Fall: a CS upper-division requirement (4 credits), CPSC 298 (C++ Programming topic), MATH 210, first lab science, and GCI 200.'
+  expected_collections:
+  - 4_year_plans
+- id: 175
+  question: When does the CS plan suggest completing the GCI sequence?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: GCI 150 in Year 1 Spring, GCI 200 in Year 2 Fall, GCI 250 in Year 2 Spring'
+  sample_answer: 'GCI 150 in Year 1 Spring, GCI 200 in Year 2 Fall, and GCI 250 in Year 2 Spring.'
+  expected_collections:
+  - 4_year_plans
+- id: 176
+  question: What does Year 3 Fall include in the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CPSC 298, CS upper-division requirement, CS elective, MATH 215'
+  sample_answer: 'Year 3 Fall: CPSC 298 (any topic), a CS upper-division requirement, a CS elective, and MATH 215.'
+  expected_collections:
+  - 4_year_plans
+- id: 177
+  question: What does Year 2 Spring look like in the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: two CS upper-division requirements, MATH 250, GCI 250, second lab science'
+  sample_answer: 'Year 2 Spring: two CS upper-division requirements, MATH 250, GCI 250, and a second lab science.'
+  expected_collections:
+  - 4_year_plans
+- id: 178
+  question: How many credits per year does the CS plan recommend to stay on track?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: 30 credits per year'
+  sample_answer: The CS 4-year plan recommends taking 30 credits per year to graduate within 4 years.
+  expected_collections:
+  - 4_year_plans
+# -- Data Science 2025 --
+- id: 179
+  question: What courses does the DS 4-year plan suggest for Year 1 Fall?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: FFC 100B, ENGR 101, CPSC 230, CPSC 298, MATH 110'
+  sample_answer: 'Year 1 Fall: FFC 100B, ENGR 101, CPSC 230, CPSC 298 (Intro to *Nix), and MATH 110.'
+  expected_collections:
+  - 4_year_plans
+- id: 180
+  question: What does Year 1 Spring look like in the DS 4-year plan?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: CPSC 231, CPSC 298, GCI 150, MATH 203'
+  sample_answer: 'Year 1 Spring: CPSC 231, CPSC 298 (any topic), GCI 150, and MATH 203.'
+  expected_collections:
+  - 4_year_plans
+- id: 181
+  question: When does the DS plan suggest taking MGSC 220?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: Year 2 Fall'
+  sample_answer: MGSC 220 (Foundations of Business Analytics) is placed in Year 2 Fall in the DS plan.
+  expected_collections:
+  - 4_year_plans
+- id: 182
+  question: When does the DS plan suggest taking CPSC 293?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: Year 2 Spring'
+  sample_answer: CPSC 293 (Mathematical Foundations of Machine Learning) appears in Year 2 Spring of the DS plan.
+  expected_collections:
+  - 4_year_plans
+- id: 183
+  question: When does the DS plan suggest taking CPSC 285?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: Year 3 Fall'
+  sample_answer: CPSC 285 (Social and Ethical Issues in Computing) is placed in Year 3 Fall in the DS plan.
+  expected_collections:
+  - 4_year_plans
+- id: 184
+  question: How many major-specific credits does the DS degree require?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: 75 major-specific credits; 120 total'
+  sample_answer: DS students need 75 major-specific credits and a minimum of 120 total credits to graduate.
+  expected_collections:
+  - 4_year_plans
+- id: 185
+  question: What does Year 2 Fall look like in the DS 4-year plan?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: ECON 200, CPSC 298, MGSC 220, GCI 200'
+  sample_answer: 'Year 2 Fall: ECON 200, CPSC 298 (C++ Programming topic), MGSC 220, and GCI 200.'
+  expected_collections:
+  - 4_year_plans
+- id: 186
+  question: When does the DS plan suggest completing the GCI sequence?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: GCI 150 Year 1 Spring, GCI 200 Year 2 Fall, GCI 250 Year 2 Spring'
+  sample_answer: 'GCI 150 in Year 1 Spring, GCI 200 in Year 2 Fall, and GCI 250 in Year 2 Spring.'
+  expected_collections:
+  - 4_year_plans
+- id: 187
+  question: What does Year 3 Spring look like in the DS plan?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: three DS upper-division requirements, CPSC 298'
+  sample_answer: 'Year 3 Spring: three DS upper-division requirements and CPSC 298.'
+  expected_collections:
+  - 4_year_plans
+- id: 188
+  question: What does Year 4 Fall include in the DS plan?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: two DS upper-division requirements, DS elective'
+  sample_answer: 'Year 4 Fall: two DS upper-division requirements and a DS elective.'
+  expected_collections:
+  - 4_year_plans
+# -- Software Engineering 2025 --
+- id: 189
+  question: What does Year 1 Fall look like in the SE 4-year plan?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: FFC 100B, ENGR 101, CPSC 230, CPSC 298, MATH 110 or MATH 115'
+  sample_answer: 'Year 1 Fall: FFC 100B, ENGR 101, CPSC 230, CPSC 298, and MATH 110 or MATH 115.'
+  expected_collections:
+  - 4_year_plans
+- id: 190
+  question: When does the SE plan suggest taking SE 300 and SE 310?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: Year 3 Fall (both together)'
+  sample_answer: SE 300 (Software Requirements and Testing) and SE 310 (Software Design) are both placed in Year 3 Fall of the SE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 191
+  question: When does the SE plan suggest taking SE 320?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: Year 3 Spring'
+  sample_answer: SE 320 (The Software Development Lifecycle) is placed in Year 3 Spring of the SE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 192
+  question: When does the SE plan suggest taking SE 498?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: Year 4 Spring'
+  sample_answer: SE 498 (Software Engineering Capstone Project) is placed in Year 4 Spring of the SE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 193
+  question: What does Year 2 Fall look like in the SE 4-year plan?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: SE upper-division requirement, CPSC 298, MATH 210, MATH 203, GCI 200'
+  sample_answer: 'Year 2 Fall: an SE upper-division requirement, CPSC 298 (C++ Programming), MATH 210, MATH 203, and GCI 200.'
+  expected_collections:
+  - 4_year_plans
+- id: 194
+  question: What does Year 2 Spring look like in the SE 4-year plan?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: two SE upper-division requirements, MATH 250, GCI 250'
+  sample_answer: 'Year 2 Spring: two SE upper-division requirements, MATH 250, and GCI 250.'
+  expected_collections:
+  - 4_year_plans
+- id: 195
+  question: How many major-specific credits does the SE degree require?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: 77-78 major-specific credits; 120 total'
+  sample_answer: SE students need 77-78 major-specific credits and a minimum of 120 total credits to graduate.
+  expected_collections:
+  - 4_year_plans
+- id: 196
+  question: When does the SE plan suggest taking CPSC 354?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: Year 4 Fall'
+  sample_answer: CPSC 354 (Programming Languages) appears in Year 4 Fall of the SE 4-year plan.
+  expected_collections:
+  - 4_year_plans
+- id: 197
+  question: What does Year 4 Spring look like in the SE plan?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: CPSC 285, SE 498, SE elective'
+  sample_answer: 'Year 4 Spring: CPSC 285 (Social and Ethical Issues in Computing), SE 498 (Capstone Project), and an SE elective.'
+  expected_collections:
+  - 4_year_plans
+- id: 198
+  question: What does Year 3 Fall look like in the SE plan?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: SE 300, SE 310, MATH 215'
+  sample_answer: 'Year 3 Fall: SE 300, SE 310, and MATH 215.'
+  expected_collections:
+  - 4_year_plans
+# -- Computer Engineering 2025 --
+- id: 199
+  question: What does Year 1 Fall look like in the CE 4-year plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: FFC 100B, ENGR 101, CPSC 230, CENG 298, MATH 110 or MATH 115'
+  sample_answer: 'Year 1 Fall: FFC 100B, ENGR 101, CPSC 230, CENG 298 (Computer Engineering Colloquium), and MATH 110 or MATH 115.'
+  expected_collections:
+  - 4_year_plans
+- id: 200
+  question: What does Year 1 Spring look like in the CE plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: CENG 231/231L, GCI 150, CENG 298, MATH 111 or MATH 116'
+  sample_answer: 'Year 1 Spring: CENG 231, CENG 231L, GCI 150, CENG 298, and MATH 111 or MATH 116.'
+  expected_collections:
+  - 4_year_plans
+- id: 201
+  question: When does the CE plan suggest taking EENG 200?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: Year 2 Fall'
+  sample_answer: EENG 200 and EENG 200L (Electronics and Circuits I) are placed in Year 2 Fall of the CE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 202
+  question: What does Year 2 Spring look like in the CE plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: CE upper-division requirement, MATH 250, GCI 250, PHYS 101/101L'
+  sample_answer: 'Year 2 Spring: a CE upper-division requirement, MATH 250, GCI 250, PHYS 101, and PHYS 101L.'
+  expected_collections:
+  - 4_year_plans
+- id: 203
+  question: What does Year 3 Fall look like in the CE plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: CENG 298, EENG 300/300L, MATH 215, PHYS 102/102L'
+  sample_answer: 'Year 3 Fall: CENG 298, EENG 300, EENG 300L, MATH 215, PHYS 102, and PHYS 102L.'
+  expected_collections:
+  - 4_year_plans
+- id: 204
+  question: When does the CE plan suggest taking PHYS 201?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: Year 3 Spring'
+  sample_answer: PHYS 201 (General Physics III) is placed in Year 3 Spring of the CE 4-year plan.
+  expected_collections:
+  - 4_year_plans
+- id: 205
+  question: How many major-specific credits does the CE degree require?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: 79-80 major-specific credits; 120 total'
+  sample_answer: CE students need 79-80 major-specific credits and a minimum of 120 total credits to graduate.
+  expected_collections:
+  - 4_year_plans
+- id: 206
+  question: What does Year 4 Fall look like in the CE plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: two CE upper-division requirements, CE elective'
+  sample_answer: 'Year 4 Fall: two CE upper-division requirements and a CE elective.'
+  expected_collections:
+  - 4_year_plans
+- id: 207
+  question: When do CE upper-division requirements first appear in the 4-year plan?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: Year 2 Spring is when the first CE upper-division requirement appears'
+  sample_answer: The first CE upper-division requirement appears in Year 2 Spring of the CE plan.
+  expected_collections:
+  - 4_year_plans
+# -- Electrical Engineering 2025 --
+- id: 208
+  question: What does Year 1 Fall look like in the EE 4-year plan?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: FFC 100B, ENGR 101, CPSC 230, MATH 110 or MATH 115'
+  sample_answer: 'Year 1 Fall: FFC 100B, ENGR 101, CPSC 230, and MATH 110 or MATH 115.'
+  expected_collections:
+  - 4_year_plans
+- id: 209
+  question: What does Year 1 Spring look like in the EE plan?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: CENG 231/231L, GCI 150, MATH 111 or MATH 116'
+  sample_answer: 'Year 1 Spring: CENG 231, CENG 231L, GCI 150, and MATH 111 or MATH 116.'
+  expected_collections:
+  - 4_year_plans
+- id: 210
+  question: When does the EE plan suggest taking EENG 201?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: Year 2 Fall'
+  sample_answer: EENG 201 (Digital Signals and Filters) is placed in Year 2 Fall of the EE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 211
+  question: What does Year 2 Fall look like in the EE 4-year plan?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 200/200L, EENG 201, MATH 210, GCI 200'
+  sample_answer: 'Year 2 Fall: EENG 200, EENG 200L, EENG 201, MATH 210, and GCI 200.'
+  expected_collections:
+  - 4_year_plans
+- id: 212
+  question: When does the EE plan suggest taking EENG 300?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: Year 3 Fall'
+  sample_answer: EENG 300 and EENG 300L (Electronics and Circuits II) appear in Year 3 Fall of the EE plan.
+  expected_collections:
+  - 4_year_plans
+- id: 213
+  question: What does Year 3 Fall look like in the EE 4-year plan?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 398, EENG 300/300L, MATH 215, PHYS 102/102L'
+  sample_answer: 'Year 3 Fall: EENG 398 (Advanced Engineering Applications), EENG 300, EENG 300L, MATH 215, PHYS 102, and PHYS 102L.'
+  expected_collections:
+  - 4_year_plans
+- id: 214
+  question: How many major-specific credits does the EE degree require?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: 79-80 major-specific credits; 120 total'
+  sample_answer: EE students need 79-80 major-specific credits and a minimum of 120 total credits to graduate.
+  expected_collections:
+  - 4_year_plans
+- id: 215
+  question: What is EENG 398 and when does it appear in the EE plan?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 398 Topics in Advanced Engineering Applications; appears in Years 3 and 4 (multiple sections)'
+  sample_answer: 'EENG 398 (Topics in Advanced Engineering Applications) is a 1-credit applications requirement. It appears in Year 3 Fall, Year 3 Spring, and Year 4 Spring in the EE plan.'
+  expected_collections:
+  - 4_year_plans
+
+# ==================== Multi-Collection ====================
+# -- Major + Minor overlap --
+- id: 216
+  question: I'm a CS major — can CPSC 392 from my electives count toward the Analytics minor?
+  year: '2025'
+  major: Computer Science
+  minor: Analytics
+  acceptable_answer: 'Should say yes; CPSC 392 is required for the Analytics minor and can count toward both'
+  sample_answer: Yes, CPSC 392 (Introduction to Data Science) is a required upper-division course in the Analytics minor and can satisfy both your CS elective and the minor requirement.
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 217
+  question: As a DS major, how much overlap do I have with the Analytics minor?
+  year: '2025'
+  major: Data Science
+  minor: Analytics
+  acceptable_answer: 'Should mention: MGSC 310 and CPSC 392 overlap between DS major and Analytics minor; DS students mainly need the Analytics elective courses'
+  sample_answer: 'DS majors have significant overlap: MGSC 310 and CPSC 392 are required in both. You would mainly need to complete the Analytics upper-division elective courses.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 218
+  question: Does CPSC 353 from my CS major count toward the ISP minor?
+  year: '2025'
+  major: Computer Science
+  minor: Information Security Policy
+  acceptable_answer: 'Should say yes; CPSC 353 is a required course in the ISP minor'
+  sample_answer: Yes, CPSC 353 (Data Communications and Computer Networks) is a required course in the ISP minor and will count.
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 219
+  question: As an SE major, what ISP minor courses would I still need to take?
+  year: '2025'
+  major: Software Engineering
+  minor: Information Security Policy
+  acceptable_answer: 'Should mention: CENG 231/231L not in SE, ISP 363 (needs CPSC 353 which SE lacks), ISP 452, HUM 312; CPSC 230 and ENGR 385 overlap'
+  sample_answer: 'CPSC 230 and ENGR 385 are already in your SE plan. You would still need CENG 231/231L, CPSC 353, ISP 363, ISP 452, and HUM 312.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 220
+  question: Does CENG 330 from my CS major count toward the Computer Engineering minor?
+  year: '2025'
+  major: Computer Science
+  minor: Computer Engineering
+  acceptable_answer: 'Should say yes; CENG 330/330L is required in both CS upper-division and CE minor'
+  sample_answer: Yes, CENG 330 and CENG 330L are required in both the CS upper-division requirements and the Computer Engineering minor.
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 221
+  question: Do any of my CE major courses count toward the Electrical Engineering minor?
+  year: '2025'
+  major: Computer Engineering
+  minor: Electrical Engineering
+  acceptable_answer: 'Should mention: EENG 200/200L and EENG 300/300L appear in both CE major and EE minor'
+  sample_answer: 'Yes, EENG 200/200L and EENG 300/300L are required in both the CE major and the EE minor.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 222
+  question: I'm a DS major — does CPSC 350 from my major count toward the CS minor?
+  year: '2025'
+  major: Data Science
+  minor: Computer Science
+  acceptable_answer: 'Should say yes; CPSC 350 is among the upper-division elective options for the CS minor'
+  sample_answer: Yes, CPSC 350 (Data Structures and Algorithms) is one of the upper-division elective options for the CS minor.
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 223
+  question: What Game Dev minor courses overlap with my CS major?
+  year: '2025'
+  major: Computer Science
+  minor: Game Development
+  acceptable_answer: 'Should mention: CPSC 230 overlaps; note CPSC 236 is in Game Dev lower-div but CS requires CPSC 231 (different course)'
+  sample_answer: 'CPSC 230 (CS I) is shared. Note that Game Dev requires CPSC 236 as a separate intro course — your CS major has CPSC 231 instead, so you would still need to take CPSC 236 for the minor.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 224
+  question: Can SE 310 or SE 320 from my major count toward the CS minor?
+  year: '2025'
+  major: Software Engineering
+  minor: Computer Science
+  acceptable_answer: 'Should say yes; SE 310 and SE 320 are listed as elective options for the CS minor'
+  sample_answer: Yes, both SE 310 (Software Design) and SE 320 (Software Development Lifecycle) are listed as elective options for the Computer Science minor.
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 225
+  question: I'm a DS major — what additional courses would I need for the ISP minor?
+  year: '2025'
+  major: Data Science
+  minor: Information Security Policy
+  acceptable_answer: 'Should mention: CPSC 230 and CPSC 353 overlap; still need CENG 231/231L, ISP 363, ENGR 385, ISP 452, HUM 312'
+  sample_answer: 'DS majors already have CPSC 230 and CPSC 353. You would still need CENG 231/231L, ISP 363, ENGR 385 (if not taken), ISP 452, and HUM 312.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 226
+  question: What additional courses would I need for the Analytics minor beyond my CS major?
+  year: '2025'
+  major: Computer Science
+  minor: Analytics
+  acceptable_answer: 'Should mention: MGSC 220, MATH 203, MGSC 310 not in CS; CPSC 392 can come from CS electives'
+  sample_answer: 'CS majors would need to add MGSC 220, MATH 203, and MGSC 310. CPSC 392 can count as a CS elective. A stats elective is also required.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+- id: 227
+  question: As an SE major, what Game Dev courses would I need to add for the minor?
+  year: '2025'
+  major: Software Engineering
+  minor: Game Development
+  acceptable_answer: 'Should mention: GAME 230, CPSC 236, GAME 242, GAME 244, GAME 245/246, GAME 339, GAME 340, GAME 440'
+  sample_answer: 'You would need to add all Game Dev minor courses: GAME 230, CPSC 236, GAME 242, GAME 244, GAME 245 or 246, GAME 339, GAME 340, and GAME 440. SE has minimal overlap with the Game Dev curriculum.'
+  expected_collections:
+  - major_catalogs
+  - minor_catalogs
+# -- 4-Year Plan + Major --
+- id: 228
+  question: The CS plan has a CS elective in Year 3 Fall — what are my options based on the catalog?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: SE 300, SE 310, CPSC 285, CPSC 349, CPSC 355, CPSC 390, CPSC 392, CPSC 393, and others'
+  sample_answer: 'Year 3 Fall CS elective options include SE 300, SE 310, CPSC 285, CPSC 349, CPSC 355, CPSC 356, CPSC 357, CPSC 390, CPSC 392, CPSC 393, ISP 363, ENGR 385, and more from the elective list.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 229
+  question: The DS plan puts upper-division requirements in Year 2 Spring — which should I take first based on prerequisites?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: CPSC 350 is a good first choice as it is a prerequisite for many other DS upper-div courses'
+  sample_answer: 'CPSC 350 is a strong first choice since it is a prerequisite for CPSC 390, CPSC 392, CPSC 393, CPSC 408, and others. MGSC 310 requires MGSC 220 (taken Year 2 Fall) so it works well in Year 2 Spring too.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 230
+  question: SE 300 and SE 310 are both in Year 3 Fall of the SE plan — what are their prerequisites?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: both SE 300 and SE 310 require CPSC 231'
+  sample_answer: Both SE 300 (Software Requirements and Testing) and SE 310 (Software Design) require CPSC 231 (Computer Science II) as a prerequisite.
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 231
+  question: The CE plan puts a CE upper-division requirement in Year 2 Spring — which course would that typically be?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: CENG 330/330L is a common choice; requires CPSC 231 or CENG 231 which is taken in Year 1 Spring'
+  sample_answer: 'A common choice is CENG 330/330L (Digital Logic Design I), which requires CENG 231 completed in Year 1 Spring. MATH 250 is also taken that same semester and is a prerequisite for some other CE courses.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 232
+  question: How does the CS 4-year plan handle the lab science requirement, and what sequences can I choose from?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: first lab science Year 2 Fall, second Year 2 Spring; options include Biology, Chemistry, or Physics sequences'
+  sample_answer: 'The plan places the first lab science in Year 2 Fall and the second in Year 2 Spring. Students can choose from Biology, Chemistry, or Physics two-semester laboratory sequences.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 233
+  question: When should I start taking electives in the DS plan, and what are my options?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: 'Should mention: first DS elective slot in Year 3 Fall; options include MATH 303, ENV 310, MATH 360, MATH 361, ISP 363, CPSC 430, etc.'
+  sample_answer: 'The first DS elective slot appears in Year 3 Fall. Options include MATH 303, ENV 310, CPSC 358, CPSC 359, MATH 360, MATH 361, ISP 363, MGSC 406, CPSC 430, CPSC 435, CPSC 445, ECON 452, CPSC 458, and MGSC 496.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 234
+  question: The SE plan has an elective slot in Year 3 Spring — what electives are available?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: 'Should mention: CPSC 356, CPSC 357, ISP 363, SE 370, CPSC 390, CPSC 392, CPSC 406, SE 410, SE 420'
+  sample_answer: 'SE elective options include CPSC 356, CPSC 357, CPSC 358, CPSC 359, ISP 363, SE 370, CENG 381, CPSC 390, CPSC 392, CPSC 393, CPSC 406, CPSC 458, SE 410, and SE 420.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 235
+  question: Year 4 Fall of the CS plan specifically names CPSC 354 — what is that course and what does it require?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: 'Should mention: CPSC 354 Programming Languages; prereq MATH 250 and CPSC 350'
+  sample_answer: CPSC 354 is Programming Languages, covering language design and implementation. It requires MATH 250 and CPSC 350 as prerequisites.
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 236
+  question: When does CENG 465 appear in the CE plan, and what are its prerequisites?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: 'Should mention: Year 4 area; prerequisite is CENG 330'
+  sample_answer: CENG 465 (Integrated Circuit Design I) is a Year 4 upper-division requirement. It requires CENG 330 as a prerequisite, typically completed in Year 2-3.
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+- id: 237
+  question: Looking at EE upper-division requirements in Year 2 Spring, what courses are available to take?
+  year: '2025'
+  major: Electrical Engineering
+  acceptable_answer: 'Should mention: options from EE upper-div like EENG 300/300L, EENG 310, EENG 320/320L, CENG 330/330L, EENG 330'
+  sample_answer: 'In Year 2 Spring, EE upper-division options include EENG 300/300L, EENG 310, EENG 320/320L, CENG 330/330L, and EENG 330, depending on which prerequisites have been completed.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+# -- All three collections --
+- id: 238
+  question: When would I realistically take Game Dev minor courses within the CS 4-year plan?
+  year: '2025'
+  major: Computer Science
+  minor: Game Development
+  acceptable_answer: 'Should mention: Game Dev lower-div (GAME 230, CPSC 236, GAME 242, GAME 244) in Years 1-2; upper-div (GAME 339, 340, 440) in Years 3-4 elective slots'
+  sample_answer: 'Game Dev lower-division courses (GAME 230, CPSC 236, GAME 242, GAME 244, GAME 245/246) would fit in Years 1-2 alongside CS lower-div. Upper-division Game Dev courses (GAME 339, GAME 340, GAME 440) would fit in Years 3-4 elective slots.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+  - minor_catalogs
+- id: 239
+  question: How does adding the Analytics minor affect my DS 4-year plan?
+  year: '2025'
+  major: Data Science
+  minor: Analytics
+  acceptable_answer: 'Should mention: significant overlap — MGSC 310 and CPSC 392 already in DS major; mainly need Analytics elective upper-div courses which can fit in Year 3-4 elective slots'
+  sample_answer: 'The Analytics minor adds minimal burden for DS majors since MGSC 310 and CPSC 392 are already required. You would mainly slot one or two Analytics upper-division electives into the existing Year 3-4 elective positions.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+  - minor_catalogs
+- id: 240
+  question: What additional courses would the ISP minor add to my SE 4-year plan?
+  year: '2025'
+  major: Software Engineering
+  minor: Information Security Policy
+  acceptable_answer: 'Should mention: CENG 231/231L and CPSC 353 not in SE plan; ISP 363, ISP 452, HUM 312 also needed; CPSC 230 and ENGR 385 overlap'
+  sample_answer: 'CPSC 230 and ENGR 385 are already in your SE plan. You would need to add CENG 231/231L, CPSC 353, ISP 363, ISP 452, and HUM 312 — fitting these into elective slots across Years 2-4.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+  - minor_catalogs
+- id: 241
+  question: As a CE major, how many extra courses would I need for the EE minor and when would I take them?
+  year: '2025'
+  major: Computer Engineering
+  minor: Electrical Engineering
+  acceptable_answer: 'Should mention: CE already covers EENG 200/200L and EENG 300/300L; still need EENG 320/320L and EENG 420 for EE minor'
+  sample_answer: 'Your CE major already covers EENG 200/200L and EENG 300/300L. For the EE minor you would additionally need EENG 320/320L and EENG 420, which could fit in Years 3-4 elective slots.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+  - minor_catalogs
+- id: 242
+  question: Looking at the DS 4-year plan, when would I fit in courses for the CS minor?
+  year: '2025'
+  major: Data Science
+  minor: Computer Science
+  acceptable_answer: 'Should mention: DS already has CPSC 230, CPSC 231, CPSC 285, MATH 250; would need CS minor upper-div electives (e.g., CENG 330/330L, SE 310) in Years 3-4'
+  sample_answer: 'DS lower-division already includes CPSC 230, CPSC 231, CPSC 285, and MATH 250, satisfying most CS minor lower-div requirements. You would add CS minor upper-division electives like CENG 330/330L or SE 310 in Years 3-4 elective slots.'
+  expected_collections:
+  - 4_year_plans
+  - major_catalogs
+  - minor_catalogs
+# -- Unanswerable questions --
+- id: 243
+  question: When is CPSC 350 offered — is it fall, spring, or both?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: System should state it does not have course scheduling or semester offering information
+  sample_answer: I don't have information about which semesters specific courses are offered. Please check the course schedule in the registration system or contact advising.
+  expected_collections:
+  - major_catalogs
+- id: 244
+  question: What time does SE 300 meet on Tuesdays?
+  year: '2025'
+  major: Software Engineering
+  acceptable_answer: System should state it does not have class meeting time or schedule information
+  sample_answer: I don't have access to class meeting times. Please check the current schedule of classes in the registration system.
+  expected_collections:
+  - major_catalogs
+- id: 245
+  question: Which professor is teaching GAME 339 next semester?
+  year: '2025'
+  minor: Game Development
+  acceptable_answer: System should state it does not have faculty or instructor assignment information
+  sample_answer: I don't have information about which instructors are assigned to specific courses. Please check the course schedule or contact the advising office.
+  expected_collections:
+  - minor_catalogs
+- id: 246
+  question: What building and room is CPSC 408 in?
+  year: '2025'
+  major: Data Science
+  acceptable_answer: System should state it does not have room or building location information
+  sample_answer: I don't have building or room location information. Please check the course schedule in the registration system for the current location.
+  expected_collections:
+  - major_catalogs
+- id: 247
+  question: Are there still open seats in CENG 330 for next semester?
+  year: '2025'
+  major: Computer Science
+  acceptable_answer: System should state it does not have real-time enrollment or seat availability information
+  sample_answer: I don't have access to real-time enrollment data or seat availability. Please check the registration system for current availability.
+  expected_collections:
+  - major_catalogs
+- id: 248
+  question: When is EENG 320 offered — fall only, spring only, or both semesters?
+  year: '2025'
+  minor: Electrical Engineering
+  acceptable_answer: System should state it does not have course scheduling or semester offering information
+  sample_answer: I don't have information about which semesters specific courses are offered. Please check the course catalog or schedule in the registration system.
+  expected_collections:
+  - minor_catalogs
+- id: 249
+  question: What is the email or phone number for the FSE advising office?
+  acceptable_answer: System should state it does not have contact information for advising offices
+  sample_answer: I don't have contact information such as phone numbers or email addresses for offices. You can try reaching FSE advising through Chapman's official advising resources.
+  expected_collections:
+  - general_knowledge
+- id: 250
+  question: Does CENG 465 have any open seats available right now?
+  year: '2025'
+  major: Computer Engineering
+  acceptable_answer: System should state it does not have real-time enrollment or seat availability information
+  sample_answer: I don't have access to real-time enrollment data. Please check the registration system for current seat availability.
+  expected_collections:
+  - major_catalogs

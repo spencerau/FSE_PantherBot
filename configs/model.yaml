@@ -22,9 +22,8 @@ reranker:
 llm:
   host: localhost
   port: 8080
-  #primary_model: "qwen3.5:35b"
-  # primary_model: Jackrong/Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled
-  primary_model: Jackrong/MLX-Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled-8bit
+  # primary_model: Jackrong/MLX-Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled-8bit
+  primary_model: unsloth/Qwen3.6-27B-MLX-8bit
   temperature: 0.1
   top_p: 0.9
   # min/max tokens 
@@ -74,8 +73,6 @@ llm:
 intermediate_llm:
   host: "localhost"
   port: 8081
-  #model: "qwen3.5:4b"
-  # model: Jackrong/Qwen3.5-9B-Claude-4.6-Opus-Reasoning-Distilled
   model: Jackrong/MLX-Qwen3.5-4B-Claude-4.6-Opus-Reasoning-Distilled-8bit
   temperature: 0.1
   max_tokens: 3500
