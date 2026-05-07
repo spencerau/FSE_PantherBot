@@ -23,13 +23,14 @@ llm:
   host: localhost
   port: 8080
   # primary_model: Jackrong/MLX-Qwen3.5-35B-A3B-Claude-4.6-Opus-Reasoning-Distilled-8bit
-  primary_model: unsloth/Qwen3.6-27B-MLX-8bit
+  # primary_model: unsloth/Qwen3.6-27B-MLX-8bit
+  primary_model: unsloth/Qwen3.6-35B-A3B-MLX-8bit
   temperature: 0.1
   top_p: 0.9
   # min/max tokens 
   min_tokens: 100
   max_tokens: 10000
-  num_ctx: 128000
+  num_ctx: 48000
   thinking_budget: 6000
   keep_alive: "30m"
   timeout: 600

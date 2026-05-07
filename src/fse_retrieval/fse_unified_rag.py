@@ -18,6 +18,89 @@ from core_rag.utils.llm_api import get_ollama_api, get_intermediate_ollama_api
 _CATALOG_COLLECTIONS = frozenset({'major_catalogs', 'minor_catalogs', '4_year_plans'})
 
 
+class _StreamingLLMHandler(LLMHandler):
+    """Overrides get_response_stream with proper think-tag handling for Streamlit."""
+
+    def get_response_stream(self, prompt: str, history=None, tokens: int = 600):
+        import json
+
+        messages = [{'role': 'system', 'content': self.system_prompt}]
+        if history:
+            messages.extend(history)
+        messages.append({'role': 'user', 'content': prompt})
+        options = {
+            'temperature': self.config['llm']['temperature'],
+            'num_predict': tokens + self.config['llm'].get('thinking_budget', 0),
+        }
+        if 'num_ctx' in self.config['llm']:
+            options['num_ctx'] = self.config['llm']['num_ctx']
+
+        backend = self.ollama_api._backend
+        payload = backend._build_payload(
+            self.config['llm']['primary_model'], messages, stream=True, options=options
+        )
+        url = f"{backend.base_url}/v1/chat/completions"
+
+        in_thinking = False
+
+        try:
+            resp = backend.session.post(url, json=payload, stream=True, timeout=backend.timeout)
+            resp.raise_for_status()
+            for line in resp.iter_lines():
+                if not line:
+                    continue
+                decoded = line.decode()
+                if not decoded.startswith('data: '):
+                    continue
+                raw = decoded[6:]
+                if raw.strip() == '[DONE]':
+                    break
+                try:
+                    data = json.loads(raw)
+                    delta = data['choices'][0].get('delta', {})
+                    reasoning = delta.get('reasoning') or ''
+                    content = delta.get('content') or ''
+
+                    # mlx_lm routes thinking tokens through delta.reasoning
+                    if reasoning:
+                        if not in_thinking:
+                            yield '\n\n---\n\n**Thinking**\n\n'
+                            in_thinking = True
+                        yield reasoning
+                        continue
+
+                    if not content:
+                        continue
+
+                    if in_thinking:
+                        yield '\n\n---\n\n'
+                        in_thinking = False
+
+                    # Fallback: handle inline <think> tags if server uses that format
+                    remainder = content
+                    while remainder:
+                        idx = remainder.find('<think>')
+                        if idx == -1:
+                            yield remainder
+                            break
+                        if idx > 0:
+                            yield remainder[:idx]
+                        yield '\n\n---\n\n**Thinking**\n\n'
+                        remainder = remainder[idx + 7:]
+                        end_idx = remainder.find('</think>')
+                        if end_idx == -1:
+                            yield remainder
+                            break
+                        yield remainder[:end_idx]
+                        yield '\n\n---\n\n'
+                        remainder = remainder[end_idx + 8:]
+                except (json.JSONDecodeError, KeyError, IndexError):
+                    continue
+        except Exception as e:
+            print(f"Streaming error: {e}")
+            yield f"Error: {e}"
+
+
 class FSEUnifiedRAG(BaseUnifiedRAG):
 
     def __init__(self):
@@ -51,7 +134,7 @@ class FSEUnifiedRAG(BaseUnifiedRAG):
             self.embedding_model, self.bm25_retriever, self.hybrid_disabled,
         )
         self.system_prompt = format_system_prompt(self.config)
-        self.llm_handler = LLMHandler(self.config, self.ollama_api, self.system_prompt)
+        self.llm_handler = _StreamingLLMHandler(self.config, self.ollama_api, self.system_prompt)
         self.answer_gen = AnswerGenerator(
             self.config, self.search_engine, self.llm_handler, self._get_reranker,
             query_router=self.query_router,

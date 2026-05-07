@@ -6,12 +6,28 @@ import sys
 from pathlib import Path
 from collections import defaultdict
 
+import yaml
+
 report = Path(__file__).parent.parent / '.reports' / 'eval_corpus.json'
 if len(sys.argv) > 1:
     report = Path(sys.argv[1])
 
 with open(report) as f:
     data = json.load(f)
+
+# Build lookup: question text -> expected_collections from corpus YAML
+_corpus_path = Path(__file__).parent.parent / 'configs' / 'eval_corpus.yaml'
+_expected_cols: dict = {}
+if _corpus_path.exists():
+    _corpus = yaml.safe_load(_corpus_path.read_text())
+    for q in _corpus.get('queries', []):
+        _expected_cols[q['question']] = q.get('expected_collections') or []
+
+def _get_expected_cols(r):
+    # Report query may have "[Student context — ...]\n" prefix — strip it
+    raw = r.get('query', '')
+    question = raw.split('\n', 1)[-1] if raw.startswith('[Student context') else raw
+    return _expected_cols.get(question, [])
 
 total   = len(data)
 passed  = [r for r in data if r.get('overall_success')]
@@ -57,7 +73,11 @@ for r in data:
     elif r.get('minor'):
         by_minor[r['minor']][bucket] += 1
     else:
-        by_other['unknown'][bucket] += 1
+        expected = _get_expected_cols(r)
+        if '4_year_plans' in expected:
+            by_other['4_year_plans'][bucket] += 1
+        else:
+            by_other['general_knowledge'][bucket] += 1
 
 def print_table(label, table):
     if not table:
@@ -71,6 +91,6 @@ def print_table(label, table):
 
 print_table("By major:", by_major)
 print_table("By minor:", by_minor)
-print_table("No major/minor:", by_other)
+print_table("General knowledge:", by_other)
 
 print(f"{'='*52}\n")

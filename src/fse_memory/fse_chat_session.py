@@ -53,9 +53,32 @@ class FSEChatSession(ChatSession):
         raw_result = self.rag.answer_question(
             query=query,
             conversation_history=history if history else None,
-            stream=False,
+            stream=stream,
             **kwargs,
         )
+
+        if stream:
+            if isinstance(raw_result, tuple):
+                gen, sources, debug = raw_result
+            else:
+                gen, sources, debug = raw_result, [], {}
+
+            def _collecting_gen(g):
+                tokens = []
+                for tok in g:
+                    tokens.append(tok)
+                    yield tok
+                full_answer = ''.join(tokens)
+                idx = session_store.add_message(
+                    session_id=self.session_id,
+                    user_id=self.user_id,
+                    role='assistant',
+                    content=full_answer,
+                    config=self.config,
+                )
+                self._store_citations(idx, sources)
+
+            return _collecting_gen(gen), sources, debug
 
         if isinstance(raw_result, tuple):
             answer, sources, debug = raw_result

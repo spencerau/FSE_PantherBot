@@ -122,7 +122,7 @@ def main():
         show_thinking = True
         if enable_thinking:
             config = load_config()
-            default_show_thinking = 'deepseek' in config.get('llm', {}).get('model', '').lower()
+            default_show_thinking = 'Qwen' in config.get('llm', {}).get('primary_model', '').lower()
 
             show_thinking = st.checkbox(
                 "Show Thinking Process",
@@ -170,12 +170,12 @@ def main():
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
-            with st.spinner("Searching academic catalogs..."):
-                try:
-                    program_code = majors.get(student_program, "cs")
-                    minor_code = minors_config.get(student_minor) if student_minor else None
+            try:
+                program_code = majors.get(student_program, "cs")
+                minor_code = minors_config.get(student_minor) if student_minor else None
 
-                    answer, retrieved_chunks, debug_info = session.chat_with_context(
+                with st.spinner("Searching academic catalogs..."):
+                    stream_gen, retrieved_chunks, debug_info = session.chat_with_context(
                         prompt,
                         student_program=program_code,
                         student_year=student_year,
@@ -184,112 +184,112 @@ def main():
                         enable_thinking=st.session_state.get('enable_thinking', True),
                         show_thinking=st.session_state.get('show_thinking', False),
                         return_debug_info=True,
+                        stream=True,
                     )
 
-                    cleaned_answer = clean_html_for_display(answer)
-                    st.markdown(cleaned_answer)
+                answer = st.write_stream(stream_gen)
 
-                    if retrieved_chunks:
-                        with st.expander("Sources Used", expanded=False):
-                            for i, chunk in enumerate(retrieved_chunks):
-                                metadata = chunk.get('metadata', {})
-                                collection = chunk.get('collection', '')
-                                score = chunk.get('score', 0)
-                                rerank_score = chunk.get('rerank_score', score)
+                if retrieved_chunks:
+                    with st.expander("Sources Used", expanded=False):
+                        for i, chunk in enumerate(retrieved_chunks):
+                            metadata = chunk.get('metadata', {})
+                            collection = chunk.get('collection', '')
+                            score = chunk.get('score', 0)
+                            rerank_score = chunk.get('rerank_score', score)
 
-                                st.write(f"**Source {i+1}** (Similarity: {score:.3f}, Relevance: {rerank_score:.3f})")
-                                st.write(f"Collection: `{collection}`")
+                            st.write(f"**Source {i+1}** (Similarity: {score:.3f}, Relevance: {rerank_score:.3f})")
+                            st.write(f"Collection: `{collection}`")
 
-                                if metadata:
-                                    meta_info = []
-                                    if metadata.get('year'):
-                                        meta_info.append(f"Year: {metadata['year']}")
-                                    if metadata.get('subject'):
-                                        meta_info.append(f"Subject: {metadata['subject']}")
-                                    if metadata.get('document_type'):
-                                        meta_info.append(f"Type: {metadata['document_type']}")
-                                    if metadata.get('file_name'):
-                                        meta_info.append(f"File: {metadata['file_name']}")
+                            if metadata:
+                                meta_info = []
+                                if metadata.get('year'):
+                                    meta_info.append(f"Year: {metadata['year']}")
+                                if metadata.get('subject'):
+                                    meta_info.append(f"Subject: {metadata['subject']}")
+                                if metadata.get('document_type'):
+                                    meta_info.append(f"Type: {metadata['document_type']}")
+                                if metadata.get('file_name'):
+                                    meta_info.append(f"File: {metadata['file_name']}")
 
-                                    if meta_info:
-                                        st.write(f"Metadata: {', '.join(meta_info)}")
+                                if meta_info:
+                                    st.write(f"Metadata: {', '.join(meta_info)}")
 
-                                text_preview = chunk['text'].replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
-                                st.text_area(
-                                    "Content preview:",
-                                    text_preview,
-                                    height=200,
-                                    key=f"source_{i}",
-                                    disabled=True
-                                )
-                                st.divider()
+                            text_preview = chunk['text'].replace('<br>', '\n').replace('<br/>', '\n').replace('<br />', '\n')
+                            st.text_area(
+                                "Content preview:",
+                                text_preview,
+                                height=200,
+                                key=f"source_{i}",
+                                disabled=True
+                            )
+                            st.divider()
 
-                        if st.session_state.get('debug_mode', False):
-                            with st.expander("Debug Information", expanded=False):
-                                st.subheader("Query Processing")
-                                st.write(f"**Original Query:** {prompt}")
-                                st.write(f"**Student Program:** {student_program}")
-                                st.write(f"**Catalog Year:** {student_year}")
+                    if st.session_state.get('debug_mode', False):
+                        with st.expander("Debug Information", expanded=False):
+                            st.subheader("Query Processing")
+                            st.write(f"**Original Query:** {prompt}")
+                            st.write(f"**Student Program:** {student_program}")
+                            st.write(f"**Catalog Year:** {student_year}")
 
-                                if debug_info:
-                                    st.subheader("RAG Pipeline Debug Output")
-                                    if isinstance(debug_info, dict):
-                                        for key, value in debug_info.items():
-                                            st.write(f"**{key}:** {value}")
-                                    else:
-                                        for debug_msg in debug_info:
-                                            st.code(debug_msg, language="text")
+                            if debug_info:
+                                st.subheader("RAG Pipeline Debug Output")
+                                if isinstance(debug_info, dict):
+                                    for key, value in debug_info.items():
+                                        st.write(f"**{key}:** {value}")
+                                else:
+                                    for debug_msg in debug_info:
+                                        st.code(debug_msg, language="text")
 
-                                st.subheader("Retrieval Details")
-                                st.write(f"**Total Chunks Retrieved:** {len(retrieved_chunks)}")
+                            st.subheader("Retrieval Details")
+                            st.write(f"**Total Chunks Retrieved:** {len(retrieved_chunks)}")
 
-                                dense_scores = [c.get('score_dense', 0) for c in retrieved_chunks if 'score_dense' in c]
-                                sparse_scores = [c.get('score_sparse', 0) for c in retrieved_chunks if 'score_sparse' in c]
-                                rrf_scores = [c.get('score_rrf', 0) for c in retrieved_chunks if 'score_rrf' in c]
-                                rerank_scores = [c.get('rerank_score', 0) for c in retrieved_chunks if 'rerank_score' in c]
+                            dense_scores = [c.get('score_dense', 0) for c in retrieved_chunks if 'score_dense' in c]
+                            sparse_scores = [c.get('score_sparse', 0) for c in retrieved_chunks if 'score_sparse' in c]
+                            rrf_scores = [c.get('score_rrf', 0) for c in retrieved_chunks if 'score_rrf' in c]
+                            rerank_scores = [c.get('rerank_score', 0) for c in retrieved_chunks if 'rerank_score' in c]
 
-                                if dense_scores:
-                                    st.write(f"**Dense Retrieval Scores:** {len(dense_scores)} results, top score: {max(dense_scores):.4f}")
-                                if sparse_scores:
-                                    st.write(f"**Sparse (BM25) Scores:** {len(sparse_scores)} results, top score: {max(sparse_scores):.4f}")
-                                if rrf_scores:
-                                    st.write(f"**RRF Fusion Scores:** {len(rrf_scores)} results, top score: {max(rrf_scores):.4f}")
-                                if rerank_scores:
-                                    st.write(f"**Reranking Scores:** {len(rerank_scores)} results, top score: {max(rerank_scores):.4f}")
+                            if dense_scores:
+                                st.write(f"**Dense Retrieval Scores:** {len(dense_scores)} results, top score: {max(dense_scores):.4f}")
+                            if sparse_scores:
+                                st.write(f"**Sparse (BM25) Scores:** {len(sparse_scores)} results, top score: {max(sparse_scores):.4f}")
+                            if rrf_scores:
+                                st.write(f"**RRF Fusion Scores:** {len(rrf_scores)} results, top score: {max(rrf_scores):.4f}")
+                            if rerank_scores:
+                                st.write(f"**Reranking Scores:** {len(rerank_scores)} results, top score: {max(rerank_scores):.4f}")
 
-                                st.subheader("Collection Distribution")
-                                collection_counts = {}
-                                for chunk in retrieved_chunks:
-                                    coll = chunk.get('collection', 'unknown')
-                                    collection_counts[coll] = collection_counts.get(coll, 0) + 1
+                            st.subheader("Collection Distribution")
+                            collection_counts = {}
+                            for chunk in retrieved_chunks:
+                                coll = chunk.get('collection', 'unknown')
+                                collection_counts[coll] = collection_counts.get(coll, 0) + 1
 
-                                for coll, count in collection_counts.items():
-                                    st.write(f"- **{coll}**: {count} chunks")
+                            for coll, count in collection_counts.items():
+                                st.write(f"- **{coll}**: {count} chunks")
 
-                                st.subheader("Top 5 Chunks Detail")
-                                for i, chunk in enumerate(retrieved_chunks[:5]):
-                                    st.write(f"**Rank {i+1}:**")
-                                    scores_info = []
-                                    if 'score_dense' in chunk:
-                                        scores_info.append(f"Dense: {chunk['score_dense']:.4f}")
-                                    if 'score_sparse' in chunk:
-                                        scores_info.append(f"Sparse: {chunk['score_sparse']:.4f}")
-                                    if 'score_rrf' in chunk:
-                                        scores_info.append(f"RRF: {chunk['score_rrf']:.4f}")
-                                    if 'rerank_score' in chunk:
-                                        scores_info.append(f"Rerank: {chunk['rerank_score']:.4f}")
+                            st.subheader("Top 5 Chunks Detail")
+                            for i, chunk in enumerate(retrieved_chunks[:5]):
+                                st.write(f"**Rank {i+1}:**")
+                                scores_info = []
+                                if 'score_dense' in chunk:
+                                    scores_info.append(f"Dense: {chunk['score_dense']:.4f}")
+                                if 'score_sparse' in chunk:
+                                    scores_info.append(f"Sparse: {chunk['score_sparse']:.4f}")
+                                if 'score_rrf' in chunk:
+                                    scores_info.append(f"RRF: {chunk['score_rrf']:.4f}")
+                                if 'rerank_score' in chunk:
+                                    scores_info.append(f"Rerank: {chunk['rerank_score']:.4f}")
 
-                                    st.write(f"Scores: {', '.join(scores_info)}")
-                                    st.write(f"Collection: {chunk.get('collection', 'N/A')}")
-                                    st.write(f"Text: {chunk['text'][:150]}...")
-                                    st.write("---")
+                                st.write(f"Scores: {', '.join(scores_info)}")
+                                st.write(f"Collection: {chunk.get('collection', 'N/A')}")
+                                st.write(f"Text: {chunk['text'][:150]}...")
+                                st.write("---")
 
-                    st.session_state.messages.append({"role": "assistant", "content": answer})
+                st.session_state.messages.append({"role": "assistant", "content": answer})
 
-                except Exception as e:
-                    error_msg = f"I'm sorry, I encountered an error while processing your question: {str(e)}"
-                    st.error(error_msg)
-                    st.session_state.messages.append({"role": "assistant", "content": error_msg})
+            except Exception as e:
+                error_msg = f"I'm sorry, I encountered an error while processing your question: {str(e)}"
+                st.error(error_msg)
+                st.session_state.messages.append({"role": "assistant", "content": error_msg})
 
     st.sidebar.markdown("---")
     st.sidebar.subheader("Example Questions")
