@@ -1,0 +1,1609 @@
+[
+  {
+    "question_number": 1,
+    "question": "Is Cybersecurity 1 an approved elective for my major?",
+    "context": {
+      "major": "Data Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly states that ISP 363 is not an approved elective, directly contradicting the reference answer which confirms it is an approved elective with restrictions.",
+    "answer": "ISP 363 is not listed as an approved elective for the Data Science B.S. major in the provided catalog. This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 2,
+    "question": "What major-specific requirements do I need to complete to earn my CS degree?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention two explicitly required elements from the criteria: lab science sequences and ENGR 101, which are both listed as required components in the reference answer.",
+    "answer": "You must complete 77\u201378 total credits meeting these major-specific requirements:\n\u2022 GPA: 2.500 for lower-division major courses, 2.000 for all major courses\n\u2022 Grades: C- or higher in all major courses (except default P/NP)\n\u2022 Upper-division minimum: 21 credits in the major\n\u2022 Lower-division core: 23\u201324 credits\n\u2022 Grand Challenges Initiative: 3 credits (GCI 150, 200, 250)\n\u2022 Colloquium: 6 credits (six 1-credit sections of CPSC 298)\n\u2022 Upper-division requirements: 25 credits\n\u2022 Electives: 12 credits (at least 3 must be upper-division)\n\u2022 Required GE: FFC 100B",
+    "overall_success": false
+  },
+  {
+    "question_number": 3,
+    "question": "Does my permission number expire if I don't use it before the deadline?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to directly address whether the permission number expires, and its note about using the number during the add/drop period contradicts the reference answer's statement that numbers must be used before the registration deadline.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu. Note: The deadline to submit a permission number request is the Add/Drop Deadline for the term by 12:00 PM PST, and you must use the number to register during the add/drop period.",
+    "overall_success": false
+  },
+  {
+    "question_number": 4,
+    "question": "What should I keep track of each semester to make sure I graduate on time?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention 'degree audit' as required by the evaluation criteria, even though it provides more detailed specific metrics and requirements.",
+    "answer": "Track these key metrics each semester to ensure on-time graduation:\n\u2022 Overall GPA of 2.500 for lower-division major courses\n\u2022 Overall GPA of 2.000 for all required major courses\n\u2022 Letter grade of C- or higher for all major courses (except P/NP)\n\u2022 Minimum 21 upper-division credits in the major\n\u2022 Completion of FFC 100B and the 3-credit Grand Challenges Initiative\n\u2022 Fulfillment of lower-division core requirements (23-24 or 29-30 credits depending on your major)\n\nFor detailed semester-by-semester planning, contact fseadvising@chapman.edu.",
+    "overall_success": false
+  },
+  {
+    "question_number": 5,
+    "question": "What do I need to look over if I want to graduate early?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention either 'degree audit' or 'advisor consultation' as required by the criteria, instead providing a generic response that the information isn't in the knowledge base.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 6,
+    "question": "What GPA do I need to complete my minor?",
+    "context": {
+      "minor": "Computer Engineering",
+      "year": "2022"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['minor_catalogs'])"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": true,
+    "judge_reason": "The generated answer correctly identifies the 2.000 GPA requirement for the minor and provides additional helpful context about upper-division coursework standards.",
+    "answer": "You need a 2.000 cumulative GPA in the minor and a 2.000 GPA for all upper-division coursework in the minor, unless the specific program requires a higher standard.",
+    "overall_success": false
+  },
+  {
+    "question_number": 7,
+    "question": "What are the required upper-division courses for my Computer Engineering major?",
+    "context": {
+      "major": "Computer Engineering",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly includes CENG 350 (Embedded Systems) and many other courses not listed in the reference answer, suggesting these are required when they are not.",
+    "answer": "The required upper-division courses are:\n\u2022 EENG 300 & EENG 300L - Electronics and Circuits II\n\u2022 CENG 330 & CENG 330L - Digital Logic Design I\n\u2022 CENG 350 - Embedded Systems\n\u2022 CENG 351 - Computer Architecture I\n\u2022 CENG 352 - Computer Architecture II\n\u2022 CENG 353 - Wireless Communication\n\u2022 CENG 366 & CENG 366L - Digital Logic Design II\n\u2022 CENG 370 - Topics in Computer Engineering\n\u2022 CENG 380 - Real-Time Operating Systems\n\u2022 CENG 381 - Modeling and Simulation\n\u2022 CENG 382 - Digital Signal Processing\n\u2022 CENG 390 - Robotics\n\u2022 CENG 465 - Integrated Circuit Design I\n\u2022 CENG 466 - Integrated Circuit Design II\n\u2022 CPSC 350 - Data Structures and Algorithms\n\u2022 CPSC 353 - Data Communications and Computer Networks\n\u2022 CPSC 380 - Operating Systems\n\u2022 CPSC 453 - Network Implementation and Security\n\u2022 ISP 363 - Cybersecurity 1\n\u2022 CENG 298 - Computer Engineering Colloquium (4 credits total)\n\u2022 9 credits of approved electives",
+    "overall_success": false
+  },
+  {
+    "question_number": 8,
+    "question": "I'm almost done with my degree but still have a few upper-division requirements left \u2014 what are my options for finishing those?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to address the core criteria because it begins by stating information isn't in the knowledge base, and it completely omits the key advice to review remaining upper-division requirements and check elective options in the major catalog.",
+    "answer": "This information isn't in the provided knowledge base. Study abroad upper-division courses count toward major requirements. Contact fseadvising@chapman.edu for other completion options.",
+    "overall_success": false
+  },
+  {
+    "question_number": 9,
+    "question": "What are all the required upper-division courses for my SE major?",
+    "context": {
+      "major": "Software Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly includes MATH 250 and CPSC 285 as required upper-division courses, which are not listed in the reference answer's required course list.",
+    "answer": "The required upper-division courses for the Software Engineering B.S. (33 credits) are:\n\u2022 SE 300 - Software Requirements and Testing\n\u2022 MATH 250 - Discrete Mathematics I\n\u2022 CPSC 285 - Social and Ethical Issues in Computing\n\u2022 SE 310 - Software Design\n\u2022 CPSC 355 - Human Computer Interaction\n\u2022 CPSC 380 - Operating Systems\n\u2022 ENGR 385 - Effective Technical Communication\n\u2022 CPSC 408 - Database Management\n\u2022 SE 498 - Software Engineering Capstone Project\n\u2022 SE 320 - The Software Development Lifecycle\n\u2022 CPSC 349 - Human Factors\n\u2022 CPSC 350 - Data Structures and Algorithms\n\u2022 CPSC 354 - Programming Languages",
+    "overall_success": false
+  },
+  {
+    "question_number": 10,
+    "question": "How do I check if a transfer course will count toward a specific requirement?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer describes the approval process for transfer courses but fails to provide actionable steps for students on how to check if their specific course will count toward requirements, missing both the 'articulation office' and 'transfer evaluation' guidance that the criteria requires.",
+    "answer": "Transfer courses are approved by the Associate Dean and Program Director based on a review of the course syllabus.",
+    "overall_success": false
+  },
+  {
+    "question_number": 11,
+    "question": "What GPA do I need across all my coursework including transfer credits to graduate?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide the required information about the 2.000 GPA requirement, instead deferring to a contact email without answering the question directly.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 12,
+    "question": "If I complete more GE credits than required, will that reduce my major requirements?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to address the question or mention that GE and major requirements are separate, instead simply stating the information isn't in the knowledge base and providing a contact email.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 13,
+    "question": "What kinds of things need a registrar form?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "Judge returned unparseable response: ",
+    "answer": "Registrar forms are required for:\n\u2022 Student-Faculty Research & Creative Activity\n\u2022 Independent Study & Research\n\u2022 Course by Reading and Conference\n\u2022 Undergraduate registration for graduate courses\n\u2022 Non-degree seeking student registration\n\u2022 Notarized transcripts or diplomas\n\u2022 FERPA release for recommendations\n\u2022 Graduate program changes\n\u2022 Undergraduate or graduate petitions\n\u2022 Re-enrollment after an absence\n\u2022 GE course usage or transfer/study abroad GE approval\n\u2022 Internship/Individual Study for GE Citizenship, Community, Service\n\u2022 Self-designed majors or minors\n\nSubmit completed forms to regforms@chapman.edu unless otherwise noted (graduate petitions: graded@chapman.edu; re-enrollment: reenroll@chapman.edu).",
+    "overall_success": false
+  },
+  {
+    "question_number": 14,
+    "question": "Do I need approval before taking a class at another school for transfer credit?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer explicitly states 'No formal pre-approval is required' which directly contradicts the criteria asking for prior approval to be recommended, as the reference answer clearly indicates students should obtain approval before enrolling.",
+    "answer": "No formal pre-approval is required, but it is strongly recommended to verify transferability before enrolling. Check the online transfer articulation database (TES or Transferology) for pre-approved courses. Email articulation@chapman.edu for unevaluated courses and send proof of enrollment when registering. All transfer credit must ultimately be evaluated and approved by the Office of the University Registrar to count toward your degree.",
+    "overall_success": false
+  },
+  {
+    "question_number": 15,
+    "question": "Do I need to talk to my advisor before changing my major?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention advisor consultation at all, instead only describing the form submission process and providing an email contact, which does not directly address whether students need to consult their advisor.",
+    "answer": "The provided context does not specify a mandatory advisor meeting. Undergraduate students submit major change requests via the Change of Program eForm in Student Center. For specific procedural requirements, contact fseadvising@chapman.edu.",
+    "overall_success": false
+  },
+  {
+    "question_number": 16,
+    "question": "How can I satisfy the Exploration Focus requirement?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide any of the required information about how to satisfy the Exploration Focus requirement, instead simply stating the information is unavailable and directing the student to contact an advisor.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 17,
+    "question": "I want to double major \u2014 what requirements should I check first?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention unique credit requirements as specified in the criteria, instead simply deferring to a knowledge base that doesn't contain the information.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu.",
+    "overall_success": false
+  },
+  {
+    "question_number": 18,
+    "question": "How many credits for my minor need to be taken at Chapman?",
+    "context": {
+      "minor": "Analytics",
+      "year": "2023"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies 12 credits but fails to include the location constraint 'at Chapman' that was explicitly asked about in the question, making it an incomplete response.",
+    "answer": "12 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 19,
+    "question": "Is Human-Computer Interaction required?",
+    "context": {
+      "major": "Data Science",
+      "year": "2023"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly states that CPSC 355 is not required, directly contradicting the reference answer which confirms it is required.",
+    "answer": "No, CPSC 355 - Human Computer Interaction is not listed as a required course in the provided context. Contact fseadvising@chapman.edu for confirmation.",
+    "overall_success": false
+  },
+  {
+    "question_number": 20,
+    "question": "When should I start making sure I've met all my graduation requirements?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer does not mention graduation planning and instead defers to a contact email, failing to provide the direct guidance about timing that the question asks for.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 21,
+    "question": "What are the stats courses required for my minor?",
+    "context": {
+      "minor": "Analytics",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer does not mention MATH 361, which is explicitly required by the evaluation criteria, and instead lists four different courses for an Analytics minor.",
+    "answer": "The Analytics minor requires two statistics courses (one lower-division, one upper-division) selected from:\n\u2022 MATH 203 - Introduction to Statistics\n\u2022 PSY 203 - Statistics for Behavioral Sciences\n\u2022 MGSC 209 - Introductory Business Statistics\n\u2022 MGSC 310 - Statistical Models in Business Analytics (upper-division only)\n\nAll minor courses must be completed for a letter grade.",
+    "overall_success": false
+  },
+  {
+    "question_number": 22,
+    "question": "How many credits do I need for the Global Focus?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide the required information about the Global Focus credit requirement (12\u201318 credits) and instead states that the information is not available in the knowledge base.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 23,
+    "question": "How many classes do I need if I complete the Exploration Focus through a minor?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention minor coursework or provide any relevant information about the number of classes needed, instead simply stating the information is unavailable and providing a contact email.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 24,
+    "question": "I want to add a minor on top of my major \u2014 what should I check first?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": true,
+    "judge_reason": "The generated answer directly addresses the unique credit overlap requirement by explicitly stating the course duplication rules and specifying that 12 credits must not be duplicated by the major or other minors.",
+    "answer": "Check course duplication rules first: you must complete a minimum of 12 credits in the minor that are not duplicated by your major or any other minor. Also verify:\n- 6 upper-division credits completed in residence at Chapman\n- 9\u201312 upper-division credits total (varies by minor)\n- 2.000 cumulative GPA in the minor and 2.000 GPA for all upper-division minor coursework\n- All minor courses taken for a letter grade\nContact fseadvising@chapman.edu to audit your current schedule against your target minor\u2019s specific requirements.",
+    "overall_success": false
+  },
+  {
+    "question_number": 25,
+    "question": "Who should I talk to if I'm confused about a degree requirement?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only mentions the registrar and omits academic advisors as a resource, failing to address both required elements in the evaluation criteria.",
+    "answer": "Contact the Office of the University Registrar. Per catalog policy, \"Questions regarding the program evaluation should always be referred to the Office of the University Registrar.\" You are responsible for checking your program evaluation in StudentCenter to verify completed and pending requirements.",
+    "overall_success": false
+  },
+  {
+    "question_number": 26,
+    "question": "Can I graduate without finishing all my major requirements?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": true,
+    "judge_reason": "The generated answer correctly states that major completion is required by explicitly stating 'You must complete all courses in the major' which directly satisfies the criterion of mentioning major completion is required.",
+    "answer": "No. You must complete all courses in the major for a letter grade of C- or higher, except those where the default grading option is P/NP.",
+    "overall_success": false
+  },
+  {
+    "question_number": 27,
+    "question": "I'm graduating next semester \u2014 when should I check my degree audit?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention 'degree audit' as required by the criteria, instead substituting 'program evaluation' which is a different academic document and could confuse the student.",
+    "answer": "Check your program evaluation regularly, and specifically after each registration period to confirm your enrolled courses meet graduation requirements. Monitoring your audit is your responsibility, not your advisor's or the Registrar's.",
+    "overall_success": false
+  },
+  {
+    "question_number": 28,
+    "question": "How many credits is the First-Year Foundations course?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly states '3 credits' but fails to mention 'first year foundations' as required by the evaluation criteria, making the answer incomplete despite having the correct numerical value.",
+    "answer": "3 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 29,
+    "question": "If I run into issues registering for a required course, who should I contact first?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer does not mention advisor support as the primary recommendation for required course registration issues, instead suggesting the course instructor first, which fails to meet the specified criterion.",
+    "answer": "Contact the course instructor first, then request a Permission Number online. Depending on the specific issue:\n- Closed/waitlisted courses: Talk to the instructor in person during the first week, then request a permission code online\n- Registration holds: Contact the specific holding office listed in your StudentCenter (Business Office, Academic Advising Center, Dean of Students, or Health Center)\n- Major requirements: Contact your Faculty Program Advisor\n- Non-major requirements: Contact the Academic Advising Center",
+    "overall_success": false
+  },
+  {
+    "question_number": 30,
+    "question": "How do I plan my schedule so my courses count toward multiple requirements?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention 'academic planning' as required by the evaluation criteria, even though it provides helpful guidance about contacting advisors and mentions 'plans' without using the specific required terminology.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu for official policies on double-counting courses. The suggested 4-year plans recommend selecting General Education and minor/second major courses around your major schedule to optimize remaining space each semester, and advise working with an academic advisor to develop a plan that meets your specific goals.",
+    "overall_success": false
+  },
+  {
+    "question_number": 31,
+    "question": "Is Artificial Intelligence part of the major?",
+    "context": {
+      "major": "Data Science",
+      "year": "2023"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly states that Artificial Intelligence is not part of the major, directly contradicting the reference answer which confirms CPSC 390 is required, and violating the explicit evaluation criteria that the answer should say yes.",
+    "answer": "No, CPSC 390 - Artificial Intelligence is not listed as a required course or elective for the Data Science B.S. major in the provided context.",
+    "overall_success": false
+  },
+  {
+    "question_number": 32,
+    "question": "What stats electives can I take for my minor?",
+    "context": {
+      "minor": "Analytics",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention MATH 360 and provides no relevant information about stats electives for the minor.",
+    "answer": "I couldn't generate a response.",
+    "overall_success": false
+  },
+  {
+    "question_number": 33,
+    "question": "How do I know if I meet the prerequisites before I register for a class?",
+    "context": {},
+    "fail_reason": [
+      "wrong_collection(missing:['general_knowledge'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention validating classes, which is the core information the student needs to know about checking prerequisites before registration.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 34,
+    "question": "How many credits do I need to complete my minor?",
+    "context": {
+      "minor": "Information Security Policy",
+      "year": "2022"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly states 28 credits but fails to identify the Information Security and Policy (ISP) minor, which is a required element per the evaluation criteria.",
+    "answer": "28 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 35,
+    "question": "What GPA do I need in my lower-division major courses to move on?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies the 2.5 GPA requirement for lower-division major courses but fails to mention the 2.0 GPA requirement for overall major courses, making it incomplete.",
+    "answer": "You need an overall GPA of 2.500 for all required lower-division major courses.",
+    "overall_success": false
+  },
+  {
+    "question_number": 36,
+    "question": "What are all the required upper-division courses for my major?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 3 of the 8 required courses (missing CPSC 353, CPSC 354, CPSC 380, CPSC 406, and CPSC 408), failing to provide the complete list requested by the question.",
+    "answer": "The required upper-division courses are:\n\u2022 CENG 330 - Digital Logic Design I (3 credits)\n\u2022 CENG 330L - Lab - Digital Logic Design I (1 credit)\n\u2022 CPSC 350 - Data Structures and Algorithms (3 credits)\n\u2022 CENG 351 - Computer Architecture I (3 credits)\n\nThe catalog specifies 25 total credits for this section, but only these four are listed in the provided text. Contact fseadvising@chapman.edu for the complete list.",
+    "overall_success": false
+  },
+  {
+    "question_number": 37,
+    "question": "What electives can I choose from for my CS major?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 4 courses when the criteria requires mentioning at least 10 specific courses including CPSC 349, CPSC 355, CPSC 390, CPSC 392, CPSC 393, and ISP 363.",
+    "answer": "You can choose from the following courses to satisfy the 12-credit elective requirement:\n\u2022 CPSC 285 - Social and Ethical Issues in Computing\n\u2022 SE 300 - Software Requirements and Testing\n\u2022 SE 310 - Software Design\n\u2022 SE 320 - The Software Development Lifecycle\n\nAt least three must be upper-division courses, and your selection requires approval from the computer science advising committee.",
+    "overall_success": false
+  },
+  {
+    "question_number": 38,
+    "question": "What are all the required upper-division courses for my CS major?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 4 of the 8 required upper-division courses, missing CPSC 353, CPSC 354, CPSC 380, CPSC 406, and CPSC 408, which fails to provide a complete answer to the question asking for all required courses.",
+    "answer": "The required upper-division courses listed under the major requirements are:\n\u2022 CENG 330 - Digital Logic Design I (3 credits)\n\u2022 CENG 330L - Lab - Digital Logic Design I (1 credit)\n\u2022 CPSC 350 - Data Structures and Algorithms (3 credits)\n\u2022 CENG 351 - Computer Architecture I (3 credits)\n\nThe catalog heading specifies 25 total upper-division credits are required, though only these four are explicitly listed in the provided text. You must also complete five 1-credit sections of CPSC 298 - Computer Science Colloquium and earn a minimum of 21 upper-division major credits overall.",
+    "overall_success": false
+  },
+  {
+    "question_number": 39,
+    "question": "What elective options do I have for my Data Science major?",
+    "context": {
+      "major": "Data Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only includes 2 of the 12 required courses (MATH 303 and ENV 310), missing all other required electives including MATH 360, MATH 361, ISP 363, CPSC 430, CPSC 435, CPSC 445, ECON 452, CPSC 458, MGSC 406, and MGSC 496.",
+    "answer": "You must complete 9 credits by selecting three courses from the following list:\n\u2022 MATH 303 - Biostatistics\n\u2022 ENV 310 - Geographic Information Systems, Lecture and Laboratory\n\u2022 ECON 201 - Principles of Macroeconomics\n\u2022 MATH 203 - Introduction to Statistics\n\u2022 MGSC 220 - Foundations of Business Analytics\n\u2022 CPSC 230 - Computer Science I\n\u2022 CPSC 231 - Computer Science II\n\u2022 CPSC 285 - Social and Ethical Issues in Computing\n\u2022 CPSC 293 - Mathematical Foundations of Machine Learning",
+    "overall_success": false
+  },
+  {
+    "question_number": 40,
+    "question": "What is CPSC 293 and is it required for my major?",
+    "context": {
+      "major": "Data Science",
+      "year": "2024"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to directly answer whether CPSC 293 is required for the major, instead hedging by stating the catalog doesn't explicitly classify it and suggesting contacting advising, when the reference answer clearly states it is a required lower-division course for DS majors.",
+    "answer": "CPSC 293 is Mathematical Foundations of Machine Learning, a 3-credit course covering intermediate calculus, linear algebra, probability, statistics, and optimization concepts for machine learning. Prerequisites: CPSC 230, MATH 203, and MATH 110 or MATH 115. The provided catalog excerpt does not explicitly classify it as a required course or elective for the Data Science major. Contact fseadvising@chapman.edu for confirmation.",
+    "overall_success": false
+  },
+  {
+    "question_number": 41,
+    "question": "What are all the required upper-division courses for my Data Science major?",
+    "context": {
+      "major": "Data Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 2 of the 10 required upper-division courses (MGSC 310 and CPSC 349) and incorrectly includes what appear to be lower-division courses (CPSC 285 and CPSC 293), failing to provide the complete list of required upper-division courses that the student requested.",
+    "answer": "The required upper-division courses listed in the provided catalog excerpt are:\n\u2022 MGSC 310 - Statistical Models in Business Analytics\n\u2022 CPSC 349 - Human Factors\n\u2022 CPSC 285 - Social and Ethical Issues in Computing\n\u2022 CPSC 293 - Mathematical Foundations of Machine Learning\n\nThe catalog requires 30 upper-division credits total, but the provided text only includes these four. Contact fseadvising@chapman.edu for the complete list.",
+    "overall_success": false
+  },
+  {
+    "question_number": 42,
+    "question": "What electives can I choose from for my SE major?",
+    "context": {
+      "major": "Software Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 3 courses when it should mention at least 9 courses from the criteria, missing critical options like ISP 363, CPSC 390, CPSC 392, CPSC 406, SE 370, SE 410, and SE 420.",
+    "answer": "You can choose from the following three courses to satisfy the 9-credit elective requirement, pending approval from the software engineering advising committee:\n\u2022 CPSC 356 - Android Application Development\n\u2022 CPSC 357 - iOS Application Development\n\u2022 CPSC 358 - Assistive Technology",
+    "overall_success": false
+  },
+  {
+    "question_number": 43,
+    "question": "What are all the required upper-division courses for my EE major?",
+    "context": {
+      "major": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 3 courses instead of the required 8, and incorrectly includes MATH 115 and MATH 116 which are not part of the EE upper-division requirements.",
+    "answer": "The provided catalog lists these three courses under upper-division requirements:\n\u2022 MATH 115 - Accelerated Calculus Part I: Differentiation and Integration\n\u2022 MATH 116 - Accelerated Calculus Part II: Series, Differential Equations and Multivariable Calculus\n\u2022 EENG 300 - Electronics and Circuits II\n\nThe section requires 25 credits total, but the provided text is incomplete. Contact fseadvising@chapman.edu for the full list.",
+    "overall_success": false
+  },
+  {
+    "question_number": 44,
+    "question": "What upper-division courses are required for the Analytics minor?",
+    "context": {
+      "minor": "Analytics",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly includes MGSC 410 as a required course, when the reference answer correctly identifies only two required courses: MGSC 310 and CPSC 392.",
+    "answer": "The required upper-division courses for the Analytics minor are:\n\u2022 MGSC 310 - Statistical Models in Business Analytics\n\u2022 CPSC 392 - Introduction to Data Science\n\u2022 MGSC 410 - Applied Business Analytics",
+    "overall_success": false
+  },
+  {
+    "question_number": 45,
+    "question": "What are the required core courses for the ISP minor?",
+    "context": {
+      "minor": "Information Security Policy",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly includes CPSC 453 as a core course and omits HUM 312, which are both present in the reference answer's core course list.",
+    "answer": "The 2025-2026 catalog requires the following technical core courses (22 credits):\n\u2022 CPSC 230 - Computer Science I\n\u2022 CENG 231 - Systems Programming\n\u2022 CENG 231L - Lab - Systems Programming\n\u2022 CPSC 353 - Data Communications and Computer Networks\n\u2022 ISP 363 - Cybersecurity 1\n\u2022 ENGR 385 - Effective Technical Communication\n\u2022 ISP 452 - Fundamentals of Digital Forensics\n\u2022 CPSC 453 - Network Implementation and Security\n\nThe minor also requires one 3-credit social science course (POSC 317, POSC 341, or POSC 343) and three 1-credit sections of ISP 371 - Advanced Topics in Cybersecurity. Prior catalogs (2022-2024) used a 25-credit required core structure that included HUM 312 and POSC 317 instead of ENGR 385. All minor courses must be taken for a letter grade.",
+    "overall_success": false
+  },
+  {
+    "question_number": 46,
+    "question": "What lower-division courses are required for the Computer Science minor?",
+    "context": {
+      "minor": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly includes CPSC 350 (Data Structures and Algorithms) as a required lower-division course, which is not listed in the reference answer and appears to be an upper-division course, making the answer factually incorrect.",
+    "answer": "The required lower-division courses for the Computer Science minor are:\n\u2022 CPSC 230 - Computer Science I\n\u2022 CPSC 231 - Computer Science II\n\u2022 CPSC 285 - Social and Ethical Issues in Computing\n\u2022 MATH 250 - Discrete Mathematics I\n\u2022 CPSC 350 - Data Structures and Algorithms\n(Total: 15 credits)",
+    "overall_success": false
+  },
+  {
+    "question_number": 47,
+    "question": "I want to take 19 credits this semester \u2014 do I need special approval?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies that approval is needed but fails to mention the 3.0+ GPA requirement, which is explicitly listed in the required information.",
+    "answer": "Yes. The maximum credit load is 18 credits per semester. You cannot register for 19 credits without exceeding the university limit.",
+    "overall_success": false
+  },
+  {
+    "question_number": 48,
+    "question": "Can I take a required major course on a pass/no pass basis?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly states 'Yes' when the criteria explicitly requires the answer to be 'No' since required courses must be taken for a letter grade, not pass/no pass.",
+    "answer": "Yes, but only with department chair approval and if the course allows it. Some major courses require letter grades only. You must consult your department chair before selecting P/NP for any major course. You are also limited to 6 credits per academic year on a P/NP basis.",
+    "overall_success": false
+  },
+  {
+    "question_number": 49,
+    "question": "What kinds of holds can prevent me from registering?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention library holds, which is explicitly required by the evaluation criteria, even though it correctly identifies advising and immunization holds.",
+    "answer": "Holds that can prevent registration include:\n- Business Office holds\n- Missing Official Transcripts hold\n- Holds from the Academic Advising Center\n- Holds from the Dean of Students Office\n- Holds from the Health Center\n\nCheck the TASKS TILE in StudentCenter to identify your specific holds and clear them before your registration appointment.",
+    "overall_success": false
+  },
+  {
+    "question_number": 50,
+    "question": "How many total credits do I need to graduate with a CS degree?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only provides the major-specific credit range (77-78 credits) but fails to mention the total credit requirement of 120 credits, which is the primary question asked.",
+    "answer": "77-78 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 51,
+    "question": "What does Year 1 Spring look like in the DS 4-year plan?",
+    "context": {
+      "major": "Data Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide any course information about Year 1 Spring and does not mention any of the required courses (CPSC 231, CPSC 298, GCI 150, MATH 203), instead deflecting to contact information.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 52,
+    "question": "How many major-specific credits does the DS degree require?",
+    "context": {
+      "major": "Data Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies the 75 major-specific credits but fails to include the required 120 total credits information specified in the evaluation criteria.",
+    "answer": "75 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 53,
+    "question": "How many major-specific credits does the SE degree require?",
+    "context": {
+      "major": "Software Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly states 76-77 major-specific credits instead of the required 77-78, and it fails to mention the 120 total credits requirement that was explicitly required by the evaluation criteria.",
+    "answer": "The B.S. in Software Engineering requires 76-77 major-specific credits. Breakdown:\n\u2022 Lower-division requirements: 29-30 credits\n\u2022 Upper-division requirements: 33 credits\n\u2022 Grand Challenges Initiative: 3 credits\n\u2022 Colloquium requirement: 2 credits\n\u2022 Electives: 9 credits",
+    "overall_success": false
+  },
+  {
+    "question_number": 54,
+    "question": "How many major-specific credits does the CE degree require?",
+    "context": {
+      "major": "Computer Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies the 79-80 major-specific credits but fails to mention the 120 total credits requirement, which is explicitly required by the evaluation criteria.",
+    "answer": "The Computer Engineering B.S. requires 79-80 major-specific credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 55,
+    "question": "How many major-specific credits does the EE degree require?",
+    "context": {
+      "major": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['4_year_plans'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "4_year_plans"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies the 79-80 major-specific credits but fails to include the required mention of 120 total credits as specified in the evaluation criteria.",
+    "answer": "79-80 credits.",
+    "overall_success": false
+  },
+  {
+    "question_number": 56,
+    "question": "I'm a CS major \u2014 can CPSC 392 from my electives count toward the Analytics minor?",
+    "context": {
+      "major": "Computer Science",
+      "minor": "Analytics",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly implies CPSC 392 is an elective option for the Analytics minor when it is actually a required course, and fails to clarify that it can simultaneously satisfy both the CS elective and the minor requirement.",
+    "answer": "Yes, CPSC 392 can count toward the Analytics minor. Note that 12 credits (4 courses) of the minor must be taken outside your major program of study.",
+    "overall_success": false
+  },
+  {
+    "question_number": 57,
+    "question": "As an SE major, what ISP minor courses would I still need to take?",
+    "context": {
+      "major": "Software Engineering",
+      "minor": "Information Security Policy",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to identify any ISP minor courses that overlap with the SE major or specify which courses would still be needed, essentially declining to answer the question rather than providing the specific course recommendations requested.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu for a degree audit. The provided context only contains the ISP minor requirements and does not list Software Engineering major courses or overlap details.\n\nISP Minor Requirements (2025-2026):\n- Technical Core (22 credits): CPSC 230, CENG 231, CENG 231L, CPSC 353, ISP 363, ENGR 385, ISP 452, CPSC 453\n- Social Science (3 credits): POSC 317, POSC 341, or POSC 343\n- Advanced Topics (3 credits): Three 1-credit sections of ISP 371\n\nKey constraints: Minimum 12 minor credits cannot duplicate your major. SE majors cannot use ISP 363 as a major elective if minoring in ISP. All courses require a letter grade and 2.0 GPA.",
+    "overall_success": false
+  },
+  {
+    "question_number": 58,
+    "question": "Does CENG 330 from my CS major count toward the Computer Engineering minor?",
+    "context": {
+      "major": "Computer Science",
+      "minor": "Computer Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly characterizes CENG 330 as a 'required core course for the minor' when the reference answer clarifies it is required in both CS upper-division AND the CE minor - it is a shared course, not a minor-specific core course.",
+    "answer": "Yes. CENG 330 is a required core course for the minor and can count toward it. You must \"complete a minimum of 12 credits in the minor that are not duplicated by the major or any other minor.\" Ensure your remaining minor courses meet this non-overlap requirement.",
+    "overall_success": false
+  },
+  {
+    "question_number": 59,
+    "question": "Do any of my CE major courses count toward the Electrical Engineering minor?",
+    "context": {
+      "major": "Computer Engineering",
+      "minor": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide the specific course information requested, instead stating the information isn't in the knowledge base and directing the student to contact advising, when it should have confirmed that EENG 200/200L and EENG 300/300L appear in both the CE major and EE minor.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu.",
+    "overall_success": false
+  },
+  {
+    "question_number": 60,
+    "question": "I'm a DS major \u2014 does CPSC 350 from my major count toward the CS minor?",
+    "context": {
+      "major": "Data Science",
+      "minor": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to confirm that CPSC 350 is specifically an eligible course for the CS minor, only providing general advice about minor credit requirements without addressing the core question about this specific course's eligibility.",
+    "answer": "Yes, provided you still complete a minimum of 12 credits in the minor that are not duplicated by your major or any other minor.",
+    "overall_success": false
+  },
+  {
+    "question_number": 61,
+    "question": "What Game Dev minor courses overlap with my CS major?",
+    "context": {
+      "major": "Computer Science",
+      "minor": "Game Development",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly lists CPSC 236 as an overlapping course when the reference clearly states that CS major requires CPSC 231 instead, making CPSC 236 a separate course needed for the minor rather than an overlap.",
+    "answer": "You can overlap up to 15 credits, as the minor requires a minimum of 12 credits not duplicated by your major. Potential overlapping courses include:\n\u2022 GAME/CPSC 230\n\u2022 CPSC 236\n\u2022 GAME/CPSC 242\n\u2022 GAME/CPSC 244\n\u2022 GAME/CPSC 245 or 246\n\u2022 GAME/CPSC 339\n\u2022 GAME/CPSC 340\n\u2022 GAME/CPSC 440\n\u2022 GAME/CPSC 344\n\u2022 CPSC 349, 353, 355, 360, 390\n\u2022 GAME 370\n\nCS major requirements aren't in the provided context. Contact fseadvising@chapman.edu to verify exact overlap for your specific major.",
+    "overall_success": false
+  },
+  {
+    "question_number": 62,
+    "question": "I'm a DS major \u2014 what additional courses would I need for the ISP minor?",
+    "context": {
+      "major": "Data Science",
+      "minor": "Information Security Policy",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention HUM 312 as a required course and incorrectly substitutes it with POSC courses and ISP 371, which contradicts the reference answer's explicit requirement for HUM 312.",
+    "answer": "You need 28 total credits, with at least 12 not overlapping your DS major. Required courses:\n\u2022 Technical Core (22 credits): CPSC 230, CENG 231, CENG 231L, CPSC 353, ISP 363, ENGR 385, ISP 452, CPSC 453\n\u2022 Social Science (3 credits): POSC 317, POSC 341, or POSC 343\n\u2022 Advanced Topics (3 credits): Three 1-credit sections of ISP 371\n\nISP 363 cannot count as a major elective for CS, CE, SE, or data analytics majors. All minor courses must be taken for a letter grade with a minimum 2.0 minor GPA. Prerequisites apply per course.",
+    "overall_success": false
+  },
+  {
+    "question_number": 63,
+    "question": "The CE plan puts a CE upper-division requirement in Year 2 Spring \u2014 which course would that typically be?",
+    "context": {
+      "major": "Computer Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies CENG 330 as the course and mentions the correct prerequisites, but it fails to specify that CENG 231/CPSC 231 is taken in Year 1 Spring, which is a key piece of information required by the evaluation criteria to explain the scheduling timeline.",
+    "answer": "CENG 330 (Digital Logic Design I). The provided context does not include the full suggested 4-year plan schedule, but CENG 330 is the foundational upper-division CE course typically scheduled after completing the CENG 231/CPSC 231 prerequisite.",
+    "overall_success": false
+  },
+  {
+    "question_number": 64,
+    "question": "When should I start taking electives in the DS plan, and what are my options?",
+    "context": {
+      "major": "Data Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer correctly identifies Year 3 Fall as the start time but fails to mention the required course options (MATH 303, ENV 310, MATH 360, MATH 361, ISP 363, CPSC 430, etc.) and instead provides an incomplete list of only three courses.",
+    "answer": "Start taking Data Science electives in Year 3 Fall, with one each in Year 3 Fall, Year 4 Fall, and Year 4 Spring. You must complete 9 credits total by choosing three of the following:\n- CPSC 393 - Machine Learning (Prerequisite: CPSC 392)\n- CPSC 408 - Database Management (Prerequisite: CPSC 350)\n- MGSC 410 - Applied Business Analytics (Prerequisites: MGSC 310, CPSC 392)",
+    "overall_success": false
+  },
+  {
+    "question_number": 65,
+    "question": "The SE plan has an elective slot in Year 3 Spring \u2014 what electives are available?",
+    "context": {
+      "major": "Software Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer only lists 2 of the 9 required electives (CPSC 356 and CPSC 357), missing all other required courses including ISP 363, SE 370, CPSC 390, CPSC 392, CPSC 406, SE 410, and SE 420.",
+    "answer": "Available software engineering electives:\n\u2022 CPSC 356 - Android Application Development\n\u2022 CPSC 357 - iOS Application Development\n\u2022 CPSC 358 - Assistive Technology\n\nElective programs require approval from the software engineering advising committee.",
+    "overall_success": false
+  },
+  {
+    "question_number": 66,
+    "question": "Looking at EE upper-division requirements in Year 2 Spring, what courses are available to take?",
+    "context": {
+      "major": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide any of the required EE upper-division course options (EENG 300/300L, EENG 310, EENG 320/320L, CENG 330/330L, EENG 330) and instead deflects by stating the information isn't available and provides a contact email.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 67,
+    "question": "How does adding the Analytics minor affect my DS 4-year plan?",
+    "context": {
+      "major": "Data Science",
+      "minor": "Analytics",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to mention the critical fact that MGSC 310 and CPSC 392 are already required courses in the DS major, which is the key reason why the minor adds minimal burden and can fit into existing Year 3-4 elective slots.",
+    "answer": "Adding the Analytics minor adds 6 credits to your total degree load due to double-counting limits. The minor requires 24 credits total, but only 12 credits can overlap with your Data Science major.\n\n- Overlapping courses (18 credits): CPSC 230, MATH 203, MGSC 220, MGSC 310, CPSC 392, MGSC 410\n- Required outside courses: You must take 2 additional courses (6 credits) outside the DS major to satisfy the minor's requirement that 12 credits be taken outside the major program\n- Scheduling impact: The 4-year plan is flexible for minors, but you must stay within the 18-credit semester maximum. You will need to adjust DS electives, utilize summer sessions, or extend your timeline to accommodate the extra 6 credits\n- Contact fseadvising@chapman.edu to map the minor into your specific schedule",
+    "overall_success": false
+  },
+  {
+    "question_number": 68,
+    "question": "What additional courses would the ISP minor add to my SE 4-year plan?",
+    "context": {
+      "major": "Software Engineering",
+      "minor": "Information Security Policy",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer incorrectly substitutes POSC courses (317, 341, or 343) for HUM 312, which the reference answer explicitly states is required for the ISP minor.",
+    "answer": "The ISP minor adds 22 credits to your SE plan. CPSC 230 and ENGR 385 overlap with your major and count toward both.\n\nAdditional courses:\n- CENG 231 (3 credits)\n- CENG 231L (1 credit)\n- CPSC 353 (3 credits)\n- ISP 363 (3 credits)\n- ISP 452 (3 credits)\n- CPSC 453 (3 credits)\n- POSC 317, 341, or 343 (3 credits)\n- ISP 371 (three 1-credit sections) (3 credits)\n\nConstraint: ISP 363 cannot be used as an SE major elective. All minor courses must be taken for a letter grade.",
+    "overall_success": false
+  },
+  {
+    "question_number": 69,
+    "question": "As a CE major, how many extra courses would I need for the EE minor and when would I take them?",
+    "context": {
+      "major": "Computer Engineering",
+      "minor": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to provide the specific course overlap information and timing requested, instead deflecting by claiming the information isn't in the knowledge base when the reference answer clearly states CE covers EENG 200/200L and EENG 300/300L and the student still needs EENG 320/320L and EENG 420 in Years 3-4.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu. The context only lists the EE minor requirements (30 credits total: MATH 115, EENG 200/200L, EENG 300/300L, EENG 320/320L, EENG 420, a physics sequence, and 3 elective credits) but does not specify CE major overlap or a recommended semester schedule.",
+    "overall_success": false
+  },
+  {
+    "question_number": 70,
+    "question": "Looking at the DS 4-year plan, when would I fit in courses for the CS minor?",
+    "context": {
+      "major": "Data Science",
+      "minor": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs",
+      "minor_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer omits MATH 250 from the list of courses already covered in the DS plan and does not mention specific upper-division electives like CENG 330/330L or SE 310 as required by the criteria.",
+    "answer": "Fit CS minor courses into semesters with lighter major loads (Year 1 Spring, Year 2 Fall, Year 4 Fall) while maintaining 12\u201318 total credits. The minor requires 24 credits total, but you must complete at least 12 credits not duplicated by your DS major. Since the DS plan already covers CPSC 230, 231, and 285, schedule the remaining non-duplicated courses in those open slots. Complete your upper-division minor electives in Years 3\u20134 to satisfy the 6 in-residence requirement. The 4-year plan recommends 30 credits/year, leaving 2\u20137 credits/semester for GE and minor work. Contact fseadvising@chapman.edu to map specific courses to your schedule.",
+    "overall_success": false
+  },
+  {
+    "question_number": 71,
+    "question": "When is CPSC 350 offered \u2014 is it fall, spring, or both?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer provides specific information about when CPSC 350 is offered, but the evaluation criteria requires the system to explicitly state it does not have course scheduling or semester offering information, which the reference answer correctly does.",
+    "answer": "CPSC 350 is offered every semester (fall and spring).",
+    "overall_success": false
+  },
+  {
+    "question_number": 72,
+    "question": "Are there still open seats in CENG 330 for next semester?",
+    "context": {
+      "major": "Computer Science",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['major_catalogs'])"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "major_catalogs"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": true,
+    "judge_reason": "The generated answer correctly states that it cannot provide real-time seat availability information by indicating the information isn't in the knowledge base, which satisfies the criterion of communicating the system's limitation regarding enrollment data.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  },
+  {
+    "question_number": 73,
+    "question": "When is EENG 320 offered \u2014 fall only, spring only, or both semesters?",
+    "context": {
+      "minor": "Electrical Engineering",
+      "year": "2025"
+    },
+    "fail_reason": [
+      "wrong_collection(missing:['minor_catalogs'])",
+      "judge_fail"
+    ],
+    "collection_ok": false,
+    "expected_collections": [
+      "minor_catalogs"
+    ],
+    "collections_found": [
+      "4_year_plans",
+      "major_catalogs"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer fails to explicitly state that the AI lacks information about semester offerings, instead providing a vague response that doesn't clearly communicate the knowledge limitation or offer guidance on where to find this information.",
+    "answer": "EENG 320 is offered as needed.",
+    "overall_success": false
+  },
+  {
+    "question_number": 74,
+    "question": "What is the email or phone number for the FSE advising office?",
+    "context": {},
+    "fail_reason": [
+      "judge_fail"
+    ],
+    "collection_ok": true,
+    "expected_collections": [
+      "general_knowledge"
+    ],
+    "collections_found": [
+      "general_knowledge"
+    ],
+    "judge_passed": false,
+    "judge_reason": "The generated answer contradicts the criterion by providing specific contact information (an email address) when the reference answer explicitly states the system does not have contact information for advising offices.",
+    "answer": "This information isn't in the provided knowledge base. Contact fseadvising@chapman.edu",
+    "overall_success": false
+  }
+]
